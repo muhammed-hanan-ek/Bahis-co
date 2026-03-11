@@ -1,0 +1,254 @@
+<div class="w-full xl:p-6 md:p-4 p-3 space-y-8">
+
+  <!-- HEADER -->
+  <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+
+    <div class="space-y-1">
+      <div class="text-xl md:text-2xl font-semibold text-gray-900 tracking-tight">
+        User Management
+      </div>
+      <p class="text-sm text-gray-500">
+        Manage users with role-based access control
+      </p>
+    </div>
+
+    <div class="flex flex-col sm:flex-row gap-3">
+
+      <!-- SEARCH -->
+      <div class="relative w-full sm:w-[280px]">
+        <input
+          type="text"
+          class="h-10 w-full rounded-xl border border-gray-200 bg-white pl-10 pr-4 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--primaryColor)]/30 focus:border-[var(--primaryColor)] transition"
+          placeholder="Search users..."
+        />
+        <i class="fa-solid fa-magnifying-glass text-gray-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+      </div>
+
+      <!-- NEW USER -->
+      <button
+      (click)="openUser(false,null)"
+        class="h-10 flex items-center justify-center gap-2 px-5 rounded-xl bg-[var(--primaryColor)] text-white text-sm font-medium shadow hover:shadow-lg hover:-translate-y-[1px] active:scale-95 transition-all duration-200">
+
+        <i class="fa-solid fa-plus"></i>
+        New User
+
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- STAT CARDS -->
+  <div class="grid xl:grid-cols-4  md:grid-cols-2 grid-cols-1 gap-5">
+
+    <!-- TOTAL USERS -->
+    <div
+      (click)="setFilter('All')"
+      class="group rounded-xl border border-gray-200 px-6 py-5 flex justify-between items-center cursor-pointer transition-all hover:-translate-y-1 hover:shadow-lg"
+      [ngClass]="selectedFilter==='All' ? 'ring-2 ring-orange-200 bg-orange-50' : 'bg-white '">
+
+      <div>
+        <div class="text-3xl font-bold text-gray-900">
+          {{users.length}}
+        </div>
+        <div class="text-xs uppercase font-semibold text-gray-400">
+          Total Users
+        </div>
+      </div>
+
+      <div class="h-12 w-12 flex items-center justify-center rounded-lg text-white bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-400 shadow-sm">
+        <i class="fa-solid fa-users"></i>
+      </div>
+
+    </div>
+
+
+    <!-- ADMIN -->
+    <div
+      (click)="setFilter('Admin')"
+      class="group  rounded-xl border border-gray-200 px-6 py-5 flex justify-between items-center cursor-pointer transition-all hover:-translate-y-1 hover:shadow-lg"
+      [ngClass]="selectedFilter==='Admin' ? 'ring-2 ring-red-200 bg-red-50' : 'bg-white'">
+
+      <div>
+        <div class="text-3xl font-bold text-gray-900">
+          {{adminCount}}
+        </div>
+        <div class="text-xs uppercase font-semibold text-gray-400">
+          Admin
+        </div>
+      </div>
+
+      <div class="h-12 w-12 flex items-center justify-center rounded-lg text-white bg-gradient-to-r from-red-500 via-rose-500 to-pink-500 shadow-sm">
+        <i class="fa-solid fa-user-shield"></i>
+      </div>
+
+    </div>
+
+
+    <!-- STAFF -->
+    <div
+      (click)="setFilter('Staff')"
+      class="group  rounded-xl border border-gray-200 px-6 py-5 flex justify-between items-center cursor-pointer transition-all hover:-translate-y-1 hover:shadow-lg"
+      [ngClass]="selectedFilter==='Staff' ? 'ring-2 ring-blue-200 bg-blue-50' : 'bg-white '">
+
+      <div>
+        <div class="text-3xl font-bold text-gray-900">
+          {{staffCount}}
+        </div>
+        <div class="text-xs uppercase font-semibold text-gray-400">
+          Staff
+        </div>
+      </div>
+
+      <div class="h-12 w-12 flex items-center justify-center rounded-lg text-white bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 shadow-sm">
+        <i class="fa-solid fa-user-tie"></i>
+      </div>
+
+    </div>
+
+
+    <!-- CLIENT -->
+    <div
+      (click)="setFilter('Client')"
+      class="group  rounded-xl border border-gray-200 px-6 py-5 flex justify-between items-center cursor-pointer transition-all hover:-translate-y-1 hover:shadow-lg"
+      [ngClass]="selectedFilter==='Client' ? 'ring-2 ring-green-200 bg-green-50' : 'bg-white '">
+
+      <div>
+        <div class="text-3xl font-bold text-gray-900">
+          {{clientCount}}
+        </div>
+        <div class="text-xs uppercase font-semibold text-gray-400">
+          Client
+        </div>
+      </div>
+
+      <div class="h-12 w-12 flex items-center justify-center rounded-lg text-white bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 shadow-sm">
+        <i class="fa-solid fa-building"></i>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- USERS SECTION -->
+  <div class="space-y-5">
+
+    <div class="flex items-center justify-between">
+
+      <div class="text-lg font-semibold text-gray-900">
+        Users
+      </div>
+
+      <span class="text-sm text-gray-400">
+        {{filteredUsers.length}} users
+      </span>
+
+    </div>
+
+
+    <!-- USER GRID -->
+    <div class="grid xl:grid-cols-5  md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-5">
+
+      <div
+        *ngFor="let user of filteredUsers"
+        class="group bg-white border border-gray-200 rounded-xl p-4 min-h-[90px] flex justify-between items-start transition-all hover:-translate-y-[2px] hover:shadow-md hover:border-gray-300">
+
+        <!-- USER INFO -->
+        <div class="flex items-start gap-3 min-w-0">
+
+          <!-- AVATAR -->
+          <div
+            class="h-11 w-11 shrink-0 rounded-full flex items-center justify-center text-white font-semibold text-sm shadow-sm bg-gradient-to-br"
+            [ngClass]="{
+              'from-red-500 to-rose-500': user.role==='Admin',
+              'from-blue-500 to-indigo-500': user.role==='Staff',
+              'from-green-500 to-emerald-500': user.role==='Client'
+            }">
+
+            {{user.avatar}}
+
+          </div>
+
+          <!-- TEXT -->
+          <div class="min-w-0 w-full">
+
+            <div
+              class="text-sm font-semibold text-gray-900 truncate"
+              [title]="user.name">
+              {{user.name}}
+            </div>
+
+            <div
+              class="text-xs text-gray-400 truncate"
+              [title]="user.email">
+              {{user.email}}
+            </div>
+
+            <div class="flex items-center gap-2 mt-1 flex-wrap">
+
+              <span
+                class="text-[10px] font-semibold px-2 py-0.5 rounded-full"
+                [ngClass]="{
+                  'bg-red-100 text-red-600': user.role==='Admin',
+                  'bg-blue-100 text-blue-600': user.role==='Staff',
+                  'bg-green-100 text-green-600': user.role==='Client'
+                }">
+                {{user.role}}
+              </span>
+
+              <!-- STATUS -->
+              <div class="flex items-center gap-1 text-xs">
+
+                <span class="relative flex">
+
+                  <span *ngIf="user.isActive"
+                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75">
+                  </span>
+
+                  <span
+                    class="relative inline-flex rounded-full h-1.5 w-1.5"
+                    [ngClass]="user.isActive ? 'bg-green-500' : 'bg-gray-400'">
+                  </span>
+
+                </span>
+
+                <span
+                  class="font-medium"
+                  [ngClass]="user.isActive ? 'text-green-600' : 'text-gray-500'">
+                  {{user.isActive ? 'Active' : 'Inactive'}}
+                </span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- ACTION BUTTONS -->
+        <div class="flex flex-col gap-2 opacity-70 group-hover:opacity-100 shrink-0">
+
+          <button
+            class="w-8 h-8 flex items-center justify-center rounded-full text-gray-500 hover:bg-blue-50 hover:text-blue-600 transition">
+            <i class="fa-solid fa-pen text-xs"></i>
+          </button>
+
+          <button
+          (click)="deleteUser()"
+            class="w-8 h-8 flex items-center justify-center rounded-full text-gray-500 hover:bg-red-50 hover:text-red-600 transition">
+            <i class="fa-solid fa-trash text-xs"></i>
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

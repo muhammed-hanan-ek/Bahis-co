@@ -1,0 +1,123 @@
+<!-- admin login page -->
+<div
+  id="sign-in"
+  class="w-full min-h-screen bg-[#F8FAFC] flex justify-center items-center"
+>
+  <div
+    class="w-full md:w-[80%] min-h-screen md:min-h-[90vh]  bg-[#F8FAFC] md:border md:shadow md:rounded-2xl lg:grid lg:grid-cols-2"
+  >
+    <!-- LEFT SECTION -->
+    <div class="w-full relative">
+      <div
+        class="left-section relative w-full lg:h-full h-full md:rounded-t-2xl md:h-[450px] overflow-hidden lg:rounded-l-2xl"
+      >
+        <!-- overlay -->
+        <div class="absolute inset-0 bg-black/50 z-10"></div>
+
+        <!-- content -->
+        <div
+          class="relative z-20 flex flex-col justify-center  items-start h-full p-10 text-white"
+        >
+          <span class="font-extrabold font-serif text-4xl mb-4">
+            Bahis & CO
+          </span>
+
+          <p
+            class="font-medium leading-relaxed max-w-md text-white/90 text-base"
+          >
+            Welcome to Your Work Management & Approval System.
+            Streamline work submissions, simplify approvals,
+            and manage workflows effortlessly.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT SECTION -->
+    <div class="w-full flex items-center justify-center py-10 lg:py-0">
+      <div class="w-full max-w-md px-10">
+        <div
+          class="font-semibold text-[var(--primaryColor)] text-lg mb-8"
+        >
+          Sign in to your account
+        </div>
+
+        <div class="flex flex-col gap-6">
+          <!-- USERNAME -->
+          <div class="flex flex-col w-full relative">
+            <label
+              class="font-medium text-[var(--primaryColor)] text-sm mb-1"
+            >
+              Username
+            </label>
+
+            <i
+              class="fa-regular fa-user absolute top-[38px] left-2 text-[var(--primaryColor)] text-sm"
+            ></i>
+
+            <input
+              [(ngModel)]="username"
+              type="text"
+              placeholder="Enter Your Username"
+              required
+              class="w-full py-2 border border-[var(--primaryColor)] rounded-md bg-gray-100 ps-8 pe-3 focus:outline-none focus:ring-2 focus:ring-[var(--primaryColor)]/30 text-base"
+            />
+          </div>
+
+          <!-- PASSWORD -->
+          <div class="flex flex-col w-full relative">
+            <label
+              class="font-medium text-[var(--primaryColor)] text-sm mb-1"
+            >
+              Password
+            </label>
+
+            <i
+              class="fa-solid fa-lock absolute top-[38px] left-2 text-[var(--primaryColor)] text-sm"
+            ></i>
+
+            <i
+              *ngIf="!show"
+              (click)="show = !show"
+              title="Show"
+              class="fa-solid fa-eye absolute top-[38px] right-3 text-[var(--primaryColor)] text-sm cursor-pointer"
+            ></i>
+
+            <i
+              *ngIf="show"
+              (click)="show = !show"
+              title="Hide"
+              class="fa-solid fa-eye-slash absolute top-[38px] right-3 text-[var(--primaryColor)] text-sm cursor-pointer"
+            ></i>
+
+            <input
+              [(ngModel)]="password"
+              [type]="show ? 'text' : 'password'"
+              placeholder="Enter Your Password"
+              required
+              class="w-full py-2 border border-[var(--primaryColor)] rounded-md bg-gray-100 ps-8 pe-8 focus:outline-none focus:ring-2 focus:ring-[var(--primaryColor)]/30 text-base"
+            />
+
+            <div class="flex justify-end pt-2">
+              <a
+                routerLink="/forgot-password"
+                class="text-xs font-medium text-[var(--primaryColor)] hover:underline"
+              >
+                Forgot Password?
+              </a>
+            </div>
+          </div>
+
+          <!-- BUTTON -->
+          <button
+            [disabled]="!username || !password"
+            (click)="signIn()"
+            class="py-2 bg-[var(--primaryColor)] w-full rounded-md font-medium text-white shadow-md hover:shadow-lg disabled:opacity-70 transition"
+          >
+            Sign In
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

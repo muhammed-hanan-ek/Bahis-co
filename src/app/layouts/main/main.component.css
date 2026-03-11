@@ -1,0 +1,24 @@
+
+.layout-container {
+  min-height: 100vh;
+  @apply bg-gray-100
+}
+
+/* Fix header */
+app-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+/* Push content below header */
+.content {
+  margin-top: 64px; /* Angular Material toolbar height */
+  padding: 16px;
+   height: calc(100vh - 64px);
+  overflow-y: none; /* content scroll */
+}
+
+/* Optional: sidebar height adjustment */
+

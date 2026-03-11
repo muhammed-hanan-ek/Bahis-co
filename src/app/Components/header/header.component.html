@@ -1,0 +1,156 @@
+<mat-toolbar
+  class="fixed top-0 z-50 w-full flex justify-between items-center px-4 h-14 md:h-16 !bg-[var(--primaryColor)] shadow-md shadow-black/10"
+>
+  <!-- LEFT -->
+  <div class="flex items-center gap-4">
+
+    <!-- MENU MODULE -->
+    <div class="relative menu-container">
+
+      <!-- MENU BUTTON -->
+      <button
+        (click)="toggleMenu($event)"
+        class="flex items-center justify-center w-10 h-10 rounded hover:bg-white/10 text-white"
+      >
+        <i class="fa-solid fa-grip"></i>
+      </button>
+
+      <!-- MODULE PANEL -->
+      <div
+        *ngIf="isOpenNav"
+        class="absolute left-0 mt-3 w-[320px] bg-white rounded-2xl shadow-2xl border z-50"
+      >
+
+        <div class="flex justify-between items-center px-6 py-4 bg-[var(--primaryColor)] text-white rounded-t-xl">
+
+    <div>
+      <div class="text-lg font-semibold">
+        Menu
+      </div>
+
+    </div>
+    </div>
+
+        <div class="grid grid-cols-2 gap-4 py-5">
+
+          <div class="flex flex-col items-center gap-2 cursor-pointer hover:scale-105 transition">
+            <div class="w-12 h-12 bg-gray-200 rounded-xl flex items-center justify-center text-[var(--primaryColor)] text-xl">
+              <i class="fa-regular fa-home"></i>
+            </div>
+            <span class="text-sm text-gray-600 text-center font-semibold">
+              Home
+            </span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Logo -->
+    <a routeLink="/home" class="cursor-pointer">
+      <span class="font-extrabold text-white font-serif">Bahis & CO</span>
+    </a>
+
+  </div>
+
+  <!-- RIGHT -->
+  <div class="flex items-center gap-4">
+
+    <!-- Notification -->
+    <div
+      cdkOverlayOrigin
+      #bellOrigin="cdkOverlayOrigin"
+      (click)="openNotifications(bellOrigin)"
+      class="relative flex items-center justify-center w-10 h-10 rounded-full text-white hover:bg-white/10 cursor-pointer transition"
+    >
+      <i class="fa-solid fa-bell"></i>
+      <span
+        class="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[8px] font-semibold"
+      >
+        1
+      </span>
+    </div>
+
+    <!-- notification panel -->
+    <ng-template #notificationTpl>
+      <div class="w-96 bg-white rounded-xl min-h-56 shadow-xl">
+        <div class="text-xl text-[var(--primaryColor)] font-semibold flex justify-between items-center p-4 border-b-2">
+          <span>Notifications</span>
+          <span class="cursor-pointer hover:bg-gray-100 flex justify-center items-center w-10 h-10 rounded-full">
+            <i class="fa-solid fa-envelope-open"></i>
+          </span>
+        </div>
+
+        <div class="flex gap-2 items-center border-b py-3 px-4 cursor-pointer">
+          <div class="bg-[var(--primaryColor)] w-10 h-9 flex justify-center items-center rounded-full text-white font-medium">
+            10
+          </div>
+
+          <div class="text-sm w-full flex justify-between items-center text-gray-600">
+            <span class="font-medium">
+              Notification heading
+              <div class="text-[10px] font-normal">
+                Lorem ipsum dolor sit amet consectetur adipisicing.
+              </div>
+            </span>
+
+            <span class="cursor-pointer hover:bg-gray-100 rounded-full p-2 flex justify-center items-center">
+              <i class="fa-solid fa-x text-[9px]"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+
+    <!-- Profile -->
+    <div class="relative">
+
+      <div class="lg:hidden flex items-center" (click)="OpenMenu($event)">
+        <img
+          src="default.jpg"
+          alt="User"
+          class="h-9 w-9 rounded-full border border-white/40 object-cover"
+        />
+      </div>
+
+      <div
+        class="lg:flex hidden items-center gap-2 cursor-pointer select-none"
+        (click)="OpenMenu($event)"
+      >
+        <img
+          src="default.jpg"
+          alt="User"
+          class="h-9 w-9 rounded-full border border-white/40 object-cover"
+        />
+        <span class="text-sm font-medium text-white hidden lg:block">
+          Username
+        </span>
+        <i class="fa-solid fa-chevron-down text-xs text-white hidden lg:block"></i>
+      </div>
+
+      <!-- Dropdown -->
+      @if (isOpenMenu) {
+      <div class="absolute right-0 mt-3 w-44 rounded-lg bg-white shadow-xl border z-50">
+
+        <div class="absolute -top-2 right-6 h-4 w-4 rotate-45 -z-10 bg-white border-l border-t"></div>
+
+        <button class="flex w-full items-center gap-2 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-t-lg">
+          <i class="fa-solid fa-house text-gray-500"></i>
+          Home
+        </button>
+
+        <div class="border-t"></div>
+
+        <button class="flex w-full items-center gap-2 px-4 py-3 text-sm font-medium text-red-600 hover:bg-red-50 rounded-b-lg">
+          <i class="fa-solid fa-right-from-bracket"></i>
+          Logout
+        </button>
+
+      </div>
+      }
+
+    </div>
+
+  </div>
+</mat-toolbar>

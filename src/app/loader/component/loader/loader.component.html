@@ -1,0 +1,18 @@
+<div
+  *ngIf="loader.isLoading$ | async"
+  class="fixed inset-0 bg-[#e0ebf3]/50 backdrop-blur-sm flex items-center justify-center z-[9999]"
+>
+  <div class="loader-wrapper">
+
+    <!-- TYPING TEXT -->
+    <div class="typing-text font-serif">
+      {{ displayedText }}<span class="cursor">|</span>
+    </div>
+
+    <!-- LOADING BAR -->
+    <!-- <div class="loader-bar">
+      <div class="loader-progress"></div>
+    </div> -->
+
+  </div>
+</div>

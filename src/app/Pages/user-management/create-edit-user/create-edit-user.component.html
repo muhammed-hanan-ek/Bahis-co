@@ -1,0 +1,187 @@
+<div class="w-full max-w-[520px]">
+
+  <!-- HEADER -->
+  <div class="flex justify-between items-center px-6 py-4 bg-[var(--primaryColor)] text-white rounded-t-xl">
+
+    <div>
+      <div class="text-lg font-semibold">
+        {{isEdit ? 'Edit User' : 'Create User'}}
+      </div>
+
+      <p class="text-xs opacity-80">
+        {{isEdit ? 'Update user information and permissions' : 'Add a new user and assign a role'}}
+      </p>
+    </div>
+
+    <button
+      (click)="close()"
+      class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/20 transition">
+
+      <i class="fa-solid fa-x text-sm"></i>
+
+    </button>
+
+  </div>
+
+
+  <!-- FORM BODY -->
+  <div class="px-6 py-6 max-h-[65vh] overflow-y-auto space-y-6">
+
+    <!-- PROFILE IMAGE -->
+    <div class="flex justify-center">
+
+      <label class="relative cursor-pointer group">
+
+        <img
+          [src]="profileImage || 'assets/default-user.png'"
+          class="w-24 h-24 rounded-full object-cover border border-gray-300 shadow-sm"
+        />
+
+        <input
+          type="file"
+          hidden
+          accept="image/*"
+          (change)="onFileSelected($event)"
+        />
+
+        <!-- Upload overlay -->
+        <div class="absolute inset-0 flex items-center justify-center bg-black/40 rounded-full opacity-0 group-hover:opacity-100 transition">
+          <i class="fa-solid fa-camera text-white text-sm"></i>
+        </div>
+
+      </label>
+
+    </div>
+
+
+    <!-- FORM GRID -->
+    <div class="grid grid-cols-1 md:grid-cols-1 gap-4">
+
+      <!-- USERNAME -->
+      <div class="space-y-1">
+
+        <label class="text-sm font-medium text-gray-700">
+          Username <span class="text-red-500">*</span>
+        </label>
+
+        <input
+          type="text"
+          placeholder="Enter username"
+          class="h-10 w-full rounded-lg border border-gray-200 px-3 bg-white text-sm shadow-sm
+          focus:outline-none focus:ring-2 focus:ring-[var(--primaryColor)]/30 focus:border-[var(--primaryColor)] transition"
+        />
+
+      </div>
+
+
+      <!-- FULL NAME -->
+      <div class="space-y-1">
+
+        <label class="text-sm font-medium text-gray-700">
+          Full Name
+        </label>
+
+        <input
+          type="text"
+          placeholder="Enter full name"
+          class="h-10 w-full rounded-lg border border-gray-200 px-3 bg-white text-sm shadow-sm
+          focus:outline-none focus:ring-2 focus:ring-[var(--primaryColor)]/30 focus:border-[var(--primaryColor)] transition"
+        />
+
+      </div>
+
+
+      <!-- EMAIL -->
+      <div class="space-y-1">
+
+        <label class="text-sm font-medium text-gray-700">
+          Email <span class="text-red-500">*</span>
+        </label>
+
+        <input
+          type="email"
+          placeholder="Enter email address"
+          class="h-10 w-full rounded-lg border border-gray-200 px-3 bg-white text-sm shadow-sm
+          focus:outline-none focus:ring-2 focus:ring-[var(--primaryColor)]/30 focus:border-[var(--primaryColor)] transition"
+        />
+
+      </div>
+
+
+      <!-- ROLE -->
+      <div class="space-y-1">
+
+        <label class="text-sm font-medium text-gray-700">
+          Role <span class="text-red-500">*</span>
+        </label>
+
+        <select
+          class="h-10 w-full rounded-lg border border-gray-200 px-3 bg-white text-sm shadow-sm
+          focus:outline-none focus:ring-2 focus:ring-[var(--primaryColor)]/30 focus:border-[var(--primaryColor)] transition">
+
+          <option value="">Select Role</option>
+          <option value="Admin">Admin</option>
+          <option value="Staff">Staff</option>
+          <option value="Client">Client</option>
+
+        </select>
+
+      </div>
+
+    </div>
+
+
+    <!-- PASSWORD -->
+    <div class="space-y-1">
+
+      <label class="text-sm font-medium text-gray-700">
+        Password <span class="text-red-500">*</span>
+      </label>
+
+      <div class="relative">
+
+        <input
+          [type]="show ? 'text' : 'password'"
+          placeholder="Enter password"
+          class="h-10 w-full rounded-lg border border-gray-200 px-3 pr-10 bg-white text-sm shadow-sm
+          focus:outline-none focus:ring-2 focus:ring-[var(--primaryColor)]/30 focus:border-[var(--primaryColor)] transition"
+        />
+
+        <button
+          type="button"
+          (click)="show = !show"
+          class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-md hover:bg-gray-100 transition">
+
+          <i *ngIf="!show" class="fa-solid fa-eye text-gray-400 text-sm"></i>
+          <i *ngIf="show" class="fa-solid fa-eye-slash text-gray-400 text-sm"></i>
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- FOOTER -->
+  <div class="flex justify-end gap-3 px-6 py-4 border-t bg-gray-50 rounded-b-xl">
+
+    <button
+      (click)="close()"
+      class="px-4 py-2 text-sm rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 transition">
+
+      Cancel
+
+    </button>
+
+    <button
+      class="px-5 py-2 text-sm rounded-lg bg-[var(--primaryColor)] text-white font-medium shadow-sm hover:shadow-md hover:scale-[1.02] transition">
+
+      {{isEdit ? 'Save Changes' : 'Create User'}}
+
+    </button>
+
+  </div>
+
+</div>
