@@ -6,12 +6,11 @@ import { CommonModule } from '@angular/common';
   selector: 'app-loader',
   imports: [CommonModule],
   templateUrl: './loader.component.html',
-  styleUrl: './loader.component.css'
+  styleUrl: './loader.component.css',
 })
-export class LoaderComponent implements OnInit{
-
-  fullText = "Bahis & CO";
-  displayedText = "";
+export class LoaderComponent implements OnInit {
+  fullText = 'Bahis & CO';
+  displayedText = '';
   index = 0;
 
   constructor(public loader: LoaderService) {}
@@ -21,9 +20,7 @@ export class LoaderComponent implements OnInit{
   }
 
   startTyping() {
-
     setInterval(() => {
-
       this.displayedText = this.fullText.slice(0, this.index);
 
       this.index++;
@@ -31,10 +28,6 @@ export class LoaderComponent implements OnInit{
       if (this.index > this.fullText.length) {
         this.index = 1;
       }
-
     }, 200);
-
   }
-
 }
-

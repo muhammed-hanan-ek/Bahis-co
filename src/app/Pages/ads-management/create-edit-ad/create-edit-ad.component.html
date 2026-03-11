@@ -1,153 +1,113 @@
 <div class="w-full max-w-[520px]">
-
   <!-- HEADER -->
-  <div class="flex justify-between items-center px-6 py-4 bg-[var(--primaryColor)] text-white rounded-t-xl">
-
+  <div
+    class="flex justify-between items-center px-6 py-4 bg-[var(--primaryColor)] text-white rounded-t-xl"
+  >
     <div>
       <div class="text-lg font-semibold">
-        {{isEdit ? 'Edit Ad' : 'Create Ad'}}
+        {{ isEdit ? "Edit Ad" : "Create Ad" }}
       </div>
 
       <p class="text-xs opacity-80">
-        {{isEdit ? 'Update Ad Details' : 'Add a new Ad for a client'}}
+        {{ isEdit ? "Update Ad Details" : "Add a new Ad for a client" }}
       </p>
     </div>
 
     <button
       (click)="close()"
-      class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/20 transition">
-
+      class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/20 transition"
+    >
       <i class="fa-solid fa-x text-sm"></i>
-
     </button>
-
   </div>
 
+  <!-- FORM BODY -->
+  <div class="px-6 py-6 max-h-[65vh] overflow-y-auto space-y-5">
+    <!-- TITLE -->
+    <div class="space-y-1">
+      <label class="text-sm font-medium text-gray-600"> Ad Title </label>
 
-<!-- FORM BODY -->
-<div class="px-6 py-6 max-h-[65vh] overflow-y-auto space-y-5">
+      <input
+        type="text"
+        [(ngModel)]="form.title"
+        placeholder="Enter Ad title"
+        class="w-full h-10 px-3 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primaryColor)]/30"
+      />
+    </div>
 
-<!-- TITLE -->
-<div class="space-y-1">
+    <!-- CLIENT -->
+    <div class="space-y-1">
+      <label class="text-sm font-medium text-gray-600"> Client </label>
 
-<label class="text-sm font-medium text-gray-600">
-Ad Title
-</label>
+      <mat-form-field appearance="outline" class="w-full text-sm">
+        <input
+          type="text"
+          matInput
+          placeholder="Search client"
+          [(ngModel)]="clientSearch"
+          [matAutocomplete]="clientAuto"
+          (input)="filterClients()"
+        />
 
-<input
-type="text"
-[(ngModel)]="form.title"
-placeholder="Enter Ad title"
-class="w-full h-10 px-3 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primaryColor)]/30"
-/>
+        <mat-autocomplete
+          #clientAuto="matAutocomplete"
+          (optionSelected)="selectClient($event.option.value)"
+        >
+          <mat-option *ngFor="let client of filteredClients" [value]="client">
+            {{ client }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
 
-</div>
+    <div class="space-y-1">
+      <label class="text-sm font-medium text-gray-600"> Start Date </label>
+      <div class="flex gap-2 items-center">
+        <input
+          type="date"
+          [(ngModel)]="form.startDate"
+          class="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primaryColor)]/30 resize-none"
+        />
+        <span class="font-bold text-xl">-</span>
+        <input
+          type="date"
+          [(ngModel)]="form.endDate"
+          class="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primaryColor)]/30 resize-none"
+        />
+      </div>
+    </div>
 
+    <div class="space-y-1">
+      <label class="text-sm font-medium text-gray-600"> Amount </label>
 
-<!-- CLIENT -->
-<div class="space-y-1">
-
-<label class="text-sm font-medium text-gray-600">
-Client
-</label>
-
-<mat-form-field appearance="outline" class="w-full text-sm">
-
-<input
-type="text"
-matInput
-placeholder="Search client"
-[(ngModel)]="clientSearch"
-[matAutocomplete]="clientAuto"
-(input)="filterClients()"
-/>
-
-<mat-autocomplete
-#clientAuto="matAutocomplete"
-(optionSelected)="selectClient($event.option.value)">
-
-<mat-option
-*ngFor="let client of filteredClients"
-[value]="client">
-
-{{client}}
-
-</mat-option>
-
-</mat-autocomplete>
-
-</mat-form-field>
-
-</div>
-
-
-<div class="space-y-1">
-
-    <label class="text-sm font-medium text-gray-600">
-        Start Date
-    </label>
-<div class="flex gap-2 items-center">
-    
-    <input
-    type="date"
-    [(ngModel)]="form.startDate"
-    
-    class="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primaryColor)]/30 resize-none"
-    />
-    <span class="font-bold text-xl">-</span>
-    <input
-    type="date"
-    [(ngModel)]="form.endDate"
-    
-    class="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primaryColor)]/30 resize-none"
-    />
-</div>
-
-
-</div>
-
-<div class="space-y-1">
-
-<label class="text-sm font-medium text-gray-600">
-Amount
-</label>
-
-<input
-type="text"
-placeholder="Enter Amount"
-[(ngModel)]="form.amount"
-(ngModelChange)="validateAmt($event)"
-class="w-full h-10 px-3 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primaryColor)]/30"
-/>
-<div *ngIf="AmtNumber" class="mt-1 text-sm text-red-500">
-                    {{ 'Only numbers are allowed.' }}
-                </div>
-</div>
-
-
-
-
-</div>
-
+      <input
+        type="text"
+        placeholder="Enter Amount"
+        [(ngModel)]="form.amount"
+        (ngModelChange)="validateAmt($event)"
+        class="w-full h-10 px-3 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primaryColor)]/30"
+      />
+      <div *ngIf="AmtNumber" class="mt-1 text-sm text-red-500">
+        {{ "Only numbers are allowed." }}
+      </div>
+    </div>
+  </div>
 
   <!-- FOOTER -->
-  <div class="flex justify-end gap-3 px-6 py-4 border-t bg-gray-50 rounded-b-xl">
-
+  <div
+    class="flex justify-end gap-3 px-6 py-4 border-t bg-gray-50 rounded-b-xl"
+  >
     <button
       (click)="close()"
-      class="px-4 py-2 text-sm rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 transition">
-
+      class="px-4 py-2 text-sm rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 transition"
+    >
       Cancel
-
     </button>
 
     <button
-      class="px-5 py-2 text-sm rounded-lg bg-[var(--primaryColor)] text-white font-medium shadow-sm hover:shadow-md hover:scale-[1.02] transition">
-
-      {{isEdit ? 'Save Changes' : 'Create Ad'}}
-
+      class="px-5 py-2 text-sm rounded-lg bg-[var(--primaryColor)] text-white font-medium shadow-sm hover:shadow-md hover:scale-[1.02] transition"
+    >
+      {{ isEdit ? "Save Changes" : "Create Ad" }}
     </button>
-
   </div>
-
 </div>

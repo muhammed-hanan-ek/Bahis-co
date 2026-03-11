@@ -4,6 +4,7 @@ import {
   ElementRef,
   EventEmitter,
   HostListener,
+  OnInit,
   Output,
   TemplateRef,
   ViewChild,
@@ -15,10 +16,15 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { CdkOverlayOrigin, Overlay, OverlayModule, OverlayRef } from '@angular/cdk/overlay';
+import {
+  CdkOverlayOrigin,
+  Overlay,
+  OverlayModule,
+  OverlayRef,
+} from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
-import {MatIconModule} from '@angular/material/icon';
-import {MatBadgeModule} from '@angular/material/badge';
+import { MatIconModule } from '@angular/material/icon';
+import { MatBadgeModule } from '@angular/material/badge';
 
 @Component({
   selector: 'app-header',
@@ -30,42 +36,37 @@ import {MatBadgeModule} from '@angular/material/badge';
     FormsModule,
     MatMenuModule,
     MatDialogModule,
-    OverlayModule,MatBadgeModule, MatIconModule
+    OverlayModule,
+    MatBadgeModule,
+    MatIconModule,
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
 })
-export class HeaderComponent {
-
+export class HeaderComponent implements OnInit {
   @Output() menuToggle = new EventEmitter<void>();
-
   @ViewChild('notificationTpl') notificationTpl!: TemplateRef<any>;
-
-  overlayRef!: OverlayRef;
-
+  @HostListener('document:click', ['$event'])
   isOpenMenu: boolean = false;
   isOpenNav: boolean = false;
+
+  overlayRef!: OverlayRef;
 
   constructor(
     private elementRef: ElementRef,
     private dialog: MatDialog,
     private overlay: Overlay,
-    private vcr: ViewContainerRef
+    private vcr: ViewContainerRef,
   ) {}
+
+  ngOnInit(): void {}
 
   toggleMenu(event: Event) {
     event.stopPropagation();
     this.isOpenNav = !this.isOpenNav;
   }
 
-  OpenMenu(event: Event) {
-    event.stopPropagation();
-    this.isOpenMenu = !this.isOpenMenu;
-  }
-
-  @HostListener('document:click', ['$event'])
   closeAll(event: any) {
-
     if (!event.target.closest('.menu-container')) {
       this.isOpenNav = false;
     }
@@ -73,11 +74,14 @@ export class HeaderComponent {
     if (!this.elementRef.nativeElement.contains(event.target)) {
       this.isOpenMenu = false;
     }
+  }
 
+  OpenMenu(event: Event) {
+    event.stopPropagation();
+    this.isOpenMenu = !this.isOpenMenu;
   }
 
   openNotifications(origin: CdkOverlayOrigin) {
-
     if (this.overlayRef) {
       this.overlayRef.dispose();
     }
@@ -102,16 +106,10 @@ export class HeaderComponent {
       scrollStrategy: this.overlay.scrollStrategies.close(),
     });
 
-    this.overlayRef.attach(
-      new TemplatePortal(this.notificationTpl, this.vcr)
-    );
+    this.overlayRef.attach(new TemplatePortal(this.notificationTpl, this.vcr));
 
     this.overlayRef.backdropClick().subscribe(() => {
       this.overlayRef.dispose();
     });
-
   }
 }
-
-
-

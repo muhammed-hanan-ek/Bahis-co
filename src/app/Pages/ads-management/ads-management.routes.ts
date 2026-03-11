@@ -1,10 +1,9 @@
-import { Routes } from "@angular/router";
-import { AdsManagementComponent } from "./ads-management.component";
-
+import { Routes } from '@angular/router';
+import { AdsManagementComponent } from './ads-management.component';
 
 export default [
-    {
-        path:'',
-        component:AdsManagementComponent
-    }
-] as Routes
+  {
+    path: '',
+    component: AdsManagementComponent,
+  },
+] as Routes;

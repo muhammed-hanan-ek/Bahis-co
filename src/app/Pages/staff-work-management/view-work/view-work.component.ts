@@ -7,42 +7,40 @@ import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-view-work',
-  imports: [FormsModule,CommonModule,MatAutocompleteModule,MatInputModule],
+  imports: [FormsModule, CommonModule, MatAutocompleteModule, MatInputModule],
   templateUrl: './view-work.component.html',
-  styleUrl: './view-work.component.css'
+  styleUrl: './view-work.component.css',
 })
-export class ViewWorkComponent implements OnInit{
-
-  slno:number | null=null
-  userRole:string | null=null
+export class ViewWorkComponent implements OnInit {
+  slno: number | null = null;
+  userRole: string | null = null;
 
   constructor(
     private dialogRef: MatDialogRef<ViewWorkComponent>,
-        @Inject(MAT_DIALOG_DATA) public data: any,
-  ){}
+    @Inject(MAT_DIALOG_DATA) public data: any,
+  ) {}
 
   ngOnInit(): void {
-      this.userRole=this.data.userRole
+    this.userRole = this.data.userRole;
   }
 
-work = {
-  title: 'Website UI design',
-  description: 'Description 1',
-  client: 'ABC Company',
-  driveLink: 'https://link',
-  remark:''
-}
+  work = {
+    title: 'Website UI design',
+    description: 'Description 1',
+    client: 'ABC Company',
+    driveLink: 'https://link',
+    remark: '',
+  };
 
-copyLink(link:any){
-navigator.clipboard.writeText(link);
-}
-
-openLink(link:any){
-window.open(link,'_blank');
-}
-
- close(){
-    this.dialogRef.close()
+  copyLink(link: any) {
+    navigator.clipboard.writeText(link);
   }
 
+  openLink(link: any) {
+    window.open(link, '_blank');
+  }
+
+  close() {
+    this.dialogRef.close();
+  }
 }

@@ -1,18 +1,17 @@
 <div class="pb-6 space-y-5">
-
   <!-- DASHBOARD GRID -->
   <div class="grid xl:grid-cols-12 lg:grid-cols-6 grid-cols-1 gap-5">
-
     <!-- LEFT PANEL -->
-    <div class="xl:col-span-2 lg:col-span-2 flex flex-col md:flex-row xl:flex-col gap-4">
-
+    <div
+      class="xl:col-span-2 lg:col-span-2 flex flex-col md:flex-row xl:flex-col gap-4"
+    >
       <!-- DATE CARD -->
-      <div class="flex-1 rounded-2xl bg-gradient-to-br from-[var(--primaryColor)] to-blue-700 text-white shadow-lg p-6 relative overflow-hidden h-52">
-
+      <div
+        class="flex-1 rounded-2xl bg-gradient-to-br from-[var(--primaryColor)] to-blue-700 text-white shadow-lg p-6 relative overflow-hidden h-52"
+      >
         <div class="absolute inset-0 bg-white/10 backdrop-blur-sm"></div>
 
         <div class="relative flex flex-col items-center justify-center h-full">
-
           <div class="text-xs opacity-80 tracking-wide">
             {{ dayName }}
           </div>
@@ -21,55 +20,43 @@
             {{ day }}
           </div>
 
-          <div class="text-xs opacity-90 mt-1">
-            {{ month }} {{ year }}
-          </div>
+          <div class="text-xs opacity-90 mt-1">{{ month }} {{ year }}</div>
 
           <div class="mt-3 text-lg font-semibold tracking-widest">
             {{ time }}
           </div>
-
         </div>
-
       </div>
 
-      <div class="flex-1 bg-white rounded-2xl shadow-md p-5 flex flex-col items-center justify-center h-52">
+      <div
+        class="flex-1 bg-white rounded-2xl shadow-md p-5 flex flex-col items-center justify-center h-52"
+      >
+        <div class="text-xs text-gray-500 font-medium">Most Earned Ad</div>
 
-        <div class="text-xs text-gray-500 font-medium">
-          Most Earned Ad
+        <div
+          class="bg-gradient-to-br from-blue-500 to-indigo-600 text-white flex items-center justify-center text-3xl font-semibold rounded-full border-4 border-blue-100 w-20 h-20 mt-3 object-cover"
+        >
+          {{ "A" }}
         </div>
-
-        <div class=" bg-gradient-to-br from-blue-500 to-indigo-600 text-white flex items-center justify-center text-3xl font-semibold rounded-full border-4 border-blue-100 w-20 h-20 mt-3 object-cover">
-                  {{ 'A' }}
-                </div>
 
         <!-- <img
           src="MH.png"
           class=""
         /> -->
 
-        <div class="text-sm font-semibold mt-3 text-gray-800">
-          Ad Title
-        </div>
+        <div class="text-sm font-semibold mt-3 text-gray-800">Ad Title</div>
 
-        <div class="text-xs text-gray-500">
-         Earned ₹100
-        </div>
-
+        <div class="text-xs text-gray-500">Earned ₹100</div>
       </div>
-
     </div>
 
     <!-- WORK ANALYSIS -->
     <div class="xl:col-span-3 lg:col-span-4 bg-white rounded-2xl shadow-md p-5">
-
       <div class="flex justify-between items-center mb-3">
-        <div class="text-sm font-semibold text-gray-800">
-          Work Analysis
-        </div>
+        <div class="text-sm font-semibold text-gray-800">Work Analysis</div>
 
         <span class="bg-gray-100 text-gray-600 px-3 py-1 text-xs rounded-full">
-          {{month}}
+          {{ month }}
         </span>
       </div>
 
@@ -81,19 +68,16 @@
         [legend]="chartLegend"
         [plotOptions]="plotOptions"
         [dataLabels]="dataLabels"
-        [fill]="fill">
+        [fill]="fill"
+      >
       </apx-chart>
-
     </div>
-
-
 
     <!-- ADS CHART -->
     <div class="xl:col-span-7 lg:col-span-7 bg-white rounded-2xl shadow-md p-5">
-
       <div class="flex justify-between items-center mb-4">
         <div class="text-sm font-semibold text-gray-800">
-         Ads Revenue Analysis
+          Ads Revenue Analysis
         </div>
       </div>
 
@@ -104,90 +88,64 @@
         [stroke]="adsStroke"
         [markers]="adsMarkers"
         [tooltip]="adsTooltip"
-        [colors]="adsColors">
+        [colors]="adsColors"
+      >
       </apx-chart>
-
     </div>
-
 
     <div class="xl:col-span-12 lg:col-span-12 flex flex-col gap-4">
-
-  <div class="bg-white rounded-2xl shadow-md p-5">
-
-    <!-- HEADER -->
-    <div class="flex justify-between items-center mb-4">
-      <div class="text-sm font-semibold text-gray-800">
-        Ads Performance
-      </div>
-    </div>
-
-    <!-- ADS SLIDER -->
-    <div class="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
-
-      <div
-        *ngFor="let ad of ads"
-        class="min-w-[260px] bg-gradient-to-br from-white to-gray-50 border border-gray-200 rounded-xl p-4 hover:shadow-lg transition duration-300">
-
-        <!-- AD HEADER -->
-        <div class="flex justify-between items-start mb-3">
-
-          <div>
-            <div class="text-sm font-semibold text-gray-800">
-              {{ ad.name }}
-            </div>
-
-            <div class="text-xs text-gray-500">
-              {{ ad.fromDate }} - {{ ad.toDate }}
-            </div>
-          </div>
-
-
-
+      <div class="bg-white rounded-2xl shadow-md p-5">
+        <!-- HEADER -->
+        <div class="flex justify-between items-center mb-4">
+          <div class="text-sm font-semibold text-gray-800">Ads Performance</div>
         </div>
 
-        <!-- METRICS -->
-        <div class="grid grid-cols-3 gap-2 text-xs">
+        <!-- ADS SLIDER -->
+        <div class="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
+          <div
+            *ngFor="let ad of ads"
+            class="min-w-[260px] bg-gray-50 border border-gray-100 rounded-xl p-4 hover:shadow-lg transition duration-300"
+          >
+            <!-- AD HEADER -->
+            <div class="flex justify-between items-start mb-3">
+              <div>
+                <div class="text-sm font-semibold text-gray-800">
+                  {{ ad.name }}
+                </div>
 
-          <!-- CONVERSIONS -->
-          <div class="bg-indigo-50 rounded-lg p-2 text-center">
-            <div class="font-semibold text-indigo-700">
-              {{ ad.conversions }}
+                <div class="text-xs text-gray-500">
+                  {{ ad.fromDate }} - {{ ad.toDate }}
+                </div>
+              </div>
             </div>
-            <div class="text-gray-500 text-[10px]">
-              Conversions
+
+            <!-- METRICS -->
+            <div class="grid grid-cols-3 gap-2 text-xs">
+              <!-- CONVERSIONS -->
+              <div class="bg-indigo-50 rounded-lg p-2 text-center">
+                <div class="font-semibold text-indigo-700">
+                  {{ ad.conversions }}
+                </div>
+                <div class="text-gray-500 text-[10px]">Conversions</div>
+              </div>
+
+              <!-- REVENUE -->
+              <div class="bg-green-50 rounded-lg p-2 text-center">
+                <div class="font-semibold text-green-700">
+                  ₹{{ ad.revenue }}
+                </div>
+                <div class="text-gray-500 text-[10px]">Revenue</div>
+              </div>
+
+              <!-- SPEND -->
+              <div class="bg-red-50 rounded-lg p-2 text-center">
+                <div class="font-semibold text-red-700">₹{{ ad.spend }}</div>
+                <div class="text-gray-500 text-[10px]">Spend</div>
+              </div>
             </div>
           </div>
-
-          <!-- REVENUE -->
-          <div class="bg-green-50 rounded-lg p-2 text-center">
-            <div class="font-semibold text-green-700">
-              ₹{{ ad.revenue }}
-            </div>
-            <div class="text-gray-500 text-[10px]">
-              Revenue
-            </div>
-          </div>
-
-          <!-- SPEND -->
-          <div class="bg-red-50 rounded-lg p-2 text-center">
-            <div class="font-semibold text-red-700">
-              ₹{{ ad.spend }}
-            </div>
-            <div class="text-gray-500 text-[10px]">
-              Spend
-            </div>
-          </div>
-
         </div>
-
       </div>
-
     </div>
-
   </div>
-
-</div>
-
-  </div>
-
 </div>

@@ -1,123 +1,95 @@
 <div class="w-full max-w-[520px]">
-
   <!-- HEADER -->
-  <div class="flex justify-between items-center px-6 py-4 bg-[var(--primaryColor)] text-white rounded-t-xl">
-
+  <div
+    class="flex justify-between items-center px-6 py-4 bg-[var(--primaryColor)] text-white rounded-t-xl"
+  >
     <div>
       <div class="text-lg font-semibold">
-        {{isEdit ? 'Edit Conversion' : 'Create Conversion'}}
+        {{ isEdit ? "Edit Conversion" : "Create Conversion" }}
       </div>
 
       <p class="text-xs opacity-80">
-        {{isEdit ? 'Update Conversion Details' : 'Add a new Conversion'}}
+        {{ isEdit ? "Update Conversion Details" : "Add a new Conversion" }}
       </p>
     </div>
 
     <button
       (click)="close()"
-      class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/20 transition">
-
+      class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/20 transition"
+    >
       <i class="fa-solid fa-x text-sm"></i>
-
     </button>
-
   </div>
 
+  <!-- FORM BODY -->
+  <div class="px-6 py-6 max-h-[65vh] overflow-y-auto space-y-5">
+    <!-- Ads -->
+    <div class="space-y-1">
+      <label class="text-sm font-medium text-gray-600"> Ad </label>
 
-<!-- FORM BODY -->
-<div class="px-6 py-6 max-h-[65vh] overflow-y-auto space-y-5">
+      <mat-form-field appearance="outline" class="w-full text-sm">
+        <input
+          type="text"
+          matInput
+          placeholder="Search Ads"
+          [(ngModel)]="AdSearch"
+          [matAutocomplete]="adAuto"
+          (input)="filterads()"
+        />
 
+        <mat-autocomplete
+          #adAuto="matAutocomplete"
+          (optionSelected)="selectad($event.option.value)"
+        >
+          <mat-option *ngFor="let ad of filteredads" [value]="ad">
+            {{ ad }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
 
+    <div class="space-y-1">
+      <label class="text-sm font-medium text-gray-600">
+        Conversion Count
+      </label>
 
-<!-- Ads -->
-<div class="space-y-1">
+      <input
+        type="number"
+        [(ngModel)]="form.converioncount"
+        class="w-full h-10 px-3 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primaryColor)]/30"
+      />
+    </div>
+    <div class="space-y-1">
+      <label class="text-sm font-medium text-gray-600"> Amount </label>
 
-<label class="text-sm font-medium text-gray-600">
-Ad
-</label>
-
-<mat-form-field appearance="outline" class="w-full text-sm">
-
-<input
-type="text"
-matInput
-placeholder="Search Ads"
-[(ngModel)]="AdSearch"
-[matAutocomplete]="adAuto"
-(input)="filterads()"
-/>
-
-<mat-autocomplete
-#adAuto="matAutocomplete"
-(optionSelected)="selectad($event.option.value)">
-
-<mat-option
-*ngFor="let ad of filteredads"
-[value]="ad">
-
-{{ad}}
-
-</mat-option>
-
-</mat-autocomplete>
-
-</mat-form-field>
-
-</div>
-
-<div class="space-y-1">
-
-<label class="text-sm font-medium text-gray-600">
-Conversion Count
-</label>
-
-<input
-type="number"
-[(ngModel)]="form.converioncount"
-class="w-full h-10 px-3 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primaryColor)]/30"
-/>
-
-</div>
-<div class="space-y-1">
-
-<label class="text-sm font-medium text-gray-600">
-Amount
-</label>
-
-<input
-type="text"
-placeholder="Enter Amount"
-[(ngModel)]="form.amount"
-(ngModelChange)="validateAmt($event)"
-class="w-full h-10 px-3 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primaryColor)]/30"
-/>
-<div *ngIf="AmtNumber" class="mt-1 text-sm text-red-500">
-                    {{ 'Only numbers are allowed.' }}
-                </div>
-</div>
-
-
-</div>
-
+      <input
+        type="text"
+        placeholder="Enter Amount"
+        [(ngModel)]="form.amount"
+        (ngModelChange)="validateAmt($event)"
+        class="w-full h-10 px-3 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primaryColor)]/30"
+      />
+      <div *ngIf="AmtNumber" class="mt-1 text-sm text-red-500">
+        {{ "Only numbers are allowed." }}
+      </div>
+    </div>
+  </div>
 
   <!-- FOOTER -->
-  <div class="flex justify-end gap-3 px-6 py-4 border-t bg-gray-50 rounded-b-xl">
-
+  <div
+    class="flex justify-end gap-3 px-6 py-4 border-t bg-gray-50 rounded-b-xl"
+  >
     <button
       (click)="close()"
-      class="px-4 py-2 text-sm rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 transition">
-
+      class="px-4 py-2 text-sm rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 transition"
+    >
       Cancel
-
     </button>
 
     <button
-      class="px-5 py-2 text-sm rounded-lg bg-[var(--primaryColor)] text-white font-medium shadow-sm hover:shadow-md hover:scale-[1.02] transition">
-
-      {{isEdit ? 'Save Changes' : 'Create Conversion'}}
-
+      class="px-5 py-2 text-sm rounded-lg bg-[var(--primaryColor)] text-white font-medium shadow-sm hover:shadow-md hover:scale-[1.02] transition"
+    >
+      {{ isEdit ? "Save Changes" : "Create Conversion" }}
     </button>
-
   </div>
-
 </div>

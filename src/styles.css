@@ -2,16 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-:root{
+:root {
   --primaryColor: #2572a9;
-  --secondaryColor: #F8FAFC;
+  --secondaryColor: #f8fafc;
 }
 
-body{
-  @apply bg-[#eef4f8]
-  
+body {
+  @apply bg-[#eef4f8];
 }
-
 
 .responsive-dialog .mat-mdc-dialog-container {
   padding: 0;
@@ -21,15 +19,13 @@ body{
 
 /* Mobile */
 @media (max-width: 640px) {
-
   .responsive-dialog {
     width: 95vw !important;
   }
-
 }
 
-button{
-  @apply transition-transform duration-100 ease-in-out active:scale-95 hover:shadow-lg disabled:shadow-none disabled:scale-100 disabled:transition-none disabled:cursor-not-allowed
+button {
+  @apply transition-transform duration-100 ease-in-out active:scale-95 hover:shadow-lg disabled:shadow-none disabled:scale-100 disabled:transition-none disabled:cursor-not-allowed;
 }
 
 /* animation */
@@ -55,7 +51,6 @@ button{
   }
 }
 
-
 /* overlay pane */
 .cdk-overlay-pane.custom-top-dialog {
   position: absolute !important;
@@ -66,7 +61,6 @@ button{
   display: flex;
 }
 
-
 /* dialog container */
 .custom-top-dialog .mat-mdc-dialog-container {
   height: 100%;
@@ -74,7 +68,6 @@ button{
   flex-direction: column;
   animation: slideUp 0.3s ease-out forwards;
 }
-
 
 /* dialog surface */
 .custom-top-dialog .mat-mdc-dialog-surface {
@@ -89,21 +82,19 @@ button{
   background-color: #f1f5f9 !important;
 }
 
-
 /* scrollable content */
 .dialog-body {
   flex: 1;
   overflow-y: auto;
 }
 
-
 /* backdrop */
 .cdk-overlay-backdrop.custom-dialog-backdrop {
   cursor: pointer;
-  background: rgba(0,0,0,0.4);
+  background: rgba(0, 0, 0, 0.4);
 }
 
-.dialog-body{
+.dialog-body {
   scroll-behavior: smooth;
 }
 
@@ -115,4 +106,7 @@ button{
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}

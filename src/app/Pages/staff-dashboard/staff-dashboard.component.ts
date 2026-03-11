@@ -16,15 +16,14 @@ import {
   ApexMarkers,
   ApexFill,
 } from 'ng-apexcharts';
-import { LoaderService } from '../../loader/loader.service';
 
 @Component({
-  selector: 'app-client-dashboard',
+  selector: 'app-staff-dashboard',
   imports: [CommonModule, FormsModule, NgApexchartsModule],
-  templateUrl: './client-dashboard.component.html',
-  styleUrl: './client-dashboard.component.css',
+  templateUrl: './staff-dashboard.component.html',
+  styleUrl: './staff-dashboard.component.css',
 })
-export class ClientDashboardComponent {
+export class StaffDashboardComponent {
   // ---------------- TIME ----------------
 
   dayName = '';
@@ -32,50 +31,37 @@ export class ClientDashboardComponent {
   month = '';
   year = '';
   time = '';
-  ads = [
+
+  clientWorks = [
     {
-      name: 'Instagram Ad',
-      fromDate: '01/11/2026',
-      toDate: '11/11/2026',
-      conversions: 5,
-      revenue: 18000,
-      spend: 100,
+      name: 'ABC Company',
+      total: 25,
+      pending: 5,
+      approved: 18,
+      rejected: 2,
     },
     {
-      name: 'Facebook Campaign',
-      fromDate: '03/11/2026',
-      toDate: '12/11/2026',
-      conversions: 12,
-      revenue: 42000,
-      spend: 350,
+      name: 'Delta Corp',
+      total: 30,
+      pending: 7,
+      approved: 20,
+      rejected: 3,
     },
     {
-      name: 'Google Search Ad',
-      fromDate: '05/11/2026',
-      toDate: '14/11/2026',
-      conversions: 8,
-      revenue: 25000,
-      spend: 200,
+      name: 'Green Tech',
+      total: 18,
+      pending: 3,
+      approved: 13,
+      rejected: 2,
     },
     {
-      name: 'YouTube Promotion',
-      fromDate: '02/11/2026',
-      toDate: '09/11/2026',
-      conversions: 3,
-      revenue: 12000,
-      spend: 150,
-    },
-    {
-      name: 'LinkedIn Ad',
-      fromDate: '04/11/2026',
-      toDate: '13/11/2026',
-      conversions: 6,
-      revenue: 21000,
-      spend: 180,
+      name: 'XYZ Pvt Ltd',
+      total: 22,
+      pending: 4,
+      approved: 16,
+      rejected: 2,
     },
   ];
-
-  constructor(private loader: LoaderService) {}
 
   ngOnInit() {
     this.updateTime();
@@ -186,53 +172,53 @@ export class ClientDashboardComponent {
     },
   };
 
-  // ---------------- ADS AREA CHART ----------------
+  // ---------------- WORKS AREA CHART ----------------
 
-  adsSeries: ApexAxisChartSeries = [
+  worksSeries: ApexAxisChartSeries = [
     {
-      name: 'Total Ad Conversions',
-      data: [8, 12, 10, 15, 9],
+      name: 'Works Created',
+      data: [15, 25, 18, 30, 22],
     },
     {
-      name: 'Total Ad Revenue',
-      data: [12000, 18000, 15000, 22000, 13000],
+      name: 'Works Approved',
+      data: [10, 20, 14, 25, 18],
     },
   ];
 
-  adsChart: ApexChart = {
+  worksChart: ApexChart = {
     type: 'area',
-    height: 300,
+    height: 280,
     toolbar: {
       show: false,
     },
   };
 
-  adsXAxis: ApexXAxis = {
+  worksXAxis: ApexXAxis = {
     categories: [
-      'Instagram Ad',
-      'Facebook Ad',
-      'Twitter Ad',
-      'Threads Ad',
-      'Youtube Ad',
+      'ABC Company',
+      'XYZ Pvt Ltd',
+      'Green Tech',
+      'Delta Corp',
+      'Pixel Media',
     ],
   };
 
-  adsStroke: ApexStroke = {
+  worksStroke: ApexStroke = {
     curve: 'smooth',
     width: 3,
   };
 
-  adsMarkers: ApexMarkers = {
+  worksMarkers: ApexMarkers = {
     size: 4,
   };
 
-  adsTooltip: ApexTooltip = {
+  worksTooltip: ApexTooltip = {
     shared: true,
   };
 
-  adsColors: string[] = ['#fbbf24', '#34d399', '#fb7185'];
+  worksColors: string[] = ['#6366f1', '#22c55e'];
 
-  adsFill: ApexFill = {
+  worksFill: ApexFill = {
     type: 'gradient',
     gradient: {
       shadeIntensity: 1,

@@ -10,27 +10,22 @@ export interface ConfirmConfig {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-
-
 export class ConfirmationService {
+  constructor() {}
 
-  constructor() { }
- 
   private dialogSubject = new Subject<ConfirmConfig | null>();
   dialog$ = this.dialogSubject.asObservable();
 
   private result!: (value: boolean) => void;
 
   open(config: ConfirmConfig): Promise<boolean> {
-
     this.dialogSubject.next(config);
 
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       this.result = resolve;
     });
-
   }
 
   confirm() {
@@ -42,5 +37,4 @@ export class ConfirmationService {
     this.result(false);
     this.dialogSubject.next(null);
   }
-
 }

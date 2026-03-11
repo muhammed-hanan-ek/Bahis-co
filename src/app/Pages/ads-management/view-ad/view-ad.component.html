@@ -1,229 +1,189 @@
 <div class="flex flex-col h-full">
-
   <!-- HEADER -->
-  <div class="flex justify-between items-center px-6 py-3 bg-[var(--primaryColor)] text-white rounded-t-xl flex-shrink-0">
-
+  <div
+    class="flex justify-between items-center px-6 py-3 bg-[var(--primaryColor)] text-white rounded-t-xl flex-shrink-0"
+  >
     <div>
-      <div class="text-lg font-semibold">
-        Instagram Ad
-      </div>
+      <div class="text-lg font-semibold">Instagram Ad</div>
 
-      <p class="text-xs opacity-80">
-        Conversion Details for the Ad
-      </p>
+      <p class="text-xs opacity-80">Conversion Details for the Ad</p>
     </div>
 
     <button
       (click)="close()"
-      class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/20 transition">
-
+      class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/20 transition"
+    >
       <i class="fa-solid fa-x text-sm"></i>
-
     </button>
-
   </div>
-
 
   <!-- SCROLLABLE BODY -->
   <div class="dialog-body px-6 py-4">
-
     <!-- STAT CARDS -->
     <div class="grid xl:grid-cols-4 md:grid-cols-3 grid-cols-1 gap-5">
-
       <!-- CONVERSIONS -->
-      <div class="bg-white border border-gray-200 rounded-xl px-6 py-5 flex justify-between items-center">
-
+      <div
+        class="bg-white border border-gray-200 rounded-xl px-6 py-5 flex justify-between items-center"
+      >
         <div>
-          <div class="text-3xl font-bold text-gray-900">
-            10
-          </div>
+          <div class="text-3xl font-bold text-gray-900">10</div>
 
           <div class="text-xs uppercase font-semibold text-gray-400">
             Ad conversion
           </div>
         </div>
 
-        <div class="h-12 w-12 flex items-center justify-center rounded-lg text-white bg-gradient-to-r from-blue-500 via-blue-600 to-indigo-600">
+        <div
+          class="h-12 w-12 flex items-center justify-center rounded-lg text-white bg-gradient-to-r from-blue-500 via-blue-600 to-indigo-600"
+        >
           <i class="fa-solid fa-arrow-trend-up"></i>
         </div>
-
       </div>
 
-
       <!-- REVENUE -->
-      <div class="bg-white border border-gray-200 rounded-xl px-6 py-5 flex justify-between items-center">
-
+      <div
+        class="bg-white border border-gray-200 rounded-xl px-6 py-5 flex justify-between items-center"
+      >
         <div>
-          <div class="text-3xl font-bold text-gray-900">
-            ₹10000
-          </div>
+          <div class="text-3xl font-bold text-gray-900">₹10000</div>
 
           <div class="text-xs uppercase font-semibold text-gray-400">
             Ad Revenue
           </div>
         </div>
 
-        <div class="h-12 w-12 flex items-center justify-center rounded-lg text-white bg-gradient-to-r from-emerald-500 via-green-500 to-teal-500">
+        <div
+          class="h-12 w-12 flex items-center justify-center rounded-lg text-white bg-gradient-to-r from-emerald-500 via-green-500 to-teal-500"
+        >
           <i class="fa-solid fa-chart-line"></i>
         </div>
-
       </div>
-      <div class="bg-white border border-gray-200 rounded-xl px-6 py-5 flex justify-between items-center">
-
+      <div
+        class="bg-white border border-gray-200 rounded-xl px-6 py-5 flex justify-between items-center"
+      >
         <div>
-          <div class="text-3xl font-bold text-gray-900">
-            ₹100
-          </div>
+          <div class="text-3xl font-bold text-gray-900">₹100</div>
 
           <div class="text-xs uppercase font-semibold text-gray-400">
             Total Spend
           </div>
         </div>
 
-        <div class="h-12 w-12 flex items-center justify-center rounded-lg text-white bg-gradient-to-r from-orange-500 via-red-500 to-pink-500">
+        <div
+          class="h-12 w-12 flex items-center justify-center rounded-lg text-white bg-gradient-to-r from-orange-500 via-red-500 to-pink-500"
+        >
           <i class="fa-solid fa-coins"></i>
         </div>
-
       </div>
-
     </div>
-
 
     <!-- HEADER ACTIONS -->
     <div class="space-y-3 pt-4">
-
       <div class="flex justify-between items-center">
-
-        <div class="text-lg font-semibold text-gray-900">
-          Conversions
-        </div>
+        <div class="text-lg font-semibold text-gray-900">Conversions</div>
 
         <div class="flex items-center gap-3">
-
           <!-- Excel -->
           <button
-            class="py-1 px-3 flex items-center gap-1 bg-emerald-50 text-emerald-600 border border-emerald-200 rounded-lg hover:bg-emerald-100 transition">
-
+            class="py-1 px-3 flex items-center gap-1 bg-emerald-50 text-emerald-600 border border-emerald-200 rounded-lg hover:bg-emerald-100 transition"
+          >
             <i class="fa-solid fa-file-excel"></i>
             <span class="hidden md:block text-sm">Excel</span>
-
           </button>
-
 
           <!-- PDF -->
           <button
-            class="py-1 px-3 flex items-center gap-1 bg-red-50 text-red-600 border border-red-200 rounded-lg hover:bg-red-100 transition">
-
+            class="py-1 px-3 flex items-center gap-1 bg-red-50 text-red-600 border border-red-200 rounded-lg hover:bg-red-100 transition"
+          >
             <i class="fa-solid fa-file-pdf"></i>
             <span class="hidden md:block text-sm">PDF</span>
-
           </button>
-
         </div>
-
       </div>
 
-
       <!-- CONVERSION CARDS -->
-      <div class="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5">
-
+      <div
+        class="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5"
+      >
         <div
-          *ngFor="let conversion of conversions | paginate : { itemsPerPage: itemsPerPage, currentPage: page }; let i = index"
-          class="bg-white border border-gray-200 rounded-xl p-4 hover:shadow-md transition relative">
-
+          *ngFor="
+            let conversion of conversions
+              | paginate: { itemsPerPage: itemsPerPage, currentPage: page };
+            let i = index
+          "
+          class="bg-white border border-gray-200 rounded-xl p-4 hover:shadow-md transition relative"
+        >
           <div class="flex justify-between items-start">
-
             <div>
-
               <div class="text-sm font-semibold text-gray-900">
-                Conversion Count : {{conversion.count}}
+                Conversion Count : {{ conversion.count }}
               </div>
 
               <div class="text-sm font-semibold text-gray-900">
-                Revenue : ₹{{conversion.amount}}
+                Revenue : ₹{{ conversion.amount }}
               </div>
 
               <div class="text-xs text-gray-400 mt-1">
-                {{conversion.date}}
+                {{ conversion.date }}
               </div>
-
             </div>
-
 
             <!-- MENU -->
             <div class="relative menu-container">
-
               <button
-                (click)="toggleMenu(i,$event)"
-                class="w-8 h-8 flex items-center justify-center rounded-full text-gray-400 hover:bg-gray-100">
-
+                (click)="toggleMenu(i, $event)"
+                class="w-8 h-8 flex items-center justify-center rounded-full text-gray-400 hover:bg-gray-100"
+              >
                 <i class="fa-solid fa-ellipsis-vertical"></i>
-
               </button>
-
 
               <!-- DROPDOWN -->
               <div
                 *ngIf="activeMenu === i"
-                class="absolute right-0 top-8 w-32 bg-white border border-gray-200 rounded-lg shadow-lg z-20">
-
+                class="absolute right-0 top-8 w-32 bg-white border border-gray-200 rounded-lg shadow-lg z-20"
+              >
                 <button
-                  (click)="editConversion(true,conversion)"
-                  class="w-full text-left px-3 py-2 text-gray-700 text-sm hover:text-gray-900 flex items-center gap-2">
-
+                  (click)="editConversion(true, conversion)"
+                  class="w-full text-left px-3 py-2 text-gray-700 text-sm hover:text-gray-900 flex items-center gap-2"
+                >
                   <i class="fa-solid fa-pen"></i>
                   Edit
-
                 </button>
 
                 <button
-                  class="w-full text-left px-3 py-2 text-sm text-red-500 hover:text-red-700 flex items-center gap-2">
-
+                  class="w-full text-left px-3 py-2 text-sm text-red-500 hover:text-red-700 flex items-center gap-2"
+                >
                   <i class="fa-solid fa-trash"></i>
                   Delete
-
                 </button>
-
               </div>
-
             </div>
-
           </div>
-
         </div>
-
       </div>
 
-
       <!-- EMPTY STATE -->
-      <div *ngIf="conversions.length==0"
-        class="flex flex-col items-center justify-center gap-2 py-10">
-
+      <div
+        *ngIf="conversions.length == 0"
+        class="flex flex-col items-center justify-center gap-2 py-10"
+      >
         <i class="fa-solid fa-box-open text-3xl text-gray-400"></i>
 
-        <p class="text-lg font-medium">
-          No Records found
-        </p>
+        <p class="text-lg font-medium">No Records found</p>
 
         <p class="text-sm text-gray-400">
           Try adjusting your filters to continue
         </p>
-
       </div>
-
 
       <!-- PAGINATION -->
       <div class="mt-4 flex justify-center">
-
         <pagination-controls
           class="flex gap-2 text-sm"
-          (pageChange)="page = $event">
+          (pageChange)="page = $event"
+        >
         </pagination-controls>
-
       </div>
-
     </div>
-
   </div>
-
 </div>

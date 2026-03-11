@@ -7,65 +7,58 @@ import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-create-edit-ad',
-  imports: [FormsModule,CommonModule,MatAutocompleteModule,MatInputModule],
+  imports: [FormsModule, CommonModule, MatAutocompleteModule, MatInputModule],
   templateUrl: './create-edit-ad.component.html',
-  styleUrl: './create-edit-ad.component.css'
+  styleUrl: './create-edit-ad.component.css',
 })
-export class CreateEditAdComponent implements OnInit{
-    isEdit:boolean=false
-    AmtNumber:boolean=false;
-    clientSearch:any = null;
-    filteredClients:any[]=[]
-    form={
-      title:null,
-      client:null,
-      startDate:null,
-      endDate:null,
-      amount:''
-    }
+export class CreateEditAdComponent implements OnInit {
+  isEdit: boolean = false;
+  AmtNumber: boolean = false;
+  clientSearch: any = null;
+  filteredClients: any[] = [];
+  form = {
+    title: null,
+    client: null,
+    startDate: null,
+    endDate: null,
+    amount: '',
+  };
 
-    clients = [
-   'Bahis & Co',
-  'ABC Consultancy' ,
- 'TechNova' 
-];
+  clients = ['Bahis & Co', 'ABC Consultancy', 'TechNova'];
 
   constructor(
-    private dialogRef:MatDialogRef<CreateEditAdComponent>,
-    @Inject(MAT_DIALOG_DATA) public data:any,
-  ){}
+    private dialogRef: MatDialogRef<CreateEditAdComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+  ) {}
 
   ngOnInit(): void {
-      this.isEdit=this.data.isEdit
-      this.filteredClients = this.clients;
+    this.isEdit = this.data.isEdit;
+    this.filteredClients = this.clients;
   }
 
-  filterClients(){
+  filterClients() {
+    this.filteredClients = this.clients.filter((client) =>
+      client.toLowerCase().includes(this.clientSearch.toLowerCase()),
+    );
+  }
 
-this.filteredClients = this.clients.filter(client =>
-client.toLowerCase().includes(this.clientSearch.toLowerCase())
-);
+  selectClient(client: any) {
+    this.form.client = client.id;
+  }
 
-}
+  validateAmt(value: string) {
+    const regex = /^\d+(\.\d+)?$/; // regular expression for amount
 
-selectClient(client:any){
-this.form.client = client.id;
-}
-
-validateAmt(value: string) {
-        const regex = /^\d+(\.\d+)?$/; // regular expression for amount
-
-        if (!regex.test(value)) {
-            this.AmtNumber = true;
-            // prevent invalid character from staying in the input
-            this.form.amount = value.replace(/^\d+(\.\d+)?$/g, '');
-        } else {
-            this.AmtNumber = false;
-        }
+    if (!regex.test(value)) {
+      this.AmtNumber = true;
+      // prevent invalid character from staying in the input
+      this.form.amount = value.replace(/^\d+(\.\d+)?$/g, '');
+    } else {
+      this.AmtNumber = false;
     }
+  }
 
-  close(){
+  close() {
     this.dialogRef.close();
   }
-
 }

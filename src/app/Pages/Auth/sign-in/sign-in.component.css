@@ -1,15 +1,15 @@
 .left-section {
-  background-image: url('/bgImage.jpg');
+  background-image: url("/bgImage.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 }
 
 .left-section::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
-  background-image: url('/bgImage.jpg');
+  background-image: url("/bgImage.jpg");
   background-size: cover;
   background-position: center;
   filter: blur(3px);

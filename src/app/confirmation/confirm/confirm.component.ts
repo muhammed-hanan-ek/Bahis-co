@@ -8,14 +8,12 @@ import { ConfirmationService, ConfirmConfig } from '../confirmation.service';
   selector: 'app-confirm',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './confirm.component.html'
+  templateUrl: './confirm.component.html',
 })
 export class ConfirmComponent {
-
   config$!: Observable<ConfirmConfig | null>;
 
   constructor(public confirm: ConfirmationService) {
     this.config$ = this.confirm.dialog$;
   }
-
 }

@@ -1,156 +1,121 @@
 <div class="w-full max-w-[520px]">
-
   <!-- HEADER -->
-  <div class="flex justify-between items-center px-6 py-4 bg-[var(--primaryColor)] text-white rounded-t-xl">
-
+  <div
+    class="flex justify-between items-center px-6 py-4 bg-[var(--primaryColor)] text-white rounded-t-xl"
+  >
     <div>
-      <div class="text-lg font-semibold">
-        Work Details
-      </div>
+      <div class="text-lg font-semibold">Work Details</div>
 
-      <p class="text-xs opacity-80">
-        View submitted work information
-      </p>
+      <p class="text-xs opacity-80">View submitted work information</p>
     </div>
 
     <button
       (click)="close()"
-      class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/20 transition">
-
+      class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/20 transition"
+    >
       <i class="fa-solid fa-x text-sm"></i>
-
     </button>
-
   </div>
 
+  <!-- BODY -->
+  <div class="px-6 py-6 space-y-5">
+    <!-- TITLE -->
+    <div>
+      <label class="text-xs text-gray-500">Work Title</label>
 
-<!-- BODY -->
-<div class="px-6 py-6 space-y-5">
+      <div class="mt-1 px-3 py-2 border rounded-lg bg-gray-50 text-sm">
+        {{ work.title }}
+      </div>
+    </div>
 
-<!-- TITLE -->
-<div>
-<label class="text-xs text-gray-500">Work Title</label>
+    <!-- CLIENT -->
+    <div *ngIf="userRole != 'Client'">
+      <label class="text-xs text-gray-500">Client</label>
 
-<div class="mt-1 px-3 py-2 border rounded-lg bg-gray-50 text-sm">
-{{work.title}}
-</div>
-</div>
+      <div class="mt-1 px-3 py-2 border rounded-lg bg-gray-50 text-sm">
+        {{ work.client }}
+      </div>
+    </div>
 
+    <!-- DESCRIPTION -->
+    <div>
+      <label class="text-xs text-gray-500">Description</label>
 
+      <div
+        class="mt-1 px-3 py-2 border rounded-lg bg-gray-50 text-sm whitespace-pre-line"
+      >
+        {{ work.description }}
+      </div>
+    </div>
 
-<!-- CLIENT -->
-<div *ngIf="userRole!='Client'">
-<label class="text-xs text-gray-500">Client</label>
+    <!-- DRIVE LINK -->
+    <div>
+      <label class="text-xs text-gray-500">Drive Link</label>
 
-<div class="mt-1 px-3 py-2 border rounded-lg bg-gray-50 text-sm">
-{{work.client}}
-</div>
-</div>
+      <div class="mt-1 flex items-center border rounded-lg overflow-hidden">
+        <input
+          type="text"
+          readonly
+          [value]="work.driveLink"
+          class="flex-1 px-3 py-2 text-sm bg-gray-50 outline-none"
+        />
 
+        <!-- COPY -->
+        <button
+          title="Copy Link"
+          (click)="copyLink(work.driveLink)"
+          class="px-3 text-gray-500 hover:text-gray-700 hover:shadow-none border-l"
+        >
+          <i class="fa-regular fa-copy"></i>
+        </button>
 
+        <!-- OPEN -->
+        <button
+          title="Open Link"
+          (click)="openLink(work.driveLink)"
+          class="px-3 text-gray-500 hover:text-gray-700 border-l hover:shadow-none"
+        >
+          <i class="fa-solid fa-arrow-up-right-from-square"></i>
+        </button>
+      </div>
+    </div>
 
-<!-- DESCRIPTION -->
-<div>
-<label class="text-xs text-gray-500">Description</label>
+    <!-- REMARK -->
+    <div *ngIf="userRole == 'Client'">
+      <label class="text-xs text-gray-500"> Remark </label>
 
-<div class="mt-1 px-3 py-2 border rounded-lg bg-gray-50 text-sm whitespace-pre-line">
-{{work.description}}
-</div>
-</div>
+      <textarea
+        [(ngModel)]="work.remark"
+        rows="3"
+        placeholder="Write your approval / rejection remark..."
+        class="mt-1 w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-[var(--primaryColor)]/30 focus:outline-none resize-none"
+      ></textarea>
+    </div>
+  </div>
 
+  <!-- FOOTER -->
+  <div
+    class="flex justify-between items-center px-6 py-4 border-t bg-gray-50 rounded-b-xl"
+    *ngIf="userRole == 'Client'"
+  >
+    <div class="text-xs text-gray-400">Review & take action</div>
 
+    <div class="flex gap-3">
+      <!-- REJECT -->
+      <button
+        class="flex items-center gap-2 px-4 py-2 text-sm rounded-lg border border-red-400 text-red-600 hover:bg-red-50 transition"
+      >
+        <i class="fa-solid fa-xmark"></i>
+        Reject
+      </button>
 
-<!-- DRIVE LINK -->
-<div >
-
-<label class="text-xs text-gray-500">Drive Link</label>
-
-<div class="mt-1 flex items-center border rounded-lg overflow-hidden">
-
-<input
-type="text"
-readonly
-[value]="work.driveLink"
-class="flex-1 px-3 py-2 text-sm bg-gray-50 outline-none"
-/>
-
-<!-- COPY -->
-<button
-title="Copy Link"
-(click)="copyLink(work.driveLink)"
-class="px-3 text-gray-500 hover:text-gray-700 hover:shadow-none border-l">
-
-<i class="fa-regular fa-copy"></i>
-
-</button>
-
-<!-- OPEN -->
-<button
-title="Open Link"
-(click)="openLink(work.driveLink)"
-class="px-3 text-gray-500 hover:text-gray-700 border-l hover:shadow-none">
-
-<i class="fa-solid fa-arrow-up-right-from-square"></i>
-
-</button>
-
-</div>
-
-</div>
-
-
-
-<!-- REMARK -->
-<div *ngIf="userRole=='Client'">
-
-<label class="text-xs text-gray-500">
-Remark
-</label>
-
-<textarea
-[(ngModel)]="work.remark"
-rows="3"
-placeholder="Write your approval / rejection remark..."
-class="mt-1 w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-[var(--primaryColor)]/30 focus:outline-none resize-none"
-></textarea>
-
-</div>
-
-</div>
-
-
-
-<!-- FOOTER -->
-<div class="flex justify-between items-center px-6 py-4 border-t bg-gray-50 rounded-b-xl" *ngIf="userRole=='Client'">
-
-<div class="text-xs text-gray-400">
-Review & take action
-</div>
-
-<div class="flex gap-3">
-
-<!-- REJECT -->
-<button
-
-class="flex items-center gap-2 px-4 py-2 text-sm rounded-lg border border-red-400 text-red-600 hover:bg-red-50 transition">
-
-<i class="fa-solid fa-xmark"></i>
-Reject
-
-</button>
-
-<!-- APPROVE -->
-<button
-
-class="flex items-center gap-2 px-5 py-2 text-sm rounded-lg border border-green-400 text-green-600 hover:bg-green-50 transition">
-
-<i class="fa-solid fa-check"></i>
-Approve
-
-</button>
-
-</div>
-
-</div>
-
+      <!-- APPROVE -->
+      <button
+        class="flex items-center gap-2 px-5 py-2 text-sm rounded-lg border border-green-400 text-green-600 hover:bg-green-50 transition"
+      >
+        <i class="fa-solid fa-check"></i>
+        Approve
+      </button>
+    </div>
+  </div>
 </div>

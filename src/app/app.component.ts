@@ -5,9 +5,9 @@ import { ConfirmComponent } from './confirmation/confirm/confirm.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet,LoaderComponent,ConfirmComponent],
+  imports: [RouterOutlet, LoaderComponent, ConfirmComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.css',
 })
 export class AppComponent {
   title = 'Bahis & co';
