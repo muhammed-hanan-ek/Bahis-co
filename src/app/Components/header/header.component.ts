@@ -25,6 +25,9 @@ import {
 import { TemplatePortal } from '@angular/cdk/portal';
 import { MatIconModule } from '@angular/material/icon';
 import { MatBadgeModule } from '@angular/material/badge';
+import { Router } from '@angular/router';
+import { LoaderService } from '../../loader/loader.service';
+import { ConfirmationService } from '../../confirmation/confirmation.service';
 
 @Component({
   selector: 'app-header',
@@ -49,6 +52,19 @@ export class HeaderComponent implements OnInit {
   @HostListener('document:click', ['$event'])
   isOpenMenu: boolean = false;
   isOpenNav: boolean = false;
+  menus:any[]=[
+    {menu:'Home',icon:'fa-regular fa-home',path:'admin-dashboard'},
+    {menu:'Home',icon:'fa-regular fa-home',path:'admin-dashboard'},
+    {menu:'Home',icon:'fa-regular fa-home',path:'admin-dashboard'},
+  ];
+  notifications:any[]=[
+    {title:'Notification 1',desc:'description of notification 1',count:2,type:'hi'}
+  ];
+  user={
+    name:"Muhammed",
+    img:'',
+    homePage:'admin-dashboard'
+  }
 
   overlayRef!: OverlayRef;
 
@@ -57,6 +73,9 @@ export class HeaderComponent implements OnInit {
     private dialog: MatDialog,
     private overlay: Overlay,
     private vcr: ViewContainerRef,
+    private router:Router,
+    private loader:LoaderService,
+    private confirmService:ConfirmationService
   ) {}
 
   ngOnInit(): void {}
@@ -111,5 +130,40 @@ export class HeaderComponent implements OnInit {
     this.overlayRef.backdropClick().subscribe(() => {
       this.overlayRef.dispose();
     });
+  }
+
+  menuNavigation(path:any){
+    this.loader.showLoader()
+    setTimeout(() => {
+      this.router.navigate([`/${path}`])
+      this.loader.hideLoader()
+    }, 1000);
+  }
+
+  notificationMarkAllAsRead(){
+    console.log('Mark all as read');
+    
+  }
+
+  notificationMarkAsRead(type:string){
+    console.log('mark as read');
+    
+  }
+
+  
+  async userLogout() {
+    const ok = await this.confirmService.open({
+      title: 'Logout',
+      message: 'Are you sure you want to Logout?',
+      type: 'logout',
+      confirmText: 'Logout',
+    });
+
+    if (!ok) return;
+    this.loader.showLoader()
+    setTimeout(() => {
+      this.router.navigate(['/sign-in'])
+      this.loader.hideLoader()
+    }, 1000);
   }
 }

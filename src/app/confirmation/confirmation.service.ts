@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 export interface ConfirmConfig {
   title: string;
   message: string;
-  type?: 'danger' | 'success' | 'info';
+  type?: 'danger' | 'success' | 'info' | 'logout';
   confirmText?: string;
   cancelText?: string;
 }

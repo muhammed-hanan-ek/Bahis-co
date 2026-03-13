@@ -10,7 +10,8 @@
       <div
         class="w-14 h-14 flex items-center justify-center rounded-full shadow-sm"
         [ngClass]="{
-          'bg-red-50 text-red-600': config.type === 'danger',
+          'bg-red-50 text-red-600':
+            config.type === 'danger' || config.type === 'logout',
           'bg-green-50 text-green-600': config.type === 'success',
           'bg-blue-50 text-blue-600': config.type === 'info',
         }"
@@ -21,6 +22,7 @@
             'fa-trash': config.type === 'danger',
             'fa-check': config.type === 'success',
             'fa-circle-info': config.type === 'info',
+            'fa-right-from-bracket': config.type === 'logout',
           }"
         ></i>
       </div>
@@ -49,7 +51,7 @@
         (click)="confirm.confirm()"
         class="flex-1 py-2.5 text-sm font-semibold text-white rounded-lg transition shadow-sm"
         [ngClass]="{
-          'bg-red-600 hover:bg-red-700': config.type === 'danger',
+          'bg-red-600 hover:bg-red-700': (config.type === 'danger' || config.type === 'logout'),
           'bg-green-600 hover:bg-green-700': config.type === 'success',
           'bg-blue-600 hover:bg-blue-700': config.type === 'info',
         }"

@@ -28,20 +28,22 @@
           </div>
         </div>
         <!-- MENU ITEMS GRID -->
-        <div class="grid grid-cols-2 gap-4 py-5">
+        <div class="grid grid-cols-3 gap-3 py-5">
           <!-- REPEATING MENU ITEM CONTAINER -->
           <div
+          *ngFor="let menu of menus"
+          (click)="menuNavigation(menu.path)"
             class="flex flex-col items-center gap-2 cursor-pointer hover:scale-105 transition"
           >
             <!-- MENU ITEM ICON -->
             <div
               class="w-12 h-12 bg-gray-200 rounded-xl flex items-center justify-center text-[var(--primaryColor)] text-xl"
             >
-              <i class="fa-regular fa-home"></i>
+              <i class="" [ngClass]="menu.icon"></i>
             </div>
             <!-- MENU ITEM NAME -->
             <span class="text-sm text-gray-600 text-center font-semibold">
-              Home
+              {{menu.menu}}
             </span>
           </div>
         </div>
@@ -64,10 +66,10 @@
       class="relative flex items-center justify-center w-10 h-10 rounded-full text-white hover:bg-white/10 cursor-pointer transition"
     >
       <i class="fa-solid fa-bell"></i>
-      <span
+      <span *ngIf="notifications.length>0"
         class="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[8px] font-semibold"
       >
-        1
+        {{notifications.length}}
       </span>
     </div>
 
@@ -82,18 +84,19 @@
           <span>Notifications</span>
           <!-- MARK ALL AS READ BUTTON WITH ICON-->
           <button
+          (click)="notificationMarkAllAsRead()"
             class="cursor-pointer hover:bg-gray-100 flex justify-center items-center w-10 h-10 rounded-full"
           >
             <i class="fa-solid fa-envelope-open"></i>
           </button>
         </div>
         <!-- NOTIFICATION REPEATING CONTAINER -->
-        <div class="flex gap-2 items-center border-b py-3 px-4 cursor-pointer">
+        <div class="flex gap-2 items-center border-b py-3 px-4 cursor-pointer" *ngFor="let noti of notifications">
           <!-- SAME NOTIFICATION COUNT -->
           <div
             class="bg-[var(--primaryColor)] w-10 h-9 flex justify-center items-center rounded-full text-white font-medium"
           >
-            10
+            {{noti.count}}
           </div>
 
           <div
@@ -101,14 +104,15 @@
           >
             <!-- NOTIFICATION TITLE -->
             <span class="font-medium">
-              Notification heading
+              {{noti.title}}
               <!-- NOTIFICATION DESCRIPTION -->
               <div class="text-[10px] font-normal">
-                Lorem ipsum dolor sit amet consectetur adipisicing.
+                {{noti.desc}}
               </div>
             </span>
             <!-- NOTIFICATION CLOSE OR MARK AS READ BUTTON -->
             <button
+            (click)="notificationMarkAsRead(noti.type)"
               class="cursor-pointer hover:bg-gray-100 rounded-full p-2 flex justify-center items-center"
             >
               <i class="fa-solid fa-x text-[9px]"></i>
@@ -135,13 +139,13 @@
       >
         <!-- USER PROFILE IMAGE -->
         <img
-          src="default.jpg"
+          [src]="user.img"
           alt="User"
           class="h-9 w-9 rounded-full border border-white/40 object-cover"
         />
         <!-- USER NAME -->
         <span class="text-sm font-medium text-white hidden lg:block">
-          Username
+          {{user.name}}
         </span>
         <i
           class="fa-solid fa-chevron-down text-xs text-white hidden lg:block"
@@ -158,6 +162,7 @@
           ></div>
           <!-- HOME REDIRECTION BUTTON -->
           <button
+          (click)="menuNavigation(user.homePage)"
             class="flex w-full items-center gap-2 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-t-lg"
           >
             <i class="fa-solid fa-house text-gray-500"></i>
@@ -167,6 +172,7 @@
           <div class="border-t"></div>
           <!-- LOGOUT BUTTON -->
           <button
+          (click)="userLogout()"
             class="flex w-full items-center gap-2 px-4 py-3 text-sm font-medium text-red-600 hover:bg-red-50 rounded-b-lg"
           >
             <i class="fa-solid fa-right-from-bracket"></i>

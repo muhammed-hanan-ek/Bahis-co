@@ -32,6 +32,11 @@ export class AdminDashboardComponent implements OnInit {
   month = '';
   year = '';
   time = '';
+  bestPerformer={
+    name:'Muhammed',
+    img:'',
+    works:10
+  }
   staffWorks = [
     {
       name: 'Arjun',
@@ -92,6 +97,20 @@ export class AdminDashboardComponent implements OnInit {
       rejected: 2,
     },
   ];
+  workAnalysisData={
+    pending:10,
+    Approved:15,
+    Rejected:5
+  };
+  clientWorksOverview:any[]=[
+    {name:'XYZ Pvt Ltd',created:20,approved:5},
+    {name:'ABC Company',created:5,approved:1},
+  ];
+  clientAdsOverview:any[]=[
+    {name:'XYZ Pvt Ltd',created:20,revenue:5000},
+    {name:'ABC Company',created:5,revenue:6000},
+  ];
+
 
   ngOnInit() {
     this.updateTime();
@@ -99,6 +118,43 @@ export class AdminDashboardComponent implements OnInit {
     setInterval(() => {
       this.updateTime();
     }, 1000);
+
+    const workscreatedData = this.clientWorksOverview.map(work => work.created);
+  const worksapprovedData = this.clientWorksOverview.map(work => work.approved);
+  const workscategories = this.clientWorksOverview.map(work => work.name);
+  const adsCreated=this.clientAdsOverview.map(ad=>ad.created);
+  const adsRevenue=this.clientAdsOverview.map(ad=>ad.revenue);
+  const adCategory=this.clientAdsOverview.map(ad=>ad.name)
+
+  this.worksSeries = [
+    {
+      name: 'Works Created',
+      data: workscreatedData
+    },
+    {
+      name: 'Works Approved',
+      data: worksapprovedData
+    }
+  ];
+
+  this.worksXAxis = {
+    categories: workscategories
+  };
+
+  this.adsSeries = [
+    {
+      name: 'Total Ads Created',
+      data: adsCreated,
+    },
+    {
+      name: 'Total Ad Revenue',
+      data: adsRevenue,
+    },
+  ]
+
+  this.adsXAxis={
+    categories:adCategory
+  }
   }
 
   updateTime() {
@@ -144,7 +200,7 @@ export class AdminDashboardComponent implements OnInit {
     height: 320,
   };
 
-  chartSeries: ApexNonAxisChartSeries = [12, 18, 6];
+  chartSeries: ApexNonAxisChartSeries = [this.workAnalysisData.pending,this.workAnalysisData.Approved,this.workAnalysisData.Rejected];
 
   chartLabels: string[] = ['Pending', 'Approved', 'Rejected'];
 
@@ -204,14 +260,16 @@ export class AdminDashboardComponent implements OnInit {
 
   // ---------------- WORKS AREA CHART ----------------
 
+  
+
   worksSeries: ApexAxisChartSeries = [
     {
       name: 'Works Created',
-      data: [15, 25, 18, 30, 22],
+      data: [],
     },
     {
       name: 'Works Approved',
-      data: [10, 20, 14, 25, 18],
+      data: [],
     },
   ];
 
@@ -224,13 +282,7 @@ export class AdminDashboardComponent implements OnInit {
   };
 
   worksXAxis: ApexXAxis = {
-    categories: [
-      'ABC Company',
-      'XYZ Pvt Ltd',
-      'Green Tech',
-      'Delta Corp',
-      'Pixel Media',
-    ],
+    categories: [],
   };
 
   worksStroke: ApexStroke = {
@@ -260,14 +312,15 @@ export class AdminDashboardComponent implements OnInit {
 
   // ---------------- ADS AREA CHART ----------------
 
+
   adsSeries: ApexAxisChartSeries = [
     {
       name: 'Total Ads Created',
-      data: [8, 12, 10, 15, 9],
+      data: [],
     },
     {
       name: 'Total Ad Revenue',
-      data: [12000, 18000, 15000, 22000, 13000],
+      data: [],
     },
   ];
 
@@ -280,13 +333,7 @@ export class AdminDashboardComponent implements OnInit {
   };
 
   adsXAxis: ApexXAxis = {
-    categories: [
-      'ABC Company',
-      'XYZ Pvt Ltd',
-      'Green Tech',
-      'Delta Corp',
-      'Pixel Media',
-    ],
+    categories: [],
   };
 
   adsStroke: ApexStroke = {
