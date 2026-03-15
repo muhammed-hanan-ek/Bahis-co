@@ -172,7 +172,7 @@
           </div>
           <img *ngIf="user.img"
             class="h-11 w-11 shrink-0 rounded-full flex items-center justify-center text-white font-semibold text-sm shadow-sm "
-            [src]="user.img"
+            [src]="ApiUrl+'/uploads/'+user.img"
           />
             
 
@@ -240,7 +240,7 @@
           </button>
 
           <button
-            (click)="deleteUser()"
+            (click)="deleteUser(user.slno)"
             class="w-8 h-8 flex items-center justify-center rounded-full text-gray-500 hover:bg-red-50 hover:text-red-600 transition"
           >
             <i class="fa-solid fa-trash text-xs"></i>

@@ -28,11 +28,11 @@
           </div>
         </div>
         <!-- MENU ITEMS GRID -->
-        <div class="grid grid-cols-3 gap-3 py-5">
+        <div class="grid grid-cols-2 gap-3 py-5">
           <!-- REPEATING MENU ITEM CONTAINER -->
           <div
           *ngFor="let menu of menus"
-          (click)="menuNavigation(menu.path)"
+          (click)="menuNavigation(menu.state)"
             class="flex flex-col items-center gap-2 cursor-pointer hover:scale-105 transition"
           >
             <!-- MENU ITEM ICON -->
@@ -43,7 +43,7 @@
             </div>
             <!-- MENU ITEM NAME -->
             <span class="text-sm text-gray-600 text-center font-semibold">
-              {{menu.menu}}
+              {{menu.name}}
             </span>
           </div>
         </div>
@@ -139,13 +139,13 @@
       >
         <!-- USER PROFILE IMAGE -->
         <img
-          [src]="user.img"
+          [src]="ApiUrl+'/uploads/'+user.img"
           alt="User"
           class="h-9 w-9 rounded-full border border-white/40 object-cover"
         />
         <!-- USER NAME -->
         <span class="text-sm font-medium text-white hidden lg:block">
-          {{user.name}}
+          {{user.UserName}}
         </span>
         <i
           class="fa-solid fa-chevron-down text-xs text-white hidden lg:block"
@@ -162,7 +162,7 @@
           ></div>
           <!-- HOME REDIRECTION BUTTON -->
           <button
-          (click)="menuNavigation(user.homePage)"
+          (click)="menuNavigation(user.startpage)"
             class="flex w-full items-center gap-2 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-t-lg"
           >
             <i class="fa-solid fa-house text-gray-500"></i>

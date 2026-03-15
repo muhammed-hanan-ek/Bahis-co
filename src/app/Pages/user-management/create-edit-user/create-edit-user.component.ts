@@ -6,6 +6,7 @@ import { ConfirmationService } from '../../../confirmation/confirmation.service'
 import { LoaderService } from '../../../loader/loader.service';
 import { ToastrService } from 'ngx-toastr';
 import { BACService } from '../../../Service/bac.service';
+import { ApiUrl } from '../../../app.contsant';
 
 @Component({
   selector: 'app-create-edit-user',
@@ -22,12 +23,10 @@ export class CreateEditUserComponent implements OnInit {
   fullname:string|null=null;
   email:string|null=null;
   password:string|null=null;
+  ApiUrl=ApiUrl
   role:number|null=null
-  roles:any[]=[
-    {id:1,name:'Admin'},
-    {id:2,name:'Client'},
-    {id:3,name:'Staff'},
-  ]
+  roles:any[]=[]
+  imgFile:any;
 
 
 
@@ -43,6 +42,8 @@ export class CreateEditUserComponent implements OnInit {
   ngOnInit(): void {
     this.isEdit = this.data.isEdit;
     this.slno=this.data.slno
+
+    this.load()
   }
 
   close() {
@@ -51,7 +52,8 @@ export class CreateEditUserComponent implements OnInit {
 
   onFileSelected(event: any) {
     const file = event.target.files[0];
-
+    this.imgFile=file
+    console.log(this.imgFile)
     if (!file) return;
 
     const reader = new FileReader();
@@ -61,6 +63,10 @@ export class CreateEditUserComponent implements OnInit {
     };
 
     reader.readAsDataURL(file);
+
+
+    
+
   }
 
   async save(){
@@ -74,20 +80,58 @@ export class CreateEditUserComponent implements OnInit {
     if (!ok) return;
 
     this.loader.showLoader();
-    this.service.addUser(this.username,this.password,this.role,this.email,this.fullname).subscribe({
+    this.service.addUser(this.username,this.password,this.role,this.email,this.fullname,this.slno,null,this.imgFile).subscribe({
       next:(res)=>{
         if(res.data=='success'){
+          if(this.isEdit){
+            this.toastr.success('User edited successfully.','Successful')
+            return;
+          }
           this.toastr.success('User added successfully.','Successful')
         }
       },
       error:(err)=>{
         console.log(err);
+        if(this.isEdit){
+          this.toastr.error('An error occurred while editing user. Please try again.','Error')
+          return; 
+        }
         this.toastr.error('An error occurred while adding user. Please try again.','Error')
       },
       complete:()=>{
         this.close()
         this.loader.hideLoader()
         
+      }
+    })
+  }
+
+  load(){
+    this.service.LoadEditUSer(this.slno).subscribe({
+      next:(res)=>{
+        console.log(res,'user');
+        this.profileImage=`${ApiUrl}/uploads/${res?.data[0][0]?.img}`
+        this.username=res.data[0][0]?.UserName
+        this.fullname=res.data[0][0]?.name,
+        this.email=res.data[0][0]?.email,
+        this.role=res.data[0][0]?.USR_ROLE
+        this.roles=res.data[1] 
+        console.log(this.roles,'roles');
+        
+      },
+      error: (err) => {
+
+        console.log(err);
+
+        this.toastr.error(
+          'An error occurred while loading user. Please try again.',
+          'Error'
+        );
+
+        this.loader.hideLoader();
+      },
+      complete: () => {
+        this.loader.hideLoader();
       }
     })
   }

@@ -9,6 +9,13 @@ import { ApiUrl } from '../app.contsant';
 export class BACService {
   constructor(private http: HttpClient) {}
 
+  LoadMenu(): Observable<any> {
+    return this.http.post(
+    `${ApiUrl}/user/loadMenu`,
+    {}
+  );
+  }
+
   userLogin(username:string,password:string): Observable<any> {
     const formData = new FormData();
 
@@ -29,8 +36,29 @@ export class BACService {
   );
   }
 
+  LoadEditUSer(UserId:any): Observable<any> {
+    const formData = new FormData();
 
-   addUser(username:any,password:any,role:any,email:any,Fullname:any): Observable<any> {
+    formData.append('UserId',UserId);
+    
+    return this.http.post(
+    `${ApiUrl}/user/Load`,
+    formData
+  );
+  }
+  DeleteUser(UserId:any): Observable<any> {
+    const formData = new FormData();
+
+    formData.append('UserId',UserId);
+
+    return this.http.post(
+    `${ApiUrl}/user/Delete`,
+    formData
+  );
+  }
+
+
+   addUser(username:any,password:any,role:any,email:any,Fullname:any,userID:any,img_name:any,img_File:any): Observable<any> {
     const formData = new FormData();
 
     formData.append('username',username);
@@ -38,6 +66,9 @@ export class BACService {
     formData.append('role',role);
     formData.append('email',email);
     formData.append('Fullname',Fullname);
+    formData.append('userID',userID);
+    formData.append('img',img_name);
+    formData.append('File',img_File);
 
     return this.http.post(
     `${ApiUrl}/user/add`,

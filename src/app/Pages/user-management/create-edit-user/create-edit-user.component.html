@@ -31,7 +31,7 @@
     <div class="flex justify-center">
       <label class="relative cursor-pointer group">
         <img
-          [src]="profileImage || 'assets/default-user.png'"
+          [src]="profileImage"
           class="w-24 h-24 rounded-full object-cover border border-gray-300 shadow-sm"
         />
 
@@ -39,6 +39,7 @@
           type="file"
           hidden
           accept="image/*"
+          
           (change)="onFileSelected($event)"
         />
 
@@ -103,14 +104,14 @@
         [(ngModel)]="role"
           class="h-10 w-full rounded-lg border border-gray-200 px-3 bg-white text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--primaryColor)]/30 focus:border-[var(--primaryColor)] transition"
         >
-          <option *ngFor="let role of roles" [value]="role.id">{{role.name}}</option>
+          <option *ngFor="let role of roles" [value]="role.slno">{{role.role}}</option>
           
         </select>
       </div>
     </div>
 
     <!-- PASSWORD -->
-    <div class="space-y-1">
+    <div class="space-y-1" *ngIf="!isEdit">
       <label class="text-sm font-medium text-gray-700">
         Password <span class="text-red-500">*</span>
       </label>
@@ -151,7 +152,7 @@
 
     <button
     (click)="save()"
-    [disabled]="!username || !email || !password || !role"
+    [disabled]="!username || !email || !role ||(isEdit? false : !password)"
       class="px-5 py-2 text-sm rounded-lg bg-[var(--primaryColor)] text-white font-medium shadow-sm disabled:opacity-70 disabled:scale-100 hover:shadow-md hover:scale-[1.02] transition"
     >
       {{ isEdit ? "Save Changes" : "Create User" }}

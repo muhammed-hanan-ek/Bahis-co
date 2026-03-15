@@ -7,6 +7,7 @@ import { ConfirmationService } from '../../confirmation/confirmation.service';
 import { ToastrService } from 'ngx-toastr';
 import { BACService } from '../../Service/bac.service';
 import { LoaderService } from '../../loader/loader.service';
+import { ApiUrl } from '../../app.contsant';
 
 @Component({
   selector: 'app-user-management',
@@ -21,6 +22,7 @@ export class UserManagementComponent implements OnInit {
 
   users: any[] = [];
   filteredUsers: any[] = [];
+  ApiUrl=ApiUrl
 
   constructor(
     private dialog: MatDialog,
@@ -91,7 +93,7 @@ export class UserManagementComponent implements OnInit {
   }
 
   // ---------- DELETE ----------
-  async deleteUser() {
+  async deleteUser(slno:any) {
 
     const ok = await this.confirmService.open({
       title: 'Delete User',
@@ -101,8 +103,31 @@ export class UserManagementComponent implements OnInit {
     });
 
     if (!ok) return;
+    this.loader.showLoader()
+    this.service.DeleteUser(slno).subscribe({
+      next: (res) => {
+        if(res.result=='success'){
+          this.toastr.success('User deleted successfully','Successful')
+          this.onload()
+        }
+      },
+      error: (err) => {
 
-    console.log('Delete logic here');
+        console.log(err);
+
+        this.toastr.error(
+          'An error occurred while deleting users. Please try again.',
+          'Error'
+        );
+
+        this.loader.hideLoader();
+      },
+      complete: () => {
+        this.loader.hideLoader();
+      }
+    });
+    
+    
   }
 
   // ---------- LOAD USERS ----------

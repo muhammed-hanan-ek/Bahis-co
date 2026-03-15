@@ -28,6 +28,9 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { Router } from '@angular/router';
 import { LoaderService } from '../../loader/loader.service';
 import { ConfirmationService } from '../../confirmation/confirmation.service';
+import { BACService } from '../../Service/bac.service';
+import { SharedService } from '../../shared/shared.service';
+import { ApiUrl } from '../../app.contsant';
 
 @Component({
   selector: 'app-header',
@@ -61,19 +64,12 @@ export class HeaderComponent implements OnInit {
   }
   isOpenMenu: boolean = false;
   isOpenNav: boolean = false;
-  menus:any[]=[
-    {menu:'Home',icon:'fa-regular fa-home',path:'admin-dashboard'},
-    {menu:'Home',icon:'fa-regular fa-home',path:'admin-dashboard'},
-    {menu:'Home',icon:'fa-regular fa-home',path:'admin-dashboard'},
-  ];
+  ApiUrl=ApiUrl
+  menus:any[]=[];
   notifications:any[]=[
     {title:'Notification 1',desc:'description of notification 1',count:2,type:'hi'}
   ];
-  user={
-    name:"Muhammed",
-    img:'',
-    homePage:'admin-dashboard'
-  }
+  user:any=null
 
   overlayRef!: OverlayRef;
 
@@ -84,10 +80,14 @@ export class HeaderComponent implements OnInit {
     private vcr: ViewContainerRef,
     private router:Router,
     private loader:LoaderService,
-    private confirmService:ConfirmationService
+    private confirmService:ConfirmationService,
+    private service:BACService,
+    private shared:SharedService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.load()
+  }
 
   toggleMenu(event: Event) {
     event.stopPropagation();
@@ -162,9 +162,22 @@ export class HeaderComponent implements OnInit {
 
     if (!ok) return;
     this.loader.showLoader()
+    localStorage.removeItem('token')
     setTimeout(() => {
       this.router.navigate(['/sign-in'])
       this.loader.hideLoader()
     }, 1000);
+  }
+
+
+  load(){
+    this.service.LoadMenu().subscribe({
+      next:(res)=>{
+        this.user=res.data[0][0]
+        this.menus=res.data[1]
+        this.shared.setRole(this.user.Role)
+      },
+      
+    })
   }
 }

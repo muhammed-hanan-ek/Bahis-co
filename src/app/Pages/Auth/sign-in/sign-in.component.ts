@@ -45,8 +45,6 @@ export class SignInComponent implements OnInit {
           const start_page=res.data[0].START_PAGE
 
           localStorage.setItem('token',token)
-          localStorage.setItem('userId',userId)
-          localStorage.setItem('userRole',userRole)
 
           this.router.navigate([`/${start_page}`])
           this.toastr.success('You have successfully logged in.','Successful')
