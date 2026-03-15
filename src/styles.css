@@ -102,6 +102,19 @@ button {
   display: none;
 }
 
+.custom-toast-width {
+    min-width: 350px !important; /* 👈 set your desired minimum width */
+    width: fit-content !important; /* grows with content */
+    max-width: 100% !important; /* prevents overflow */
+    font-size: 12px;
+    white-space: nowrap; /* keeps text in one line */
+}
+
+.toast-container {
+  position: fixed !important;
+  z-index: 999999 !important;
+}
+
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;

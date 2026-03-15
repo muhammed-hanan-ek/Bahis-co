@@ -57,8 +57,8 @@
           #clientAuto="matAutocomplete"
           (optionSelected)="selectClient($event.option.value)"
         >
-          <mat-option *ngFor="let client of filteredClients" [value]="client">
-            {{ client }}
+          <mat-option *ngFor="let client of filteredClients" [value]="client.name">
+            {{ client.name }}
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>
@@ -107,7 +107,9 @@
     </button>
 
     <button
-      class="px-5 py-2 text-sm rounded-lg bg-[var(--primaryColor)] text-white font-medium shadow-sm hover:shadow-md hover:scale-[1.02] transition"
+    (click)="savework()"
+    [disabled]="!form.title || !form.description || !form.client || !form.driveLink"
+      class="px-5 py-2 text-sm rounded-lg bg-[var(--primaryColor)] text-white disabled:scale-100 disabled:opacity-70 font-medium shadow-sm hover:shadow-md hover:scale-[1.02] transition"
     >
       {{ isEdit ? "Save Changes" : "Create Work" }}
     </button>

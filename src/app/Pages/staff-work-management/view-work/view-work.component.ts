@@ -30,6 +30,7 @@ export class ViewWorkComponent implements OnInit {
     client: 'ABC Company',
     driveLink: 'https://link',
     remark: '',
+    status:'Approved'
   };
 
   copyLink(link: any) {

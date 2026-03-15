@@ -61,6 +61,7 @@
 
         <input
           type="text"
+          [(ngModel)]="username"
           placeholder="Enter username"
           class="h-10 w-full rounded-lg border border-gray-200 px-3 bg-white text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--primaryColor)]/30 focus:border-[var(--primaryColor)] transition"
         />
@@ -72,6 +73,7 @@
 
         <input
           type="text"
+          [(ngModel)]="fullname"
           placeholder="Enter full name"
           class="h-10 w-full rounded-lg border border-gray-200 px-3 bg-white text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--primaryColor)]/30 focus:border-[var(--primaryColor)] transition"
         />
@@ -85,6 +87,7 @@
 
         <input
           type="email"
+          [(ngModel)]="email"
           placeholder="Enter email address"
           class="h-10 w-full rounded-lg border border-gray-200 px-3 bg-white text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--primaryColor)]/30 focus:border-[var(--primaryColor)] transition"
         />
@@ -97,12 +100,11 @@
         </label>
 
         <select
+        [(ngModel)]="role"
           class="h-10 w-full rounded-lg border border-gray-200 px-3 bg-white text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--primaryColor)]/30 focus:border-[var(--primaryColor)] transition"
         >
-          <option value="">Select Role</option>
-          <option value="Admin">Admin</option>
-          <option value="Staff">Staff</option>
-          <option value="Client">Client</option>
+          <option *ngFor="let role of roles" [value]="role.id">{{role.name}}</option>
+          
         </select>
       </div>
     </div>
@@ -115,6 +117,7 @@
 
       <div class="relative">
         <input
+        [(ngModel)]="password"
           [type]="show ? 'text' : 'password'"
           placeholder="Enter password"
           class="h-10 w-full rounded-lg border border-gray-200 px-3 pr-10 bg-white text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--primaryColor)]/30 focus:border-[var(--primaryColor)] transition"
@@ -147,7 +150,9 @@
     </button>
 
     <button
-      class="px-5 py-2 text-sm rounded-lg bg-[var(--primaryColor)] text-white font-medium shadow-sm hover:shadow-md hover:scale-[1.02] transition"
+    (click)="save()"
+    [disabled]="!username || !email || !password || !role"
+      class="px-5 py-2 text-sm rounded-lg bg-[var(--primaryColor)] text-white font-medium shadow-sm disabled:opacity-70 disabled:scale-100 hover:shadow-md hover:scale-[1.02] transition"
     >
       {{ isEdit ? "Save Changes" : "Create User" }}
     </button>

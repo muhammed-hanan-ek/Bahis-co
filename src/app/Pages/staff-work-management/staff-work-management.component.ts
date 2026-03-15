@@ -39,7 +39,7 @@ export class StaffWorkManagementComponent implements OnInit {
   showFilter = false;
   searchText = '';
   activeMenu: number | null = null;
-  userRole: string | null = 'Client';
+  userRole: string | null = 'Staff';
 
   // pagination variables and function
   page = 1;

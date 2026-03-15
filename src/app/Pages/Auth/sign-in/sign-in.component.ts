@@ -34,8 +34,23 @@ export class SignInComponent implements OnInit {
 
     this.service.userLogin(this.username,this.password).subscribe({
       next: (res) => {
-        console.log(res);
-        this.router.navigate(['/user-management']);
+
+        const msg=res.data[0].result
+        if(msg=='invalid'){
+          this.toastr.warning('','Invalid Username or Password')
+        }else{
+          const token=res.token
+          const userId=res.data[0].userId
+          const userRole=res.data[0].UsrRole
+          const start_page=res.data[0].START_PAGE
+
+          localStorage.setItem('token',token)
+          localStorage.setItem('userId',userId)
+          localStorage.setItem('userRole',userRole)
+
+          this.router.navigate([`/${start_page}`])
+          this.toastr.success('You have successfully logged in.','Successful')
+        }
       },
       error: (err) => {
         console.log(err);
@@ -47,7 +62,7 @@ export class SignInComponent implements OnInit {
       },
       complete: () => {
         this.loader.hideLoader();
-        this.toastr.success('You have successfully logged in.','Successful')
+        
       }
     });
 

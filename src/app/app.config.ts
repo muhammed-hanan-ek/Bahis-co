@@ -12,7 +12,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideAnimations(),
     provideHttpClient(withInterceptors([authInterceptor])),
-    provideToastr({
+     provideToastr({
       timeOut: 5000,
        positionClass: 'toast-bottom-right',
         toastClass: 'ngx-toastr custom-toast-width',
@@ -26,6 +26,6 @@ export const appConfig: ApplicationConfig = {
       autoDismiss: false,
       includeTitleDuplicates: true,
       resetTimeoutOnDuplicate: false
-    })
+    }),
   ],
 };

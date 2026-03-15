@@ -17,6 +17,8 @@
       <div class="relative w-full sm:w-[280px]">
         <input
           type="text"
+          [(ngModel)]="searchText"
+          (ngModelChange)="searchWorks()"
           class="h-10 w-full rounded-xl border border-gray-200 bg-white pl-10 pr-4 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--primaryColor)]/30 focus:border-[var(--primaryColor)] transition"
           placeholder="Search users..."
         />
@@ -158,16 +160,21 @@
         <!-- USER INFO -->
         <div class="flex items-start gap-3 min-w-0">
           <!-- AVATAR -->
-          <div
+          <div *ngIf="!user.img"
             class="h-11 w-11 shrink-0 rounded-full flex items-center justify-center text-white font-semibold text-sm shadow-sm bg-gradient-to-br"
             [ngClass]="{
-              'from-red-500 to-rose-500': user.role === 'Admin',
-              'from-blue-500 to-indigo-500': user.role === 'Staff',
-              'from-green-500 to-emerald-500': user.role === 'Client',
+              'from-red-500 to-rose-500': user.Role === 'Admin',
+              'from-blue-500 to-indigo-500': user.Role === 'Staff',
+              'from-green-500 to-emerald-500': user.Role === 'Client',
             }"
           >
-            {{ user.avatar }}
+            {{ user.name.charAt(0) }}
           </div>
+          <img *ngIf="user.img"
+            class="h-11 w-11 shrink-0 rounded-full flex items-center justify-center text-white font-semibold text-sm shadow-sm "
+            [src]="user.img"
+          />
+            
 
           <!-- TEXT -->
           <div class="min-w-0 w-full">
@@ -186,35 +193,35 @@
               <span
                 class="text-[10px] font-semibold px-2 py-0.5 rounded-full"
                 [ngClass]="{
-                  'bg-red-100 text-red-600': user.role === 'Admin',
-                  'bg-blue-100 text-blue-600': user.role === 'Staff',
-                  'bg-green-100 text-green-600': user.role === 'Client',
+                  'bg-red-100 text-red-600': user.Role === 'Admin',
+                  'bg-blue-100 text-blue-600': user.Role === 'Staff',
+                  'bg-green-100 text-green-600': user.Role === 'Client',
                 }"
               >
-                {{ user.role }}
+                {{ user.Role }}
               </span>
 
               <!-- STATUS -->
               <div class="flex items-center gap-1 text-xs">
                 <span class="relative flex">
                   <span
-                    *ngIf="user.isActive"
+                    *ngIf="user.status"
                     class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"
                   >
                   </span>
 
                   <span
                     class="relative inline-flex rounded-full h-1.5 w-1.5"
-                    [ngClass]="user.isActive ? 'bg-green-500' : 'bg-gray-400'"
+                    [ngClass]="user.status ? 'bg-green-500' : 'bg-gray-400'"
                   >
                   </span>
                 </span>
 
                 <span
                   class="font-medium"
-                  [ngClass]="user.isActive ? 'text-green-600' : 'text-gray-500'"
+                  [ngClass]="user.status ? 'text-green-600' : 'text-gray-500'"
                 >
-                  {{ user.isActive ? "Active" : "Inactive" }}
+                  {{ user.status ? "Active" : "Inactive" }}
                 </span>
               </div>
             </div>
@@ -226,6 +233,7 @@
           class="flex flex-col gap-2 opacity-70 group-hover:opacity-100 shrink-0"
         >
           <button
+          (click)="openUser(true,user.slno)"
             class="w-8 h-8 flex items-center justify-center rounded-full text-gray-500 hover:bg-blue-50 hover:text-blue-600 transition"
           >
             <i class="fa-solid fa-pen text-xs"></i>

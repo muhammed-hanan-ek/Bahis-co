@@ -50,6 +50,15 @@ export class HeaderComponent implements OnInit {
   @Output() menuToggle = new EventEmitter<void>();
   @ViewChild('notificationTpl') notificationTpl!: TemplateRef<any>;
   @HostListener('document:click', ['$event'])
+    closeAll(event: any) {
+    if (!event.target.closest('.menu-container')) {
+      this.isOpenNav = false;
+    }
+
+    if (!this.elementRef.nativeElement.contains(event.target)) {
+      this.isOpenMenu = false;
+    }
+  }
   isOpenMenu: boolean = false;
   isOpenNav: boolean = false;
   menus:any[]=[
@@ -85,15 +94,7 @@ export class HeaderComponent implements OnInit {
     this.isOpenNav = !this.isOpenNav;
   }
 
-  closeAll(event: any) {
-    if (!event.target.closest('.menu-container')) {
-      this.isOpenNav = false;
-    }
 
-    if (!this.elementRef.nativeElement.contains(event.target)) {
-      this.isOpenMenu = false;
-    }
-  }
 
   OpenMenu(event: Event) {
     event.stopPropagation();
