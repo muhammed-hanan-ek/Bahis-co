@@ -81,10 +81,11 @@
     </div>
 
     <!-- REMARK -->
-    <div *ngIf="work.status != 'Pending'">
+    <div *ngIf="work.status != 'Pending' || userRole=='Client'">
       <label class="text-xs text-gray-500"> Remark </label>
 
       <textarea
+      [disabled]="work.status != 'Pending' && (userRole=='Staff'||userRole=='Admin')"
         [(ngModel)]="work.remark"
         rows="3"
         class="mt-1 w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-[var(--primaryColor)]/30 focus:outline-none resize-none"

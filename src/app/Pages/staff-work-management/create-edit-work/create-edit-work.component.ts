@@ -17,6 +17,7 @@ import { LoaderService } from '../../../loader/loader.service';
 })
 export class CreateEditWorkComponent implements OnInit{
   isEdit: boolean = false;
+  slno:any=null
   clientSearch: any = '';
 
   filteredClients: any[] = [];
@@ -33,7 +34,7 @@ export class CreateEditWorkComponent implements OnInit{
   driveLink: '',
 };
 
-  clients = [{name:'Anu Hanan',id:2}];
+  clients:any[] = [];
 
   constructor(
     private dialogRef: MatDialogRef<CreateEditWorkComponent>,
@@ -46,8 +47,10 @@ export class CreateEditWorkComponent implements OnInit{
 
   ngOnInit(): void {
     this.isEdit = this.data.isEdit;
+    this.slno = this.data.slno;
     this.filteredClients = this.clients;
 
+    this.load()
      if (this.form.client) {
     const client = this.clients.find(c => c.id === this.form.client);
     this.clientSearch = client ? client.name : '';
@@ -63,9 +66,10 @@ export class CreateEditWorkComponent implements OnInit{
   }
 
   selectClient(client: any) {
-  const selected = this.clients.find(c => c.name === client);
+  const selected = this.clients.find(c => c.Client === client);
   this.form.client = selected ? selected.id : null;
-
+    console.log(this.form);
+    
 }
 
   close() {
@@ -83,7 +87,7 @@ export class CreateEditWorkComponent implements OnInit{
     if (!ok) return;
 
     this.loader.showLoader()
-    this.service.addWork(this.form.title,this.form.client,this.form.description,this.form.driveLink).subscribe({
+    this.service.addWork(this.form.title,this.form.client,this.form.description,this.form.driveLink,this.slno).subscribe({
       next:(res)=>{
         if(res.data=='success'){
           this.toastr.success('User added successfully.','Successful')
@@ -99,4 +103,35 @@ export class CreateEditWorkComponent implements OnInit{
       }
     })
   }
+
+
+  load(){
+      this.service.LoadEditWork(this.slno).subscribe({
+        next:(res)=>{
+          console.log(res,'work');
+          
+          this.clients=res.data[1]
+          this.filteredClients=this.clients
+          this.form.client=res.data[0][0].client
+          this.form.description=res.data[0][0].description
+          this.form.driveLink=res.data[0][0].link
+          this.form.title=res.data[0][0].title
+          
+        },
+        error: (err) => {
+  
+          console.log(err);
+  
+          this.toastr.error(
+            'An error occurred while loading user. Please try again.',
+            'Error'
+          );
+  
+          this.loader.hideLoader();
+        },
+        complete: () => {
+          this.loader.hideLoader();
+        }
+      })
+    }
 }

@@ -76,13 +76,14 @@ export class BACService {
   );
   }
 
-  addWork(title:any,client:any,desc:any,link:any): Observable<any> {
+  addWork(title:any,client:any,desc:any,link:any,slno:any): Observable<any> {
     const formData = new FormData();
 
     formData.append('title',title);
     formData.append('client',client);
     formData.append('desc',desc);
     formData.append('link',link);
+    formData.append('slno',slno);
 
     return this.http.post(
     `${ApiUrl}/work/add`,
@@ -95,6 +96,17 @@ export class BACService {
     return this.http.post(
     `${ApiUrl}/work/List`,
     {}
+  );
+  }
+
+  LoadEditWork(slno:any): Observable<any> {
+    const formData = new FormData();
+
+    formData.append('slno',slno);
+    
+    return this.http.post(
+    `${ApiUrl}/work/load`,
+    formData
   );
   }
 

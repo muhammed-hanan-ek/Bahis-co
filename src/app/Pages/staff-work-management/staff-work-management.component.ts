@@ -186,7 +186,7 @@ export class StaffWorkManagementComponent implements OnInit {
   /* CREATE WORK */
 
   openwork(isEdit: boolean, slno: string | null) {
-    this.dialog.open(CreateEditWorkComponent, {
+    const dialogRef=this.dialog.open(CreateEditWorkComponent, {
       width: '500px',
       maxWidth: '95vw',
       panelClass: 'responsive-dialog',
@@ -195,18 +195,27 @@ export class StaffWorkManagementComponent implements OnInit {
         slno,
       },
     });
+
+    dialogRef.afterClosed().subscribe({
+      next:()=>this.onload()
+    })
   }
 
-  viewwork(slno: string | null) {
-    this.dialog.open(ViewWorkComponent, {
+  viewwork(slno: string | null,status:string) {
+    const dialogRef=this.dialog.open(ViewWorkComponent, {
       width: '500px',
       maxWidth: '95vw',
       panelClass: 'responsive-dialog',
       data: {
         slno,
         userRole: this.userRole,
+        status: status,
       },
     });
+
+    dialogRef.afterClosed().subscribe({
+      next:()=>this.onload()
+    })
   }
 
   /* STATUS COUNTS */

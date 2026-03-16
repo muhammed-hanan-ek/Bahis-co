@@ -359,7 +359,7 @@
               class="absolute right-0 top-8 w-32 bg-white border border-gray-200 rounded-lg shadow-lg z-20"
             >
               <button
-                (click)="viewwork('hi')"
+                (click)="viewwork(work.slno,work.status)"
                 class="w-full text-left px-3 py-2 text-sm hover:bg-gray-50 flex items-center gap-2"
               >
                 <i class="fa-solid fa-eye text-gray-400"></i>
@@ -367,7 +367,7 @@
               </button>
 
               <button
-                (click)="editWork('work')"
+                (click)="openwork(true,work.slno)"
                 class="w-full text-left px-3 py-2 text-sm hover:bg-gray-50 flex items-center gap-2"
               >
                 <i class="fa-solid fa-pen text-gray-400"></i>
@@ -388,7 +388,7 @@
           <button
             *ngIf="userRole != 'Staff'"
             title="View Work Details"
-            (click)="viewwork('work')"
+            (click)="viewwork(work.slno,work.status)"
             class="text-gray-400 hover:text-gray-600"
           >
             <i class="fa-solid fa-eye"></i>
