@@ -23,42 +23,46 @@
 
   <!-- FORM BODY -->
   <div class="px-6 py-6 max-h-[65vh] overflow-y-auto space-y-5">
-    <!-- TITLE -->
-    <div class="space-y-1">
-      <label class="text-sm font-medium text-gray-600"> Ad Title </label>
+    <!-- ad -->
+     <div class="space-y-1">
+      <label class="text-sm font-medium text-gray-600"> Ad </label>
 
-      <input
-        type="text"
-        [(ngModel)]="form.title"
-        placeholder="Enter Ad title"
-        class="w-full h-10 px-3 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primaryColor)]/30"
-      />
+      <mat-form-field appearance="outline" class="w-full text-sm">
+        <input
+          type="text"
+          matInput
+          placeholder="Select Ad"
+          [(ngModel)]="adSearch"
+          [matAutocomplete]="adAuto"
+          (input)="filterAds()"
+        />
+
+        <mat-autocomplete
+          #adAuto="matAutocomplete"
+          (optionSelected)="selectAd($event.option.value)"
+        >
+          <mat-option *ngFor="let ad of filteredads" [value]="ad.name">
+            {{ ad.name }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
     </div>
 
     <!-- CLIENT -->
     <div class="space-y-1">
       <label class="text-sm font-medium text-gray-600"> Client </label>
 
-      <mat-form-field appearance="outline" class="w-full text-sm">
-        <input
-          type="text"
-          matInput
-          placeholder="Search client"
-          [(ngModel)]="clientSearch"
-          [matAutocomplete]="clientAuto"
-          (input)="filterClients()"
-        />
-
-        <mat-autocomplete
-          #clientAuto="matAutocomplete"
-          (optionSelected)="selectClient($event.option.value)"
-        >
-          <mat-option *ngFor="let client of filteredClients" [value]="client">
-            {{ client }}
-          </mat-option>
-        </mat-autocomplete>
-      </mat-form-field>
+      <input
+        type="text"
+        disabled
+        [(ngModel)]="form.client"
+        placeholder="Enter Ad title"
+        class="w-full h-10 px-3 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primaryColor)]/30"
+      />
     </div>
+
+    
+    
 
     <div class="space-y-1">
       <label class="text-sm font-medium text-gray-600"> Start Date </label>
@@ -88,7 +92,7 @@
         class="w-full h-10 px-3 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primaryColor)]/30"
       />
       <div *ngIf="AmtNumber" class="mt-1 text-sm text-red-500">
-        {{ "Only numbers are allowed." }}
+        {{ "Please enter a valid amount greater than 0" }}
       </div>
     </div>
   </div>

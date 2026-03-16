@@ -97,12 +97,14 @@
                     [title]="emp"
                   >
                     <input
+                       #emps
                       type="checkbox"
-                      (change)="toggleEmployee(emp, $event)"
+                      [checked]="filters.employees.includes(+emp.id)"
+                      (change)="toggleEmployee(+emp.id, emps.checked)"
                       class="accent-[var(--primaryColor)]"
                     />
 
-                    <span class="truncate"> {{ emp }}</span>
+                    <span class="truncate"> {{ emp.name }}</span>
                   </label>
                 </div>
               </div>
@@ -122,15 +124,17 @@
                   <label
                     *ngFor="let client of clients"
                     class="flex items-center gap-2 text-sm text-gray-600"
-                    [title]="client"
+                    [title]="client.name"
                   >
                     <input
+                      #chk
                       type="checkbox"
-                      (change)="toggleClient(client, $event)"
+                      [checked]="filters.clients.includes(+client.id)"
+                      (change)="toggleClient(+client.id, chk.checked)"
                       class="accent-[var(--primaryColor)]"
                     />
 
-                    <span class="truncate">{{ client }}</span>
+                    <span class="truncate">{{ client.name }}</span>
                   </label>
                 </div>
               </div>
@@ -142,35 +146,18 @@
                 </label>
 
                 <div class="space-y-1">
-                  <label class="flex items-center gap-2 text-sm text-gray-600">
+                  <label class="flex items-center gap-2 text-sm text-gray-600" *ngFor="let stat of statuses">
                     <input
+                      #sts
                       type="checkbox"
-                      (change)="toggleStatus('Pending', $event)"
+                      [checked]="filters.status.includes(+stat.id)"
+                      (change)="toggleStatus(+stat.id, sts.checked)"
                       class="accent-[var(--primaryColor)]"
                     />
 
-                    Pending
+                   {{ stat.name}}
                   </label>
 
-                  <label class="flex items-center gap-2 text-sm text-gray-600">
-                    <input
-                      type="checkbox"
-                      (change)="toggleStatus('Approved', $event)"
-                      class="accent-[var(--primaryColor)]"
-                    />
-
-                    Approved
-                  </label>
-
-                  <label class="flex items-center gap-2 text-sm text-gray-600">
-                    <input
-                      type="checkbox"
-                      (change)="toggleStatus('Rejected', $event)"
-                      class="accent-[var(--primaryColor)]"
-                    />
-
-                    Rejected
-                  </label>
                 </div>
               </div>
             </div>
@@ -349,11 +336,11 @@
             </div>
 
             <p class="text-xs text-gray-400 mt-1">
-              {{ work.client }}
+              {{ work.client ||'client name' }}
             </p>
 
             <p class="text-xs text-gray-400">
-              {{ work.month }}
+              {{ work.TRN_DATE | date:'MMMM yyyy' }}
             </p>
           </div>
 

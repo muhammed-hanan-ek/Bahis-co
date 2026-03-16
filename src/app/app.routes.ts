@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { AuthComponent } from './layouts/auth/auth.component';
 import { MainComponent } from './layouts/main/main.component';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'sign-in', pathMatch: 'full' },
@@ -27,6 +28,7 @@ export const routes: Routes = [
   {
     path: '',
     component: MainComponent,
+    canActivate: [authGuard],
     children: [
       {
         path: 'user-management',

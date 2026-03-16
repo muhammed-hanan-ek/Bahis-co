@@ -66,7 +66,6 @@ export class CreateEditWorkComponent implements OnInit{
   const selected = this.clients.find(c => c.name === client);
   this.form.client = selected ? selected.id : null;
 
-  console.log(this.form);
 }
 
   close() {

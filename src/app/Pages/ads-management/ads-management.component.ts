@@ -33,7 +33,7 @@ export class AdsManagementComponent {
   showFilter = false;
   searchText = '';
   activeMenu: number | null = null;
-  userRole: string | null = 'Client';
+  userRole: string | null = 'Admin';
 
   // pagination variables and function
   page = 1;

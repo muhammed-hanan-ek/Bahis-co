@@ -6,13 +6,12 @@ import { CreateEditUserComponent } from '../user-management/create-edit-user/cre
 import { CreateEditWorkComponent } from './create-edit-work/create-edit-work.component';
 import { ViewWorkComponent } from './view-work/view-work.component';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { SharedService } from '../../shared/shared.service';
+import { BACService } from '../../Service/bac.service';
+import { ToastrService } from 'ngx-toastr';
+import { LoaderService } from '../../loader/loader.service';
 
-interface Work {
-  title: string;
-  client: string;
-  month: string;
-  status: 'Pending' | 'Approved' | 'Rejected';
-}
+
 
 @Component({
   selector: 'app-staff-work-management',
@@ -34,12 +33,16 @@ export class StaffWorkManagementComponent implements OnInit {
       this.activeMenu = null;
     }
   }
-  constructor(private dialog: MatDialog) {}
 
   showFilter = false;
   searchText = '';
+  statuses:any[]=[
+    {id:1,name:"pending"},
+    {id:2,name:"Approved"},
+    {id:3,name:"Rejected"},
+  ]
   activeMenu: number | null = null;
-  userRole: string | null = 'Staff';
+  userRole: string | null = null;
 
   // pagination variables and function
   page = 1;
@@ -50,81 +53,50 @@ export class StaffWorkManagementComponent implements OnInit {
     this.page = 1; // reset to first page
   }
 
-  works: Work[] = [
-    {
-      title: 'Website UI Design',
-      client: 'ABC Company',
-      month: '2024-06',
-      status: 'Pending',
-    },
-    {
-      title: 'API Integration',
-      client: 'TechCorp',
-      month: '2024-06',
-      status: 'Approved',
-    },
-    {
-      title: 'Mobile Bug Fix',
-      client: 'Global Solutions',
-      month: '2024-06',
-      status: 'Rejected',
-    },
-    {
-      title: 'Mobile Bug Fix',
-      client: 'Global Solutions',
-      month: '2024-06',
-      status: 'Rejected',
-    },
-    {
-      title: 'Website UI Design',
-      client: 'ABC Company',
-      month: '2024-06',
-      status: 'Pending',
-    },
-    {
-      title: 'API Integration',
-      client: 'TechCorp',
-      month: '2024-06',
-      status: 'Approved',
-    },
-    {
-      title: 'Mobile Bug Fix',
-      client: 'Global Solutions',
-      month: '2024-06',
-      status: 'Rejected',
-    },
-    {
-      title: 'Mobile Bug Fix',
-      client: 'Global Solutions',
-      month: '2024-06',
-      status: 'Rejected',
-    },
-    {
-      title: 'Mobile Bug Fix',
-      client: 'Global Solutions',
-      month: '2024-06',
-      status: 'Rejected',
-    },
+  works: any[] = [];
+
+  filteredWorks: any[] = [];
+
+  clients = [{name:'ABC Company',id:1},{id:2,name: 'TechCorp'}];
+
+  employees:any[] = [
+    {id:1,name:'emp1'},
+    {id:2,name:'emp2'},
   ];
 
-  filteredWorks: Work[] = [];
-
-  clients = ['ABC Company', 'TechCorp', 'Global Solutions', 'NextGen Labs'];
-
-  employees = ['emp1', 'emp2'];
-
-  filters: any = {
+  filters: {
+    month:string,
+    clients:number[],
+    status:number[],
+    employees:number[]
+  } = {
     month: '',
     clients: [],
     status: [],
     employees: [],
   };
 
+
+  constructor(
+    private dialog: MatDialog,
+    private shared:SharedService,
+    private service:BACService,
+    private toastr:ToastrService,
+    private loader:LoaderService
+  ) {}
+
+
   ngOnInit(): void {
+    this.shared.Role$.subscribe({
+      next:(res)=>{
+        this.userRole=res
+      }
+    })
     const today = new Date();
     this.filters.month = today.toISOString().slice(0, 7);
-
+    this.onload()
     this.filteredWorks = [...this.works];
+
   }
 
   toggleFilter(event?: Event) {
@@ -152,40 +124,39 @@ export class StaffWorkManagementComponent implements OnInit {
 
   /* CLIENT FILTER */
 
-  toggleClient(client: string, event: any) {
-    if (event.target.checked) {
-      if (!this.filters.clients.includes(client)) {
-        this.filters.clients.push(client);
-      }
-    } else {
-      this.filters.clients = this.filters.clients.filter(
-        (c: string) => c !== client,
-      );
+  toggleClient(id: number, checked: boolean) {
+  if (checked) {
+    if (!this.filters.clients.includes(id)) {
+      this.filters.clients = [...this.filters.clients, id];
     }
+  } else {
+    this.filters.clients = this.filters.clients.filter(x => x !== id);
   }
+}
 
   /* STATUS FILTER */
 
-  toggleStatus(status: string, event: any) {
-    if (event.target.checked) {
-      if (!this.filters.status.includes(status)) {
-        this.filters.status.push(status);
-      }
-    } else {
-      this.filters.status = this.filters.status.filter(
-        (s: string) => s !== status,
-      );
+  toggleStatus(status: number, checked: boolean) {
+    if (checked) {
+    if (!this.filters.status.includes(status)) {
+      this.filters.status = [...this.filters.status, status];
     }
+  } else {
+    this.filters.status = this.filters.status.filter(x => x !== status);
   }
 
-  toggleEmployee(emp: any, event: any) {
-    if (event.target.checked) {
-      this.filters.employees.push(emp.id);
-    } else {
-      this.filters.employees = this.filters.employees.filter(
-        (e: any) => e !== emp.id,
-      );
+  }
+
+  // emp filter
+
+  toggleEmployee(emp: any, checked: boolean) {
+    if (checked) {
+    if (!this.filters.employees.includes(emp)) {
+      this.filters.employees = [...this.filters.employees, emp];
     }
+  } else {
+    this.filters.employees = this.filters.employees.filter(x => x !== emp);
+  }
   }
 
   /* CLEAR FILTERS */
@@ -197,28 +168,17 @@ export class StaffWorkManagementComponent implements OnInit {
       month: today.toISOString().slice(0, 7),
       clients: [],
       status: [],
+      employees:[]
     };
-
+    this.showFilter=false
     this.filteredWorks = [...this.works];
   }
 
   /* APPLY FILTERS */
 
   applyFilters() {
-    this.filteredWorks = this.works.filter((work) => {
-      const monthMatch =
-        !this.filters.month || work.month === this.filters.month;
-
-      const clientMatch =
-        this.filters.clients.length === 0 ||
-        this.filters.clients.includes(work.client);
-
-      const statusMatch =
-        this.filters.status.length === 0 ||
-        this.filters.status.includes(work.status);
-
-      return monthMatch && clientMatch && statusMatch;
-    });
+   
+   
 
     this.showFilter = false;
   }
@@ -269,5 +229,24 @@ export class StaffWorkManagementComponent implements OnInit {
 
   deleteWork(work: any) {
     console.log('Delete', work);
+  }
+
+  onload(){
+    this.loader.showLoader()
+    this.service.LoadworkReport().subscribe({
+      next:(res)=>{
+        this.works=res.data
+        this.filteredWorks = [...this.works];
+        console.log(this.filteredWorks);
+
+      },
+      error:(err)=>{
+        console.log(err);
+        this.toastr.error('An error occurred while loading works. Please try again.','Error')
+      },
+      complete:()=>{
+        this.loader.hideLoader()
+      }
+    })
   }
 }

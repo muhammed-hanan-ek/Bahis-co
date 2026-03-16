@@ -138,6 +138,8 @@ export class HeaderComponent implements OnInit {
     setTimeout(() => {
       this.router.navigate([`/${path}`])
       this.loader.hideLoader()
+      this.isOpenNav=false;
+      this.isOpenMenu=false
     }, 1000);
   }
 

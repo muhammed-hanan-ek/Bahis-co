@@ -90,5 +90,13 @@ export class BACService {
   );
   }
 
+  LoadworkReport(): Observable<any> {
+
+    return this.http.post(
+    `${ApiUrl}/work/List`,
+    {}
+  );
+  }
+
 
 }

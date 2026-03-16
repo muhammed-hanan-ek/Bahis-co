@@ -39,10 +39,10 @@
             <div
               class="w-12 h-12 bg-gray-200 rounded-xl flex items-center justify-center text-[var(--primaryColor)] text-xl"
             >
-              <i class="" [ngClass]="menu.icon"></i>
+              <i class="" [ngClass]="menu.icon?menu.icon:'fa-regular fa-home'"></i>
             </div>
             <!-- MENU ITEM NAME -->
-            <span class="text-sm text-gray-600 text-center font-semibold">
+            <span class="text-sm text-gray-600 text-center font-semibold text-wrap">
               {{menu.name}}
             </span>
           </div>

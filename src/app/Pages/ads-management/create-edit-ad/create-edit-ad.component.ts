@@ -14,17 +14,22 @@ import { MatInputModule } from '@angular/material/input';
 export class CreateEditAdComponent implements OnInit {
   isEdit: boolean = false;
   AmtNumber: boolean = false;
-  clientSearch: any = null;
-  filteredClients: any[] = [];
+  adSearch: any = null;
+  filteredads: any[] = [];
   form = {
-    title: null,
+    ad: null,
     client: null,
     startDate: null,
     endDate: null,
     amount: '',
   };
 
-  clients = ['Bahis & Co', 'ABC Consultancy', 'TechNova'];
+  ads:any[] =[
+    {id:1,name:'ad1',client:'c1'},
+    {id:2,name:'ad2',client:'c2'},
+    {id:3,name:'ad3',client:'c3'},
+  ] ;
+
 
   constructor(
     private dialogRef: MatDialogRef<CreateEditAdComponent>,
@@ -33,29 +38,35 @@ export class CreateEditAdComponent implements OnInit {
 
   ngOnInit(): void {
     this.isEdit = this.data.isEdit;
-    this.filteredClients = this.clients;
+    this.filteredads = this.ads;
   }
 
-  filterClients() {
-    this.filteredClients = this.clients.filter((client) =>
-      client.toLowerCase().includes(this.clientSearch.toLowerCase()),
+  filterAds() {
+    this.filteredads = this.ads.filter((ad) =>
+      ad.toLowerCase().includes(this.adSearch.toLowerCase()),
     );
   }
 
-  selectClient(client: any) {
-    this.form.client = client.id;
+  selectAd(ad: any) {
+    const selected = this.ads.find(c => c.name === ad)
+    this.form.ad = selected ? selected.id : null;
+    this.form.client=selected?selected.client:null
+    console.log(this.form);
+    
   }
 
   validateAmt(value: string) {
-    const regex = /^\d+(\.\d+)?$/; // regular expression for amount
+    const regex = /^\d+(\.\d+)?$/;
 
-    if (!regex.test(value)) {
-      this.AmtNumber = true;
-      // prevent invalid character from staying in the input
-      this.form.amount = value.replace(/^\d+(\.\d+)?$/g, '');
-    } else {
-      this.AmtNumber = false;
-    }
+  if (!regex.test(value) || Number(value) <= 0) {
+    this.AmtNumber = true;
+
+    // remove non numeric characters except dot
+    this.form.amount = value.replace(/[^0-9.]/g, '');
+
+  } else {
+    this.AmtNumber = false;
+  }
   }
 
   close() {
