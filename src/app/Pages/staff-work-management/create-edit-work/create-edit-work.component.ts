@@ -51,10 +51,13 @@ export class CreateEditWorkComponent implements OnInit{
     this.filteredClients = this.clients;
 
     this.load()
-     if (this.form.client) {
-    const client = this.clients.find(c => c.id === this.form.client);
-    this.clientSearch = client ? client.name : '';
-  }
+    if (this.form.client) {
+  const client = this.clients.find(c => c.id == this.form.client);
+  this.clientSearch = client?.Client || '';
+}
+
+  console.log(this.clients,this.form.client);
+  
   }
 
   // dropdown
@@ -68,7 +71,6 @@ export class CreateEditWorkComponent implements OnInit{
   selectClient(client: any) {
   const selected = this.clients.find(c => c.Client === client);
   this.form.client = selected ? selected.id : null;
-    console.log(this.form);
     
 }
 
@@ -116,6 +118,11 @@ export class CreateEditWorkComponent implements OnInit{
           this.form.description=res.data[0][0].description
           this.form.driveLink=res.data[0][0].link
           this.form.title=res.data[0][0].title
+          if (this.form.client) {
+  const client = this.clients.find(c => c.id == this.form.client);
+  this.clientSearch = client?.Client || '';
+
+  }
           
         },
         error: (err) => {
