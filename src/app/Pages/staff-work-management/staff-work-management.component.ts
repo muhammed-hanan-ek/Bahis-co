@@ -10,6 +10,7 @@ import { SharedService } from '../../shared/shared.service';
 import { BACService } from '../../Service/bac.service';
 import { ToastrService } from 'ngx-toastr';
 import { LoaderService } from '../../loader/loader.service';
+import { ConfirmationService } from '../../confirmation/confirmation.service';
 
 
 
@@ -82,7 +83,8 @@ export class StaffWorkManagementComponent implements OnInit {
     private shared:SharedService,
     private service:BACService,
     private toastr:ToastrService,
-    private loader:LoaderService
+    private loader:LoaderService,
+    private confirmSevice:ConfirmationService
   ) {}
 
 
@@ -232,13 +234,6 @@ export class StaffWorkManagementComponent implements OnInit {
     return this.works.filter((w) => w.status === 'Rejected').length;
   }
 
-  editWork(work: any) {
-    console.log('Edit', work);
-  }
-
-  deleteWork(work: any) {
-    console.log('Delete', work);
-  }
 
   onload(){
     this.loader.showLoader()
@@ -258,4 +253,43 @@ export class StaffWorkManagementComponent implements OnInit {
       }
     })
   }
+
+  async deleteWork(slno:any) {
+
+    const ok = await this.confirmSevice.open({
+      title: 'Delete Work',
+      message: 'Are you sure you want to delete this work?',
+      type: 'danger',
+      confirmText: 'Delete',
+    });
+
+    if (!ok) return;
+    this.loader.showLoader()
+    this.service.DeleteWork(slno).subscribe({
+      next: (res) => {
+        if(res.data[0].MSG=='Success'){
+          this.toastr.success('Work deleted successfully','Successful')
+          this.onload()
+        }
+      },
+      error: (err) => {
+
+        console.log(err);
+
+        this.toastr.error(
+          'An error occurred while deleting work. Please try again.',
+          'Error'
+        );
+
+        this.loader.hideLoader();
+      },
+      complete: () => {
+        this.loader.hideLoader();
+      }
+    });
+    
+    
+  }
+
+
 }

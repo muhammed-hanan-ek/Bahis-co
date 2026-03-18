@@ -92,12 +92,12 @@ export class CreateEditWorkComponent implements OnInit{
     this.service.addWork(this.form.title,this.form.client,this.form.description,this.form.driveLink,this.slno).subscribe({
       next:(res)=>{
         if(res.data=='success'){
-          this.toastr.success('User added successfully.','Successful')
+          this.toastr.success(this.isEdit?'Work edited successfully.':'Work added successfully','Successful')
         }
       },
       error:(err)=>{
         console.log(err);
-        this.toastr.error('An error occurred while adding work. Please try again.','Error')
+        this.toastr.error(this.isEdit?'An error occurred while editing work. Please try again.':'An error occurred while adding work. Please try again.','Error')
       },
       complete:()=>{
         this.loader.hideLoader()

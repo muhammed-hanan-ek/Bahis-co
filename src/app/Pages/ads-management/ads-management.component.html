@@ -22,6 +22,8 @@
       <div class="relative w-full sm:w-[280px]">
         <input
           type="text"
+           [(ngModel)]="searchText"
+          (ngModelChange)="searchads()"
           class="h-10 w-full rounded-xl border border-gray-200 bg-white pl-10 pr-4 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--primaryColor)]/30 focus:border-[var(--primaryColor)] transition"
           placeholder="Search ad here..."
         />
@@ -88,13 +90,15 @@
                     class="flex items-center gap-2 text-sm text-gray-600"
                     [title]="client"
                   >
-                    <input
+                   <input
+                      #chk
                       type="checkbox"
-                      (change)="toggleClient(client, $event)"
+                      [checked]="filters.clients.includes(+client.id)"
+                      (change)="toggleClient(+client.id, chk.checked)"
                       class="accent-[var(--primaryColor)]"
                     />
 
-                    <span class="truncate">{{ client }}</span>
+                    <span class="truncate">{{ client.name }}</span>
                   </label>
                 </div>
               </div>
@@ -106,25 +110,19 @@
                 </label>
 
                 <div class="space-y-1">
-                  <label class="flex items-center gap-2 text-sm text-gray-600">
+                  <label class="flex items-center gap-2 text-sm text-gray-600" *ngFor="let stat of statuses">
                     <input
+                      #sts
                       type="checkbox"
-                      (change)="toggleStatus('Pending', $event)"
+                      [checked]="filters.status.includes(+stat.id)"
+                      (change)="toggleStatus(+stat.id, sts.checked)"
                       class="accent-[var(--primaryColor)]"
                     />
 
-                    Active
+                   {{ stat.name}}
                   </label>
 
-                  <label class="flex items-center gap-2 text-sm text-gray-600">
-                    <input
-                      type="checkbox"
-                      (change)="toggleStatus('Approved', $event)"
-                      class="accent-[var(--primaryColor)]"
-                    />
-
-                    Completed
-                  </label>
+                 
                 </div>
               </div>
             </div>

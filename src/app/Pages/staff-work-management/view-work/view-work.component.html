@@ -103,7 +103,9 @@
     <div class="flex gap-3">
       <!-- REJECT -->
       <button
-        class="flex items-center gap-2 px-4 py-2 text-sm rounded-lg border border-red-400 text-red-600 hover:bg-red-50 transition"
+      [disabled]="!work.remark"
+      (click)="ApproveOrRjectWork(0)"
+        class="disabled:bg-white flex items-center gap-2 px-4 py-2 text-sm rounded-lg border border-red-400 text-red-600 hover:bg-red-50 transition"
       >
         <i class="fa-solid fa-xmark"></i>
         Reject
@@ -111,7 +113,9 @@
 
       <!-- APPROVE -->
       <button
-        class="flex items-center gap-2 px-5 py-2 text-sm rounded-lg border border-green-400 text-green-600 hover:bg-green-50 transition"
+      (click)="ApproveOrRjectWork(1)"
+       [disabled]="!work.remark"
+        class="disabled:bg-white flex items-center gap-2 px-5 py-2 text-sm rounded-lg border border-green-400 text-green-600 hover:bg-green-50 transition"
       >
         <i class="fa-solid fa-check"></i>
         Approve

@@ -111,4 +111,53 @@ export class BACService {
   }
 
 
+  DeleteWork(workId:any): Observable<any> {
+    const formData = new FormData();
+
+    formData.append('workId',workId);
+
+    return this.http.post(
+    `${ApiUrl}/work/Delete`,
+    formData
+  );
+  }
+
+  ApproveOrRejectWork(workId:any,DESICION:any): Observable<any> {
+    const formData = new FormData();
+
+    formData.append('workId',workId);
+    formData.append('DESICION',DESICION);
+
+    return this.http.post(
+    `${ApiUrl}/work/ApproveOrReject`,
+    formData
+  );
+  }
+
+  LoadAd(slno:any): Observable<any> {
+    const formData = new FormData();
+
+    formData.append('slno',slno);
+
+    return this.http.post(
+    `${ApiUrl}/ad/load`,
+    formData
+  );
+  }
+
+  SaveAd(slno:any,ad:any,startDate:any,endDate:any,amount:any): Observable<any> {
+    const formData = new FormData();
+
+    formData.append('slno',slno);
+    formData.append('ad',ad);
+    formData.append('startDate',startDate);
+    formData.append('endDate',endDate);
+    formData.append('amount',amount);
+
+    return this.http.post(
+    `${ApiUrl}/ad/add`,
+    formData
+  );
+  }
+
 }

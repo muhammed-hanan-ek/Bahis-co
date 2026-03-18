@@ -89,7 +89,7 @@
         placeholder="Enter Amount"
         [(ngModel)]="form.amount"
         (ngModelChange)="validateAmt($event)"
-        class="w-full h-10 px-3 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primaryColor)]/30"
+        class="w-full h-10 px-3  rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primaryColor)]/30"
       />
       <div *ngIf="AmtNumber" class="mt-1 text-sm text-red-500">
         {{ "Please enter a valid amount greater than 0" }}
@@ -109,6 +109,7 @@
     </button>
 
     <button
+    (click)="saveAd()"
       class="px-5 py-2 text-sm rounded-lg bg-[var(--primaryColor)] text-white font-medium shadow-sm hover:shadow-md hover:scale-[1.02] transition"
     >
       {{ isEdit ? "Save Changes" : "Create Ad" }}

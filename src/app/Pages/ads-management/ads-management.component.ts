@@ -127,9 +127,14 @@ export class AdsManagementComponent {
     },
   ];
 
+  statuses:any[]=[
+    {id:1,name:"Active"},
+    {id:2,name:"Completed"},
+  ]
+
   filteredads: any[] = [];
 
-  clients = ['ABC Company', 'TechCorp', 'Global Solutions', 'NextGen Labs'];
+   clients = [{name:'ABC Company',id:1},{id:2,name: 'TechCorp'}];
 
   employees = ['emp1', 'emp2'];
 
@@ -163,49 +168,45 @@ export class AdsManagementComponent {
   /* SEARCH */
 
   searchads() {
-    const text = this.searchText.toLowerCase();
+     const text = this.searchText.toLowerCase();
 
-    this.filteredads = this.ads.filter((ads) =>
-      ads.title.toLowerCase().includes(text),
+    this.filteredads = this.ads.filter((ad) =>
+      ad.title.toLowerCase().includes(text),
     );
   }
 
   /* CLIENT FILTER */
 
-  toggleClient(client: string, event: any) {
-    if (event.target.checked) {
-      if (!this.filters.clients.includes(client)) {
-        this.filters.clients.push(client);
-      }
-    } else {
-      this.filters.clients = this.filters.clients.filter(
-        (c: string) => c !== client,
-      );
+  toggleClient(id: number, checked: boolean) {
+    if (checked) {
+    if (!this.filters.clients.includes(id)) {
+      this.filters.clients = [...this.filters.clients, id];
     }
+  } else {
+    this.filters.clients = this.filters.clients.filter((x: any) => x !== id);
+  }
   }
 
   /* STATUS FILTER */
 
-  toggleStatus(status: string, event: any) {
-    if (event.target.checked) {
-      if (!this.filters.status.includes(status)) {
-        this.filters.status.push(status);
-      }
-    } else {
-      this.filters.status = this.filters.status.filter(
-        (s: string) => s !== status,
-      );
+  toggleStatus(status: number, checked: boolean) {
+    if (checked) {
+    if (!this.filters.status.includes(status)) {
+      this.filters.status = [...this.filters.status, status];
     }
+  } else {
+    this.filters.status = this.filters.status.filter((x: any) => x !== status);
+  }
   }
 
-  toggleEmployee(emp: any, event: any) {
-    if (event.target.checked) {
-      this.filters.employees.push(emp.id);
-    } else {
-      this.filters.employees = this.filters.employees.filter(
-        (e: any) => e !== emp.id,
-      );
+  toggleEmployee(emp: any, checked: boolean) {
+    if (checked) {
+    if (!this.filters.employees.includes(emp)) {
+      this.filters.employees = [...this.filters.employees, emp];
     }
+  } else {
+    this.filters.employees = this.filters.employees.filter((x: any) => x !== emp);
+  }
   }
 
   /* CLEAR FILTERS */

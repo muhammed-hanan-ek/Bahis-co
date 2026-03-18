@@ -368,15 +368,17 @@
 
               <button
                 (click)="openwork(true,work.slno)"
-                class="w-full text-left px-3 py-2 text-sm hover:bg-gray-50 flex items-center gap-2"
+                [disabled]="work.status == 'Rejected' || work.status == 'Approved'"
+                class="w-full disabled:bg-white text-left px-3 py-2 text-sm hover:bg-gray-50 flex items-center gap-2"
               >
                 <i class="fa-solid fa-pen text-gray-400"></i>
                 Edit
               </button>
 
               <button
-                (click)="deleteWork('work')"
-                class="w-full text-left px-3 py-2 text-sm text-red-500 hover:bg-gray-50 flex items-center gap-2"
+                (click)="deleteWork(work.slno)"
+                [disabled]="work.status == 'Rejected' || work.status == 'Approved'"
+                class="w-full disabled:bg-white text-left px-3 py-2 text-sm text-red-500 hover:bg-gray-50 flex items-center gap-2"
               >
                 <i class="fa-solid fa-trash"></i>
                 Delete

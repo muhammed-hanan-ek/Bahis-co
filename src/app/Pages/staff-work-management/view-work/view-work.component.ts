@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { BACService } from '../../../Service/bac.service';
 import { ToastrService } from 'ngx-toastr';
 import { LoaderService } from '../../../loader/loader.service';
+import { ConfirmationService } from '../../../confirmation/confirmation.service';
 
 @Component({
   selector: 'app-view-work',
@@ -25,6 +26,7 @@ export class ViewWorkComponent implements OnInit {
     private service: BACService,
     private toastr: ToastrService,
     private loader: LoaderService,
+    private confirmSevice:ConfirmationService
   ) {}
 
   ngOnInit(): void {
@@ -90,5 +92,51 @@ export class ViewWorkComponent implements OnInit {
         this.loader.hideLoader();
       },
     });
+  }
+
+      async ApproveOrRjectWork(desicion:any) {
+
+    const ok = await this.confirmSevice.open({
+      title: desicion==1?'Approve Work':'Reject Work',
+      message: desicion==1?'Are you sure you want to approve this work?':'Are you sure you want to reject this work?',
+      type: desicion==1?'success':'info',
+      confirmText: desicion==1?'Approve':'Reject',
+    });
+
+    if (!ok) return;
+    this.loader.showLoader()
+    this.service.ApproveOrRejectWork(this.slno,desicion).subscribe({
+      next: (res) => {
+        if(desicion==1){
+        if(res.data[0].MSG=='Success'){
+          this.toastr.success('Work Approved successfully','Successful')
+          this.load()
+          this.close()
+        }
+      }else{
+        if(res.data[0].MSG=='Success'){
+          this.toastr.success('Work Rejected successfully','Successful')
+          this.load()
+          this.close()
+        }
+      }
+      },
+      error: (err) => {
+
+        console.log(err);
+
+        this.toastr.error(
+          'An error occurred while deleting users. Please try again.',
+          'Error'
+        );
+
+        this.loader.hideLoader();
+      },
+      complete: () => {
+        this.loader.hideLoader();
+      }
+    });
+    
+    
   }
 }
