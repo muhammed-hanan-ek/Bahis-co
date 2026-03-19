@@ -11,6 +11,7 @@ import { BACService } from '../../Service/bac.service';
 import { ToastrService } from 'ngx-toastr';
 import { LoaderService } from '../../loader/loader.service';
 import { ConfirmationService } from '../../confirmation/confirmation.service';
+import { ApiUrl } from '../../app.contsant';
 
 
 
@@ -57,6 +58,8 @@ export class StaffWorkManagementComponent implements OnInit {
   clients :any[]= [];
 
   employees:any[] = [];
+
+  ApiUrl=ApiUrl
 
   filters: {
     month:string,
@@ -286,5 +289,51 @@ export class StaffWorkManagementComponent implements OnInit {
     
   }
 
+  pdf(){
+    this.loader.showLoader()
+    this.service.LoadworkPdf(this.filters.employees,this.filters.status,this.filters.clients,this.filters.month).subscribe({
+      next:(res)=>{
+        
+        console.log(res);
+        if (res && res.filename) {
+                    window.open(`${ApiUrl}/uploads/PDF/${res.filename}`);
+                } else {
+                    this.toastr.error('PDF Export Failed');
+                }
+
+      },
+
+      error:(err)=>{
+        console.log(err);
+        this.toastr.error('An error occurred while loading works. Please try again.','Error')
+      },
+      complete:()=>{
+        this.loader.hideLoader()
+      }
+    })
+  }
+  Excel(){
+    this.loader.showLoader()
+    this.service.LoadworkExcel(this.filters.employees,this.filters.status,this.filters.clients,this.filters.month).subscribe({
+      next:(res)=>{
+        
+        console.log(res);
+        if (res && res.filename) {
+                    window.open(`${ApiUrl}/uploads/excel/${res.filename}`);
+                } else {
+                    this.toastr.error('excel Export Failed');
+                }
+
+      },
+
+      error:(err)=>{
+        console.log(err);
+        this.toastr.error('An error occurred while loading works. Please try again.','Error')
+      },
+      complete:()=>{
+        this.loader.hideLoader()
+      }
+    })
+  }
 
 }

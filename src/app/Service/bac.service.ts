@@ -102,6 +102,28 @@ export class BACService {
   return this.http.post(`${ApiUrl}/work/List`, formData);
 }
 
+  LoadworkPdf(emplist: any, status: any, Client: any, date: any): Observable<any> {
+  const formData = new FormData();
+
+  formData.append('emplist', JSON.stringify(emplist || []));
+  formData.append('status', JSON.stringify(status || []));
+  formData.append('Client', JSON.stringify(Client || []));
+  formData.append('date', date);
+
+  return this.http.post(`${ApiUrl}/work/PDF`, formData);
+}
+
+  LoadworkExcel(emplist: any, status: any, Client: any, date: any): Observable<any> {
+  const formData = new FormData();
+
+  formData.append('emplist', JSON.stringify(emplist || []));
+  formData.append('status', JSON.stringify(status || []));
+  formData.append('Client', JSON.stringify(Client || []));
+  formData.append('date', date);
+
+  return this.http.post(`${ApiUrl}/work/Excel`, formData);
+}
+
   LoadEditWork(slno:any): Observable<any> {
     const formData = new FormData();
 
