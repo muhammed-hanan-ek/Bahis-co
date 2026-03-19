@@ -91,13 +91,16 @@ export class BACService {
   );
   }
 
-  LoadworkReport(): Observable<any> {
+  LoadworkReport(emplist: any, status: any, Client: any, date: any): Observable<any> {
+  const formData = new FormData();
 
-    return this.http.post(
-    `${ApiUrl}/work/List`,
-    {}
-  );
-  }
+  formData.append('emplist', JSON.stringify(emplist || []));
+  formData.append('status', JSON.stringify(status || []));
+  formData.append('Client', JSON.stringify(Client || []));
+  formData.append('date', date);
+
+  return this.http.post(`${ApiUrl}/work/List`, formData);
+}
 
   LoadEditWork(slno:any): Observable<any> {
     const formData = new FormData();
@@ -156,6 +159,52 @@ export class BACService {
 
     return this.http.post(
     `${ApiUrl}/ad/add`,
+    formData
+  );
+  }
+
+
+    LoadAdReport(Client: any, date: any): Observable<any> {
+  const formData = new FormData();
+
+  formData.append('Client', JSON.stringify(Client || []));
+  formData.append('date', date);
+
+  return this.http.post(`${ApiUrl}/ad/List`, formData);
+}
+
+DeleteAD(SLNO:any): Observable<any> {
+    const formData = new FormData();
+
+    formData.append('SLNO',SLNO);
+
+    return this.http.post(
+    `${ApiUrl}/ad/Delete`,
+    formData
+  );
+  }
+
+  SaveConversion(SLNO:any,AD:any,count:any,amount:any): Observable<any> {
+    const formData = new FormData();
+
+    formData.append('SLNO',SLNO);
+    formData.append('AD',AD);
+    formData.append('count',count);
+    formData.append('amount',amount);
+
+    return this.http.post(
+    `${ApiUrl}/sales/add`,
+    formData
+  );
+  }
+
+   viewad(slno:any): Observable<any> {
+    const formData = new FormData();
+
+    formData.append('slno',slno);
+   
+    return this.http.post(
+    `${ApiUrl}/sales/List`,
     formData
   );
   }

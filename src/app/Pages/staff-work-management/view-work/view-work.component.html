@@ -103,7 +103,7 @@
     <div class="flex gap-3">
       <!-- REJECT -->
       <button
-      [disabled]="!work.remark"
+      [disabled]="!work.remark || work.status != 'Pending'"
       (click)="ApproveOrRjectWork(0)"
         class="disabled:bg-white flex items-center gap-2 px-4 py-2 text-sm rounded-lg border border-red-400 text-red-600 hover:bg-red-50 transition"
       >
@@ -114,7 +114,7 @@
       <!-- APPROVE -->
       <button
       (click)="ApproveOrRjectWork(1)"
-       [disabled]="!work.remark"
+       [disabled]="!work.remark || work.status != 'Pending'"
         class="disabled:bg-white flex items-center gap-2 px-5 py-2 text-sm rounded-lg border border-green-400 text-green-600 hover:bg-green-50 transition"
       >
         <i class="fa-solid fa-check"></i>

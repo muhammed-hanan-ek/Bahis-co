@@ -21,11 +21,17 @@ export class CreateEditAdComponent implements OnInit {
   AmtNumber: boolean = false;
   adSearch: any = null;
   filteredads: any[] = [];
-  form = {
+  form:{
+    ad: number |null,
+    client: string |null,
+    startDate: string |null,
+    endDate: string |null,
+    amount: string |null
+  } = {
     ad: null,
-    client: null,
-    startDate: null,
-    endDate: null,
+    client: '',
+    startDate: '',
+    endDate: '',
     amount: '',
   };
 
@@ -80,14 +86,23 @@ export class CreateEditAdComponent implements OnInit {
   onLoad(){
     this.service.LoadAd(this.slno).subscribe({
       next:(res)=>{
-        this.ads=res.data[0]
-        this.filteredads = this.ads;
-        this.form.ad=res.data[1][0]?.AD
-        this.form.amount=res.data[1][0]?.AMOUNT
-        this.form.startDate=res.data[1][0]?.START_DATE
-        this.form.endDate=res.data[1][0]?.END_DATE
-         const selected = this.ads.find(c => c.id === this.form.ad)
-         this.form.client=selected?selected.client:null 
+       this.ads = res.data[0];
+this.filteredads = this.ads;
+
+const adData = res.data[1][0];
+
+this.form.ad = adData?.AD;
+this.form.amount = adData?.AMOUNT;
+this.form.startDate = this.formatDate(adData?.START_DATE);
+this.form.endDate = this.formatDate(adData?.END_DATE);
+
+// 🔥 IMPORTANT
+const selected = this.ads.find(c => c.id === this.form.ad);
+
+if (selected) {
+  this.adSearch = selected.name;   // ✅ this binds to input
+  this.form.client = selected.client;
+}
         
       },
       error:(err)=>{
@@ -103,6 +118,12 @@ export class CreateEditAdComponent implements OnInit {
       }
     })
   }
+  formatDate(date: any) {
+  if (!date) return null;
+
+  const d = new Date(date);
+  return d.toISOString().split('T')[0]; // ✅ YYYY-MM-DD
+}
 
 
     async saveAd(){
@@ -134,6 +155,8 @@ export class CreateEditAdComponent implements OnInit {
       }
     })
   }
+
+  
 
 
   close() {

@@ -4,6 +4,10 @@ import { FormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
+import { LoaderService } from '../../../loader/loader.service';
+import { BACService } from '../../../Service/bac.service';
+import { ToastrService } from 'ngx-toastr';
+import { ConfirmationService } from '../../../confirmation/confirmation.service';
 
 @Component({
   selector: 'app-create-edit-conversion',
@@ -12,12 +16,13 @@ import { MatInputModule } from '@angular/material/input';
   styleUrl: './create-edit-conversion.component.css',
 })
 export class CreateEditConversionComponent implements OnInit {
+  slno:number | null=null
   isEdit: boolean = false;
   AmtNumber: boolean = false;
   AdSearch: any = null;
-  ads: any[] = ['ad1', 'ad2', 'ad3'];
+  ads: any[] = [];
   filteredads: any[] = [];
-  form = {
+  form: any = {
     ad: '',
     converioncount: 0,
     amount: '',
@@ -26,10 +31,17 @@ export class CreateEditConversionComponent implements OnInit {
   constructor(
     private dialogRef: MatDialogRef<CreateEditConversionComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
+    private loader: LoaderService,
+    private service: BACService,
+    private toastr: ToastrService,
+    private confirmService: ConfirmationService,
   ) {}
 
   ngOnInit(): void {
     this.isEdit = this.data.isEdit;
+    this.slno = this.data.slno;
+
+    this.onLoad()
   }
 
   filterads() {
@@ -39,7 +51,8 @@ export class CreateEditConversionComponent implements OnInit {
   }
 
   selectad(ad: any) {
-    this.form.ad = ad.id;
+    const selected = this.ads.find((c) => c.name === ad);
+    this.form.ad = selected ? selected.id : null;
   }
 
   validateAmt(value: string) {
@@ -52,6 +65,59 @@ export class CreateEditConversionComponent implements OnInit {
     } else {
       this.AmtNumber = false;
     }
+  }
+
+  onLoad() {
+    this.service.LoadAd(this.slno).subscribe({
+      next: (res) => {
+        console.log(res);
+
+        this.ads=res.data[0]
+        this.filteredads=this.ads
+        
+      },
+      error: (err) => {
+        console.log(err);
+
+        this.toastr.error(
+          'An error occurred while loading ad. Please try again.',
+          'Error',
+        );
+      },
+      complete: () => {
+        this.loader.hideLoader();
+      },
+    });
+  }
+
+      async saveconversion(){
+    const ok = await this.confirmService.open({
+      title: this.isEdit?'Save Changes':'Add Conversion',
+      message: this.isEdit?'Are you sure you want to Edit this conversion?':'Are you sure you want to create conversion?',
+      type:  this.isEdit?'info':'success',
+      confirmText:  'Confirm',
+    });
+
+    if (!ok) return;
+
+    this.loader.showLoader()
+    this.service.SaveConversion(this.slno,this.form.ad,this.form.converioncount,this.form.amount).subscribe({
+      next:(res)=>{
+        console.log(res);
+        
+        if(res.data[0].MSG=='success'){
+          this.toastr.success(this.isEdit?'Conversion edited successfully.':'Conversion added successfully','Successful')
+        }
+      },
+      error:(err)=>{
+        console.log(err);
+        this.toastr.error(this.isEdit?'An error occurred while editing conversion. Please try again.':'An error occurred while adding conversion. Please try again.','Error')
+      },
+      complete:()=>{
+        this.loader.hideLoader()
+        this.close()
+      }
+    })
   }
 
   close() {

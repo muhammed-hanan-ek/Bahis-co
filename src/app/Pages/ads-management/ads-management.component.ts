@@ -8,6 +8,11 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { CreateEditAdComponent } from './create-edit-ad/create-edit-ad.component';
 import { CreateEditConversionComponent } from './create-edit-conversion/create-edit-conversion.component';
 import { ViewAdComponent } from './view-ad/view-ad.component';
+import { BACService } from '../../Service/bac.service';
+import { ToastrService } from 'ngx-toastr';
+import { LoaderService } from '../../loader/loader.service';
+import { ConfirmationService } from '../../confirmation/confirmation.service';
+import { SharedService } from '../../shared/shared.service';
 
 @Component({
   selector: 'app-ads-management',
@@ -28,7 +33,14 @@ export class AdsManagementComponent {
       this.activeMenu = null;
     }
   }
-  constructor(private dialog: MatDialog) {}
+  constructor(
+    private shared:SharedService,
+    private dialog: MatDialog,
+    private service:BACService,
+        private toastr:ToastrService,
+        private loader:LoaderService,
+        private confirmSevice:ConfirmationService
+  ) {}
 
   showFilter = false;
   searchText = '';
@@ -44,111 +56,31 @@ export class AdsManagementComponent {
     this.page = 1; // reset to first page
   }
 
-  ads = [
-    {
-      title: 'Instagram Ad',
-      client: 'ABC Company',
-      dateperiod: '21-02-2026 to 02-03-2026',
-      Revenue: '10000',
-      status: 'Completed',
-      spend: 100,
-    },
-    {
-      title: 'Facebook Ad',
-      client: 'Nova Tech',
-      dateperiod: '25-02-2026 to 10-03-2026',
-      Revenue: '15000',
-      status: 'Active',
-      spend: 100,
-    },
-    {
-      title: 'Google Display Ad',
-      client: 'Skyline Pvt Ltd',
-      dateperiod: '01-03-2026 to 15-03-2026',
-      Revenue: '20000',
-      status: 'Active',
-      spend: 100,
-    },
-    {
-      title: 'YouTube Ad',
-      client: 'Bright Media',
-      dateperiod: '10-02-2026 to 28-02-2026',
-      Revenue: '18000',
-      status: 'Completed',
-      spend: 100,
-    },
-    {
-      title: 'LinkedIn Ad',
-      client: 'Global Corp',
-      dateperiod: '05-03-2026 to 20-03-2026',
-      Revenue: '22000',
-      status: 'Active',
-      spend: 100,
-    },
-    {
-      title: 'Twitter Ad',
-      client: 'NextGen Solutions',
-      dateperiod: '15-02-2026 to 01-03-2026',
-      Revenue: '9000',
-      status: 'Completed',
-      spend: 100,
-    },
-    {
-      title: 'Instagram Story Ad',
-      client: 'Urban Fashion',
-      dateperiod: '02-03-2026 to 12-03-2026',
-      Revenue: '13000',
-      status: 'Active',
-      spend: 100,
-    },
-    {
-      title: 'Google Search Ad',
-      client: 'Smart Electronics',
-      dateperiod: '18-02-2026 to 05-03-2026',
-      Revenue: '25000',
-      status: 'Completed',
-      spend: 100,
-    },
-    {
-      title: 'Facebook Carousel Ad',
-      client: 'GreenLife Organics',
-      dateperiod: '03-03-2026 to 18-03-2026',
-      Revenue: '14000',
-      status: 'Active',
-      spend: 100,
-    },
-    {
-      title: 'YouTube Shorts Ad',
-      client: 'TravelGo Agency',
-      dateperiod: '22-02-2026 to 07-03-2026',
-      Revenue: '17000',
-      status: 'Completed',
-      spend: 100,
-    },
-  ];
+  ads :any[]= [];
 
-  statuses:any[]=[
-    {id:1,name:"Active"},
-    {id:2,name:"Completed"},
-  ]
+  statuses:any[]=[]
 
   filteredads: any[] = [];
 
-   clients = [{name:'ABC Company',id:1},{id:2,name: 'TechCorp'}];
+   clients :any[]= [];
 
   employees = ['emp1', 'emp2'];
 
   filters: any = {
     month: '',
     clients: [],
-    status: [],
-    employees: [],
+
   };
 
   ngOnInit(): void {
+    this.shared.Role$.subscribe({
+      next:(res)=>{
+        this.userRole=res
+      }
+    })
     const today = new Date();
     this.filters.month = today.toISOString().slice(0, 7);
-
+    this.onload()
     this.filteredads = [...this.ads];
   }
 
@@ -218,35 +150,21 @@ export class AdsManagementComponent {
       month: today.toISOString().slice(0, 7),
       clients: [],
       status: [],
+      employees:[]
     };
-
+    this.showFilter=false
     this.filteredads = [...this.ads];
+    this.onload()
   }
 
   /* APPLY FILTERS */
 
-  // applyFilters() {
+  applyFilters() {
+    console.log(this.filters);
+    this.onload()
+    this.showFilter = false;
 
-  //   this.filteredads = this.ads.filter(ads => {
-
-  //     const monthMatch =
-  //       !this.filters.month || ads.month === this.filters.month;
-
-  //     const clientMatch =
-  //       this.filters.clients.length === 0 ||
-  //       this.filters.clients.includes(ads.client);
-
-  //     const statusMatch =
-  //       this.filters.status.length === 0 ||
-  //       this.filters.status.includes(ads.status);
-
-  //     return monthMatch && clientMatch && statusMatch;
-
-  //   });
-
-  //   this.showFilter = false;
-
-  // }
+  }
 
   /* CREATE ads */
 
@@ -262,12 +180,12 @@ export class AdsManagementComponent {
     });
     dialogref.afterClosed().subscribe({
       next: () => {
-        console.log('closed');
+        this.onload()
       },
     });
   }
   openconversion(isEdit: boolean, slno: string | null) {
-    this.dialog.open(CreateEditConversionComponent, {
+    const dialogRef=this.dialog.open(CreateEditConversionComponent, {
       width: '500px',
       maxWidth: '95vw',
       panelClass: 'responsive-dialog',
@@ -276,12 +194,18 @@ export class AdsManagementComponent {
         slno,
       },
     });
+
+    dialogRef.afterClosed().subscribe({
+      next: () => {
+        this.onload()
+      },
+    });
   }
 
   viewAd(slno: any) {
     console.log('view ad click');
 
-    this.dialog.open(ViewAdComponent, {
+    const dialogRef=this.dialog.open(ViewAdComponent, {
       width: '100vw',
       height: '95vh',
       minWidth: '100vw',
@@ -289,6 +213,11 @@ export class AdsManagementComponent {
       panelClass: 'custom-top-dialog',
       data: {
         slno: slno,
+      },
+    });
+     dialogRef.afterClosed().subscribe({
+      next: () => {
+        this.onload()
       },
     });
   }
@@ -307,11 +236,63 @@ export class AdsManagementComponent {
     return this.ads.reduce((sum, ad) => sum + Number(ad.Revenue), 0);
   }
 
-  editads(ads: any) {
-    console.log('Edit', ads);
+    onload(){
+    this.loader.showLoader()
+    this.service.LoadAdReport(this.filters.clients,this.filters.month).subscribe({
+      next:(res)=>{
+        this.ads=res.data[0]
+        this.filteredads = [...this.ads];
+        this.clients=res.data[1]
+        console.log(res);
+
+      },
+      error:(err)=>{
+        console.log(err);
+        this.toastr.error('An error occurred while loading works. Please try again.','Error')
+      },
+      complete:()=>{
+        this.loader.hideLoader()
+      }
+    })
   }
 
-  deleteads(ads: any) {
-    console.log('Delete', ads);
+  // editads(a:any){}
+ async deleteads(SLNO:any){
+    
+
+    const ok = await this.confirmSevice.open({
+      title: 'Delete Ad',
+      message: 'Are you sure you want to delete this Ad?',
+      type: 'danger',
+      confirmText: 'Delete',
+    });
+
+    if (!ok) return;
+    this.loader.showLoader()
+    this.service.DeleteAD(SLNO).subscribe({
+      next: (res) => {
+        if(res.data[0].MSG=='Success'){
+          this.toastr.success('Ad deleted successfully','Successful')
+          this.onload()
+        }
+      },
+      error: (err) => {
+
+        console.log(err);
+
+        this.toastr.error(
+          'An error occurred while deleting work. Please try again.',
+          'Error'
+        );
+
+        this.loader.hideLoader();
+      },
+      complete: () => {
+        this.loader.hideLoader();
+      }
+    });
+    
+    
+  
   }
 }

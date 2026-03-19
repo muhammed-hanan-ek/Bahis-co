@@ -37,11 +37,7 @@ export class StaffWorkManagementComponent implements OnInit {
 
   showFilter = false;
   searchText = '';
-  statuses:any[]=[
-    {id:1,name:"pending"},
-    {id:2,name:"Approved"},
-    {id:3,name:"Rejected"},
-  ]
+  statuses:any[]=[]
   activeMenu: number | null = null;
   userRole: string | null = null;
 
@@ -58,12 +54,9 @@ export class StaffWorkManagementComponent implements OnInit {
 
   filteredWorks: any[] = [];
 
-  clients = [{name:'ABC Company',id:1},{id:2,name: 'TechCorp'}];
+  clients :any[]= [];
 
-  employees:any[] = [
-    {id:1,name:'emp1'},
-    {id:2,name:'emp2'},
-  ];
+  employees:any[] = [];
 
   filters: {
     month:string,
@@ -174,14 +167,13 @@ export class StaffWorkManagementComponent implements OnInit {
     };
     this.showFilter=false
     this.filteredWorks = [...this.works];
+    this.onload()
   }
 
   /* APPLY FILTERS */
 
   applyFilters() {
-   
-   
-
+    this.onload()
     this.showFilter = false;
   }
 
@@ -237,11 +229,14 @@ export class StaffWorkManagementComponent implements OnInit {
 
   onload(){
     this.loader.showLoader()
-    this.service.LoadworkReport().subscribe({
+    this.service.LoadworkReport(this.filters.employees,this.filters.status,this.filters.clients,this.filters.month).subscribe({
       next:(res)=>{
-        this.works=res.data
+        this.works=res.data[0]
         this.filteredWorks = [...this.works];
-        console.log(this.filteredWorks);
+        this.statuses=res.data[1]
+        this.clients=res.data[2]
+        this.employees=res.data[3]
+        console.log(res);
 
       },
       error:(err)=>{
