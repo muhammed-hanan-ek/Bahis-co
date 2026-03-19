@@ -85,6 +85,7 @@
         <div class="flex items-center gap-3">
           <!-- Excel -->
           <button
+          (click)="excel()"
             class="py-1 px-3 flex items-center gap-1 bg-emerald-50 text-emerald-600 border border-emerald-200 rounded-lg hover:bg-emerald-100 transition"
           >
             <i class="fa-solid fa-file-excel"></i>
@@ -93,6 +94,7 @@
 
           <!-- PDF -->
           <button
+          (click)="pdf()"
             class="py-1 px-3 flex items-center gap-1 bg-red-50 text-red-600 border border-red-200 rounded-lg hover:bg-red-100 transition"
           >
             <i class="fa-solid fa-file-pdf"></i>
@@ -129,7 +131,7 @@
             </div>
 
             <!-- MENU -->
-            <div class="relative menu-container">
+            <div class="relative menu-container" *ngIf="userRole=='Client'">
               <button
                 (click)="toggleMenu(i, $event)"
                 class="w-8 h-8 flex items-center justify-center rounded-full text-gray-400 hover:bg-gray-100"
@@ -143,7 +145,7 @@
                 class="absolute right-0 top-8 w-32 bg-white border border-gray-200 rounded-lg shadow-lg z-20"
               >
                 <button
-                  (click)="editConversion(true, conversion)"
+                  (click)="editConversion(true, conversion.slno)"
                   class="w-full text-left px-3 py-2 text-gray-700 text-sm hover:text-gray-900 flex items-center gap-2"
                 >
                   <i class="fa-solid fa-pen"></i>
@@ -151,6 +153,7 @@
                 </button>
 
                 <button
+                (click)="deleteaConversion(conversion.slno)"
                   class="w-full text-left px-3 py-2 text-sm text-red-500 hover:text-red-700 flex items-center gap-2"
                 >
                   <i class="fa-solid fa-trash"></i>

@@ -22,11 +22,7 @@ export class CreateEditConversionComponent implements OnInit {
   AdSearch: any = null;
   ads: any[] = [];
   filteredads: any[] = [];
-  form: any = {
-    ad: '',
-    converioncount: 0,
-    amount: '',
-  };
+  form: any = {};
 
   constructor(
     private dialogRef: MatDialogRef<CreateEditConversionComponent>,
@@ -53,6 +49,8 @@ export class CreateEditConversionComponent implements OnInit {
   selectad(ad: any) {
     const selected = this.ads.find((c) => c.name === ad);
     this.form.ad = selected ? selected.id : null;
+    console.log(this.form);
+    
   }
 
   validateAmt(value: string) {
@@ -68,13 +66,21 @@ export class CreateEditConversionComponent implements OnInit {
   }
 
   onLoad() {
-    this.service.LoadAd(this.slno).subscribe({
+    this.service.LoadConvesrion(this.slno).subscribe({
       next: (res) => {
         console.log(res);
 
         this.ads=res.data[0]
         this.filteredads=this.ads
-        
+        this.form.ad=res.data[1][0].ad
+        this.form.converioncount=res.data[1][0].count
+        this.form.amount=res.data[1][0].amount
+        const selected = this.ads.find(c => c.id === this.form.ad);
+
+if (selected) {
+  this.AdSearch = selected.name; 
+
+}
       },
       error: (err) => {
         console.log(err);
@@ -119,6 +125,7 @@ export class CreateEditConversionComponent implements OnInit {
       }
     })
   }
+
 
   close() {
     this.dialogRef.close();

@@ -13,6 +13,7 @@ import { ToastrService } from 'ngx-toastr';
 import { LoaderService } from '../../loader/loader.service';
 import { ConfirmationService } from '../../confirmation/confirmation.service';
 import { SharedService } from '../../shared/shared.service';
+import { ApiUrl } from '../../app.contsant';
 
 @Component({
   selector: 'app-ads-management',
@@ -43,6 +44,7 @@ export class AdsManagementComponent {
   ) {}
 
   showFilter = false;
+  ApiUrl=ApiUrl
   searchText = '';
   activeMenu: number | null = null;
   userRole: string | null = 'Admin';
@@ -254,7 +256,56 @@ export class AdsManagementComponent {
         this.loader.hideLoader()
       }
     })
+
+
   }
+
+  pdf(){
+      this.loader.showLoader()
+      this.service.LoadAdpdf(this.filters.clients,this.filters.month).subscribe({
+        next:(res)=>{
+          
+          console.log(res);
+          if (res && res.filename) {
+                      window.open(`${ApiUrl}/uploads/PDF/${res.filename}`);
+                  } else {
+                      this.toastr.error('PDF Export Failed');
+                  }
+  
+        },
+  
+        error:(err)=>{
+          console.log(err);
+          this.toastr.error('An error occurred while loading works. Please try again.','Error')
+        },
+        complete:()=>{
+          this.loader.hideLoader()
+        }
+      })
+    }
+    Excel(){
+      this.loader.showLoader()
+      this.service.LoadAdExcel(this.filters.clients,this.filters.month).subscribe({
+        next:(res)=>{
+          
+          console.log(res);
+          if (res && res.filename) {
+                      window.open(`${ApiUrl}/uploads/excel/${res.filename}`);
+                  } else {
+                      this.toastr.error('excel Export Failed');
+                  }
+  
+        },
+  
+        error:(err)=>{
+          console.log(err);
+          this.toastr.error('An error occurred while loading works. Please try again.','Error')
+        },
+        complete:()=>{
+          this.loader.hideLoader()
+        }
+      })
+    }
 
   // editads(a:any){}
  async deleteads(SLNO:any){
@@ -281,7 +332,7 @@ export class AdsManagementComponent {
         console.log(err);
 
         this.toastr.error(
-          'An error occurred while deleting work. Please try again.',
+          'An error occurred while deleting ad. Please try again.',
           'Error'
         );
 
@@ -292,6 +343,7 @@ export class AdsManagementComponent {
       }
     });
     
+
     
   
   }

@@ -12,6 +12,8 @@ import { BACService } from '../../../Service/bac.service';
 import { ToastrService } from 'ngx-toastr';
 import { LoaderService } from '../../../loader/loader.service';
 import { ConfirmationService } from '../../../confirmation/confirmation.service';
+import { SharedService } from '../../../shared/shared.service';
+import { ApiUrl } from '../../../app.contsant';
 
 @Component({
   selector: 'app-view-ad',
@@ -25,6 +27,8 @@ export class ViewAdComponent implements OnInit{
   activeMenu: any = null;
   ad:string=''
   spend:any;
+  userRole:any;
+  ApiUrl=ApiUrl
 
   // pagination variables and function
   page = 1;
@@ -38,6 +42,7 @@ export class ViewAdComponent implements OnInit{
   constructor(
     private dialogRef: MatDialogRef<ViewAdComponent>,
     private dialog: MatDialog,
+    private shared:SharedService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private service:BACService,
             private toastr:ToastrService,
@@ -46,6 +51,11 @@ export class ViewAdComponent implements OnInit{
   ) {}
 
   ngOnInit(): void {
+    this.shared.Role$.subscribe({
+      next:(res)=>{
+        this.userRole=res
+      }
+    })
       this.slno=this.data.slno
 
        this.onload()
@@ -58,13 +68,19 @@ export class ViewAdComponent implements OnInit{
   }
 
   editConversion(isEdit: boolean, slno: any) {
-    this.dialog.open(CreateEditConversionComponent, {
+    const dialogRef=this.dialog.open(CreateEditConversionComponent, {
       width: '500px',
       maxWidth: '95vw',
       panelClass: 'responsive-dialog',
       data: {
         isEdit,
         slno,
+      },
+    });
+
+     dialogRef.afterClosed().subscribe({
+      next: () => {
+        this.onload()
       },
     });
   }
@@ -88,12 +104,95 @@ export class ViewAdComponent implements OnInit{
       }
     })
   }
+  pdf(){
+    this.loader.showLoader()
+    this.service.conversionPdf(this.slno).subscribe({
+      next:(res)=>{
+        console.log(res);
+        
+       if (res && res.filename) {
+                             window.open(`${ApiUrl}/uploads/PDF/${res.filename}`);
+                         } else {
+                             this.toastr.error('PDF Export Failed');
+                         }
+      },
+      error:(err)=>{
+        console.log(err);
+        this.toastr.error('An error occurred while loading works. Please try again.','Error')
+      },
+      complete:()=>{
+        this.loader.hideLoader()
+      }
+    })
+  }
+  excel(){
+    this.loader.showLoader()
+    this.service.conversionexcel(this.slno).subscribe({
+      next:(res)=>{
+        console.log(res);
+        
+       if (res && res.filename) {
+                      window.open(`${ApiUrl}/uploads/excel/${res.filename}`);
+                  } else {
+                      this.toastr.error('excel Export Failed');
+                  }
+  
+      },
+      error:(err)=>{
+        console.log(err);
+        this.toastr.error('An error occurred while loading works. Please try again.','Error')
+      },
+      complete:()=>{
+        this.loader.hideLoader()
+      }
+    })
+  }
 
   get count(){
    return this.conversions.reduce((sum, c) => sum + (c.count || 0), 0);
   }
   get Revenue(){
    return this.conversions.reduce((sum, c) => sum + (c.amount || 0), 0);
+  }
+
+  
+   async deleteaConversion(SLNO:any){
+    
+
+    const ok = await this.confirmSevice.open({
+      title: 'Delete Conversion',
+      message: 'Are you sure you want to delete this conversion?',
+      type: 'danger',
+      confirmText: 'Delete',
+    });
+
+    if (!ok) return;
+    this.loader.showLoader()
+    this.service.Deleteconversion(SLNO).subscribe({
+      next: (res) => {
+        if(res.data[0].MSG=='Success'){
+          this.toastr.success('Conversion deleted successfully','Successful')
+          this.onload()
+        }
+      },
+      error: (err) => {
+
+        console.log(err);
+
+        this.toastr.error(
+          'An error occurred while deleting conversion. Please try again.',
+          'Error'
+        );
+
+        this.loader.hideLoader();
+      },
+      complete: () => {
+        this.loader.hideLoader();
+      }
+    });
+    
+    
+  
   }
 
   close() {

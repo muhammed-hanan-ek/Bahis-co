@@ -169,6 +169,16 @@ export class BACService {
     formData
   );
   }
+  LoadConvesrion(slno:any): Observable<any> {
+    const formData = new FormData();
+
+    formData.append('SLNO',slno);
+
+    return this.http.post(
+    `${ApiUrl}/sales/load`,
+    formData
+  );
+  }
 
   SaveAd(slno:any,ad:any,startDate:any,endDate:any,amount:any): Observable<any> {
     const formData = new FormData();
@@ -193,6 +203,22 @@ export class BACService {
   formData.append('date', date);
 
   return this.http.post(`${ApiUrl}/ad/List`, formData);
+}
+    LoadAdpdf(Client: any, date: any): Observable<any> {
+  const formData = new FormData();
+
+  formData.append('Client', JSON.stringify(Client || []));
+  formData.append('date', date);
+
+  return this.http.post(`${ApiUrl}/ad/pdf`, formData);
+}
+    LoadAdExcel(Client: any, date: any): Observable<any> {
+  const formData = new FormData();
+
+  formData.append('Client', JSON.stringify(Client || []));
+  formData.append('date', date);
+
+  return this.http.post(`${ApiUrl}/ad/excel`, formData);
 }
 
 DeleteAD(SLNO:any): Observable<any> {
@@ -227,6 +253,37 @@ DeleteAD(SLNO:any): Observable<any> {
    
     return this.http.post(
     `${ApiUrl}/sales/List`,
+    formData
+  );
+  }
+   conversionPdf(slno:any): Observable<any> {
+    const formData = new FormData();
+
+    formData.append('slno',slno);
+   
+    return this.http.post(
+    `${ApiUrl}/sales/pdf`,
+    formData
+  );
+  }
+   conversionexcel(slno:any): Observable<any> {
+    const formData = new FormData();
+
+    formData.append('slno',slno);
+   
+    return this.http.post(
+    `${ApiUrl}/sales/excel`,
+    formData
+  );
+  }
+
+  Deleteconversion(slno:any): Observable<any> {
+    const formData = new FormData();
+
+    formData.append('slno',slno);
+
+    return this.http.post(
+    `${ApiUrl}/sales/Delete`,
     formData
   );
   }
