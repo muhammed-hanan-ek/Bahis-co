@@ -36,7 +36,7 @@
         <div
           class="bg-gradient-to-br from-blue-500 to-indigo-600 text-white flex items-center justify-center text-3xl font-semibold rounded-full border-4 border-blue-100 w-20 h-20 mt-3 object-cover"
         >
-          {{ "A" }}
+          {{performedAd?.title.charAt(0)}}
         </div>
 
         <!-- <img
@@ -44,9 +44,9 @@
           class=""
         /> -->
 
-        <div class="text-sm font-semibold mt-3 text-gray-800">Ad Title</div>
+        <div class="text-sm font-semibold mt-3 text-gray-800">{{performedAd?.title}}</div>
 
-        <div class="text-xs text-gray-500">Earned ₹100</div>
+        <div class="text-xs text-gray-500">Earned ₹{{performedAd?.AMT}}</div>
       </div>
     </div>
 
@@ -55,9 +55,9 @@
       <div class="flex justify-between items-center mb-3">
         <div class="text-sm font-semibold text-gray-800">Work Analysis</div>
 
-        <span class="bg-gray-100 text-gray-600 px-3 py-1 text-xs rounded-full">
+        <!-- <span class="bg-gray-100 text-gray-600 px-3 py-1 text-xs rounded-full">
           {{ month }}
-        </span>
+        </span> -->
       </div>
 
       <apx-chart
@@ -103,18 +103,18 @@
         <!-- ADS SLIDER -->
         <div class="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
           <div
-            *ngFor="let ad of ads"
+            *ngFor="let ad of clientAdsOverview"
             class="min-w-[260px] bg-gray-50 border border-gray-100 rounded-xl p-4 hover:shadow-lg transition duration-300"
           >
             <!-- AD HEADER -->
             <div class="flex justify-between items-start mb-3">
               <div>
                 <div class="text-sm font-semibold text-gray-800">
-                  {{ ad.name }}
+                  {{ ad.title }}
                 </div>
 
                 <div class="text-xs text-gray-500">
-                  {{ ad.fromDate }} - {{ ad.toDate }}
+                  {{ad.date}}
                 </div>
               </div>
             </div>
@@ -124,7 +124,7 @@
               <!-- CONVERSIONS -->
               <div class="bg-indigo-50 rounded-lg p-2 text-center">
                 <div class="font-semibold text-indigo-700">
-                  {{ ad.conversions }}
+                  {{ ad.CN_COUNT }}
                 </div>
                 <div class="text-gray-500 text-[10px]">Conversions</div>
               </div>
@@ -132,14 +132,14 @@
               <!-- REVENUE -->
               <div class="bg-green-50 rounded-lg p-2 text-center">
                 <div class="font-semibold text-green-700">
-                  ₹{{ ad.revenue }}
+                  ₹{{ ad.CN_AMOUNT }}
                 </div>
                 <div class="text-gray-500 text-[10px]">Revenue</div>
               </div>
 
               <!-- SPEND -->
               <div class="bg-red-50 rounded-lg p-2 text-center">
-                <div class="font-semibold text-red-700">₹{{ ad.spend }}</div>
+                <div class="font-semibold text-red-700">₹{{ ad.spendAmt }}</div>
                 <div class="text-gray-500 text-[10px]">Spend</div>
               </div>
             </div>

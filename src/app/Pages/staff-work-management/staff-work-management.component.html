@@ -6,7 +6,7 @@
         class="text-xl md:text-2xl font-semibold text-gray-900 tracking-tight"
       >
         {{
-          userRole == "Staff"
+          userRole == "Staff" || userRole == "Marketing Head"
             ? "My Work Dashboard"
             : userRole == "Admin"
               ? "Work Management Dashboard"
@@ -16,7 +16,7 @@
 
       <p class="text-sm text-gray-500">
         {{
-          userRole == "Staff"
+          userRole == "Staff" || userRole == "Marketing Head"
             ? "View and manage your submitted work"
             : userRole == "Admin"
               ? "Monitor and manage employee work submissions"
@@ -83,7 +83,7 @@
               </div>
 
               <!-- EMPLOYEES -->
-              <div class="space-y-1 py-2" *ngIf="userRole == 'Admin'">
+              <div class="space-y-1 py-2" *ngIf="userRole == 'Admin' || userRole == 'Marketing Head'">
                 <label class="text-xs font-medium text-gray-500">
                   Employees
                 </label>
@@ -112,7 +112,7 @@
               <!-- CLIENTS -->
               <div
                 class="space-y-1 pb-2"
-                *ngIf="userRole == 'Staff' || userRole == 'Admin'"
+                *ngIf="userRole == 'Staff' || userRole == 'Admin' || userRole == 'Marketing Head'" 
               >
                 <label class="text-xs font-medium text-gray-500">
                   Clients
@@ -185,7 +185,7 @@
 
         <!-- NEW WORK -->
         <button
-          *ngIf="userRole == 'Staff'"
+          *ngIf="userRole == 'Staff' || userRole == 'Marketing Head'"
           (click)="openwork(false, null)"
           class="h-10 flex items-center gap-2 px-5 rounded-xl bg-[var(--primaryColor)] text-white text-sm font-medium shadow hover:shadow-lg hover:-translate-y-[1px] active:scale-95 transition-all duration-200"
         >
@@ -347,7 +347,7 @@
           </div>
 
           <!-- MENU -->
-          <div class="relative menu-container" *ngIf="userRole == 'Staff'">
+          <div class="relative menu-container" *ngIf="userRole == 'Staff' || userRole == 'Marketing Head'">
             <button
               (click)="toggleMenu(i, $event)"
               class="w-8 h-8 flex items-center justify-center rounded-full text-gray-400 hover:bg-gray-100"
@@ -390,7 +390,7 @@
 
           <!-- View button for non staff -->
           <button
-            *ngIf="userRole != 'Staff'"
+            *ngIf="userRole != 'Staff' && userRole != 'Marketing Head'"
             title="View Work Details"
             (click)="viewwork(work.slno,work.status)"
             class="text-gray-400 hover:text-gray-600"

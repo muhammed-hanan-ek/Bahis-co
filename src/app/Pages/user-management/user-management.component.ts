@@ -50,8 +50,11 @@ export class UserManagementComponent implements OnInit {
     let users = [...this.users];
 
     // Role filter
-    if (this.selectedFilter !== 'All') {
+    if (this.selectedFilter !== 'All' && this.selectedFilter != 'Staff') {
       users = users.filter(user => user.Role === this.selectedFilter);
+    }
+    else if(this.selectedFilter !== 'All' && this.selectedFilter =='Staff'){
+      users = users.filter(user => user.Role === 'Staff' || user.Role=='Marketing Head');
     }
 
     // Search filter
@@ -85,7 +88,7 @@ export class UserManagementComponent implements OnInit {
   }
 
   get staffCount() {
-    return this.users.filter(u => u.Role === 'Staff').length;
+    return this.users.filter(u => u.Role === 'Staff' || u.Role==='Marketing Head').length;
   }
 
   get clientCount() {

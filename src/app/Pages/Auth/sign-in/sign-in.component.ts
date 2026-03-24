@@ -34,7 +34,8 @@ export class SignInComponent implements OnInit {
 
     this.service.userLogin(this.username,this.password).subscribe({
       next: (res) => {
-
+        console.log(res);
+        
         const msg=res.data[0].result
         if(msg=='invalid'){
           this.toastr.warning('','Invalid Username or Password')

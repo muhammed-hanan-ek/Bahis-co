@@ -115,6 +115,10 @@ button {
   z-index: 999999 !important;
 }
 
+.apexcharts-canvas {
+  touch-action: manipulation;
+}
+
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;

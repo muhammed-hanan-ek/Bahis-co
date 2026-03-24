@@ -288,4 +288,17 @@ DeleteAD(SLNO:any): Observable<any> {
   );
   }
 
+  loadAdminDashboard(): Observable<any> {
+    return this.http.post(
+    `${ApiUrl}/AdminDashboard`,
+    {}
+  );
+  }
+  loadClientDashboard(): Observable<any> {
+    return this.http.post(
+    `${ApiUrl}/ClientDashboard`,
+    {}
+  );
+  }
+
 }

@@ -17,6 +17,10 @@ import {
   ApexFill,
 } from 'ng-apexcharts';
 
+import { BACService } from '../../Service/bac.service';
+import { ToastrService } from 'ngx-toastr';
+import { ApiUrl } from '../../app.contsant';
+
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
@@ -25,171 +29,52 @@ import {
   styleUrl: './admin-dashboard.component.css',
 })
 export class AdminDashboardComponent implements OnInit {
-  // ---------------- TIME ----------------
 
+  ApiUrl = ApiUrl;
+
+  // ---------------- TIME ----------------
   dayName = '';
   day = '';
   month = '';
   year = '';
   time = '';
-  bestPerformer={
-    name:'Muhammed',
-    img:'',
-    works:10
-  }
-  staffWorks = [
-    {
-      name: 'Arjun',
-      total: 25,
-      pending: 5,
-      approved: 18,
-      rejected: 2,
-    },
-    {
-      name: 'Rahul',
-      total: 30,
-      pending: 7,
-      approved: 20,
-      rejected: 3,
-    },
-    {
-      name: 'Nikhil',
-      total: 18,
-      pending: 3,
-      approved: 13,
-      rejected: 2,
-    },
-    {
-      name: 'Faisal',
-      total: 22,
-      pending: 4,
-      approved: 16,
-      rejected: 2,
-    },
-  ];
-  clientWorks = [
-    {
-      name: 'ABC Company',
-      total: 25,
-      pending: 5,
-      approved: 18,
-      rejected: 2,
-    },
-    {
-      name: 'Delta Corp',
-      total: 30,
-      pending: 7,
-      approved: 20,
-      rejected: 3,
-    },
-    {
-      name: 'Green Tech',
-      total: 18,
-      pending: 3,
-      approved: 13,
-      rejected: 2,
-    },
-    {
-      name: 'XYZ Pvt Ltd',
-      total: 22,
-      pending: 4,
-      approved: 16,
-      rejected: 2,
-    },
-  ];
-  workAnalysisData={
-    pending:10,
-    Approved:15,
-    Rejected:5
-  };
-  clientWorksOverview:any[]=[
-    {name:'XYZ Pvt Ltd',created:20,approved:5},
-    {name:'ABC Company',created:5,approved:1},
-  ];
-  clientAdsOverview:any[]=[
-    {name:'XYZ Pvt Ltd',created:20,revenue:5000},
-    {name:'ABC Company',created:5,revenue:6000},
-  ];
 
+  bestPerformer: any;
+  staffWorks: any[] = [];
+  clientWorks: any[] = [];
+
+  workAnalysisData = {
+    pending: 0,
+    Approved: 0,
+    Rejected: 0,
+  };
+
+  clientAdsOverview: any[] = [];
+
+  constructor(
+    private service: BACService,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit() {
+    this.load();
     this.updateTime();
 
     setInterval(() => {
       this.updateTime();
     }, 1000);
-
-    const workscreatedData = this.clientWorksOverview.map(work => work.created);
-  const worksapprovedData = this.clientWorksOverview.map(work => work.approved);
-  const workscategories = this.clientWorksOverview.map(work => work.name);
-  const adsCreated=this.clientAdsOverview.map(ad=>ad.created);
-  const adsRevenue=this.clientAdsOverview.map(ad=>ad.revenue);
-  const adCategory=this.clientAdsOverview.map(ad=>ad.name)
-
-  this.worksSeries = [
-    {
-      name: 'Works Created',
-      data: workscreatedData
-    },
-    {
-      name: 'Works Approved',
-      data: worksapprovedData
-    }
-  ];
-
-  this.worksXAxis = {
-    categories: workscategories
-  };
-
-  this.adsSeries = [
-    {
-      name: 'Total Ads Created',
-      data: adsCreated,
-    },
-    {
-      name: 'Total Ad Revenue',
-      data: adsRevenue,
-    },
-  ]
-
-  this.adsXAxis={
-    categories:adCategory
-  }
   }
 
   updateTime() {
     const now = new Date();
 
-    const days = [
-      'Sunday',
-      'Monday',
-      'Tuesday',
-      'Wednesday',
-      'Thursday',
-      'Friday',
-      'Saturday',
-    ];
-
-    const months = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December',
-    ];
+    const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
     this.dayName = days[now.getDay()];
     this.day = now.getDate().toString();
     this.month = months[now.getMonth()];
     this.year = now.getFullYear().toString();
-
     this.time = now.toLocaleTimeString();
   }
 
@@ -198,9 +83,12 @@ export class AdminDashboardComponent implements OnInit {
   chartDetails: ApexChart = {
     type: 'donut',
     height: 320,
+    toolbar: { show: false },
+    zoom: { enabled: false },
+    animations: { enabled: false }
   };
 
-  chartSeries: ApexNonAxisChartSeries = [this.workAnalysisData.pending,this.workAnalysisData.Approved,this.workAnalysisData.Rejected];
+  chartSeries: ApexNonAxisChartSeries = [0, 0, 0];
 
   chartLabels: string[] = ['Pending', 'Approved', 'Rejected'];
 
@@ -217,7 +105,6 @@ export class AdminDashboardComponent implements OnInit {
       type: 'horizontal',
       shadeIntensity: 0.5,
       gradientToColors: ['#fbbf24', '#34d399', '#fb7185'],
-      inverseColors: false,
       opacityFrom: 1,
       opacityTo: 1,
       stops: [0, 90],
@@ -232,18 +119,13 @@ export class AdminDashboardComponent implements OnInit {
           show: true,
           value: {
             show: true,
-            formatter: (val: string) => {
-              return val;
-            },
+            formatter: (val: string) => val,
           },
           total: {
             show: true,
             label: 'Total Works',
             formatter: (w: any) => {
-              return w.globals.seriesTotals.reduce(
-                (a: number, b: number) => a + b,
-                0,
-              );
+              return w.globals.seriesTotals.reduce((a: number, b: number) => a + b, 0);
             },
           },
         },
@@ -260,25 +142,14 @@ export class AdminDashboardComponent implements OnInit {
 
   // ---------------- WORKS AREA CHART ----------------
 
-  
-
-  worksSeries: ApexAxisChartSeries = [
-    {
-      name: 'Works Created',
-      data: [],
-    },
-    {
-      name: 'Works Approved',
-      data: [],
-    },
-  ];
+  worksSeries: ApexAxisChartSeries = [];
 
   worksChart: ApexChart = {
     type: 'area',
     height: 280,
-    toolbar: {
-      show: false,
-    },
+    toolbar: { show: false },
+    zoom: { enabled: false },
+    animations: { enabled: false }
   };
 
   worksXAxis: ApexXAxis = {
@@ -303,7 +174,6 @@ export class AdminDashboardComponent implements OnInit {
   worksFill: ApexFill = {
     type: 'gradient',
     gradient: {
-      shadeIntensity: 1,
       opacityFrom: 0.4,
       opacityTo: 0.1,
       stops: [0, 90, 100],
@@ -312,24 +182,14 @@ export class AdminDashboardComponent implements OnInit {
 
   // ---------------- ADS AREA CHART ----------------
 
-
-  adsSeries: ApexAxisChartSeries = [
-    {
-      name: 'Total Ads Created',
-      data: [],
-    },
-    {
-      name: 'Total Ad Revenue',
-      data: [],
-    },
-  ];
+  adsSeries: ApexAxisChartSeries = [];
 
   adsChart: ApexChart = {
     type: 'area',
     height: 320,
-    toolbar: {
-      show: false,
-    },
+    toolbar: { show: false },
+    zoom: { enabled: false },
+    animations: { enabled: false }
   };
 
   adsXAxis: ApexXAxis = {
@@ -354,10 +214,71 @@ export class AdminDashboardComponent implements OnInit {
   adsFill: ApexFill = {
     type: 'gradient',
     gradient: {
-      shadeIntensity: 1,
       opacityFrom: 0.4,
       opacityTo: 0.1,
       stops: [0, 90, 100],
     },
   };
+
+  // ---------------- LOAD DATA ----------------
+
+  load() {
+    this.service.loadAdminDashboard().subscribe({
+      next: (res) => {
+
+        this.workAnalysisData.pending = res.data[0][0].pending_count;
+        this.workAnalysisData.Approved = res.data[0][0].approved_count;
+        this.workAnalysisData.Rejected = res.data[0][0].Rejected_count;
+
+        this.clientWorks = res.data[1];
+
+        this.worksSeries = [
+          {
+            name: 'Works Created',
+            data: this.clientWorks.map(w => w.total),
+          },
+          {
+            name: 'Works Approved',
+            data: this.clientWorks.map(w => w.approved_count),
+          },
+        ];
+
+        this.worksXAxis = {
+          categories: this.clientWorks.map(w => w.USR_NAME),
+        };
+
+        this.chartSeries = [
+          this.workAnalysisData.pending,
+          this.workAnalysisData.Approved,
+          this.workAnalysisData.Rejected,
+        ];
+
+        this.bestPerformer = res.data[2][0];
+        this.staffWorks = res.data[3];
+        this.clientAdsOverview = res.data[4];
+
+        this.adsSeries = [
+          {
+            name: 'Total Ads Created',
+            data: this.clientAdsOverview.map(a => a.CN_COUNT),
+          },
+          {
+            name: 'Total Ad Revenue',
+            data: this.clientAdsOverview.map(a => a.CN_AMOUNT),
+          },
+        ];
+
+        this.adsXAxis = {
+          categories: this.clientAdsOverview.map(a => a.title),
+        };
+      },
+
+      error: () => {
+        this.toastr.error(
+          'An error occurred while loading Dashboard. Please try again.',
+          'Error'
+        );
+      },
+    });
+  }
 }
