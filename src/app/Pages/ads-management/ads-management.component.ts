@@ -227,7 +227,7 @@ export class AdsManagementComponent {
   /* STATUS COUNTS */
 
   get ActiveCount() {
-    return this.ads.filter((w) => w.status === 'Active').length;
+    return this.ads.filter((Ad) => Ad.status === 'Active').length;
   }
 
   get TotalSpend() {

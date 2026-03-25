@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, HostListener, Inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   MAT_DIALOG_DATA,
@@ -22,6 +22,14 @@ import { ApiUrl } from '../../../app.contsant';
   styleUrl: './view-ad.component.css',
 })
 export class ViewAdComponent implements OnInit{
+  @HostListener('document:click', ['$event'])
+onDocumentClick(event: Event) {
+  const clickedInside = (event.target as HTMLElement).closest('.menu-container');
+
+  if (!clickedInside) {
+    this.activeMenu = null;
+  }
+}
   slno:number|null=null
   conversions: any[] = [];
   activeMenu: any = null;
@@ -62,10 +70,9 @@ export class ViewAdComponent implements OnInit{
   }
 
   toggleMenu(index: number, event: Event) {
-    event.stopPropagation();
-
-    this.activeMenu = this.activeMenu === index ? null : index;
-  }
+  event.stopPropagation(); // ✅ prevents closing immediately
+  this.activeMenu = this.activeMenu === index ? null : index;
+}
 
   editConversion(isEdit: boolean, slno: any) {
     const dialogRef=this.dialog.open(CreateEditConversionComponent, {

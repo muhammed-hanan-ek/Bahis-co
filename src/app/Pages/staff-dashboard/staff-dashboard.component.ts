@@ -16,6 +16,10 @@ import {
   ApexMarkers,
   ApexFill,
 } from 'ng-apexcharts';
+import { BACService } from '../../Service/bac.service';
+import { ToastrService } from 'ngx-toastr';
+import { LoaderService } from '../../loader/loader.service';
+import { ApiUrl } from '../../app.contsant';
 
 @Component({
   selector: 'app-staff-dashboard',
@@ -32,38 +36,24 @@ export class StaffDashboardComponent {
   year = '';
   time = '';
 
-  clientWorks = [
-    {
-      name: 'ABC Company',
-      total: 25,
-      pending: 5,
-      approved: 18,
-      rejected: 2,
-    },
-    {
-      name: 'Delta Corp',
-      total: 30,
-      pending: 7,
-      approved: 20,
-      rejected: 3,
-    },
-    {
-      name: 'Green Tech',
-      total: 18,
-      pending: 3,
-      approved: 13,
-      rejected: 2,
-    },
-    {
-      name: 'XYZ Pvt Ltd',
-      total: 22,
-      pending: 4,
-      approved: 16,
-      rejected: 2,
-    },
-  ];
+  clientWorks:any[] = [];
+  MostApproved: any;
+  ApiUrl=ApiUrl
+
+   workAnalysisData = {
+    pending: 0,
+    Approved: 0,
+    Rejected: 0,
+  };
+
+  constructor(
+    private service :BACService,
+    private toastr:ToastrService,
+    private loader:LoaderService
+  ){}
 
   ngOnInit() {
+    this.load()
     this.updateTime();
 
     setInterval(() => {
@@ -112,9 +102,12 @@ export class StaffDashboardComponent {
   chartDetails: ApexChart = {
     type: 'donut',
     height: 320,
+    toolbar: { show: false },
+    zoom: { enabled: false },
+    animations: { enabled: false }
   };
 
-  chartSeries: ApexNonAxisChartSeries = [12, 18, 6];
+  chartSeries: ApexNonAxisChartSeries = [0, 0, 0];
 
   chartLabels: string[] = ['Pending', 'Approved', 'Rejected'];
 
@@ -131,7 +124,6 @@ export class StaffDashboardComponent {
       type: 'horizontal',
       shadeIntensity: 0.5,
       gradientToColors: ['#fbbf24', '#34d399', '#fb7185'],
-      inverseColors: false,
       opacityFrom: 1,
       opacityTo: 1,
       stops: [0, 90],
@@ -146,18 +138,13 @@ export class StaffDashboardComponent {
           show: true,
           value: {
             show: true,
-            formatter: (val: string) => {
-              return val;
-            },
+            formatter: (val: string) => val,
           },
           total: {
             show: true,
             label: 'Total Works',
             formatter: (w: any) => {
-              return w.globals.seriesTotals.reduce(
-                (a: number, b: number) => a + b,
-                0,
-              );
+              return w.globals.seriesTotals.reduce((a: number, b: number) => a + b, 0);
             },
           },
         },
@@ -171,6 +158,7 @@ export class StaffDashboardComponent {
       return opts.w.config.series[opts.seriesIndex];
     },
   };
+
 
   // ---------------- WORKS AREA CHART ----------------
 
@@ -227,4 +215,53 @@ export class StaffDashboardComponent {
       stops: [0, 90, 100],
     },
   };
+
+
+  load() {
+    this.service.loadStaffDashboard().subscribe({
+      next: (res) => {
+
+        console.log(res,'staff dashboard response');
+        
+
+        this.workAnalysisData.pending = res.data[1][0].pending_count;
+        this.workAnalysisData.Approved = res.data[1][0].approved_count;
+        this.workAnalysisData.Rejected = res.data[1][0].Rejected_count;
+
+        this.clientWorks = res.data[0];
+
+        this.worksSeries = [
+          {
+            name: 'Works Created',
+            data: this.clientWorks.map(w => w.total),
+          },
+          {
+            name: 'Works Approved',
+            data: this.clientWorks.map(w => w.approved_count),
+          },
+        ];
+
+        this.worksXAxis = {
+          categories: this.clientWorks.map(w => w.USR_NAME),
+        };
+
+        this.chartSeries = [
+          this.workAnalysisData.pending,
+          this.workAnalysisData.Approved,
+          this.workAnalysisData.Rejected,
+        ];
+
+        this.MostApproved = res.data[2][0];
+
+
+      },
+
+      error: () => {
+        this.toastr.error(
+          'An error occurred while loading Dashboard. Please try again.',
+          'Error'
+        );
+      },
+    });
+  }
 }

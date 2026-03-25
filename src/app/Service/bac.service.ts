@@ -180,7 +180,7 @@ export class BACService {
   );
   }
 
-  SaveAd(slno:any,ad:any,startDate:any,endDate:any,amount:any): Observable<any> {
+  SaveAd(slno:any,ad:any,startDate:any,endDate:any,amount:any,client:any,link:any): Observable<any> {
     const formData = new FormData();
 
     formData.append('slno',slno);
@@ -188,6 +188,8 @@ export class BACService {
     formData.append('startDate',startDate);
     formData.append('endDate',endDate);
     formData.append('amount',amount);
+    formData.append('client',client);
+    formData.append('link',link);
 
     return this.http.post(
     `${ApiUrl}/ad/add`,
@@ -297,6 +299,12 @@ DeleteAD(SLNO:any): Observable<any> {
   loadClientDashboard(): Observable<any> {
     return this.http.post(
     `${ApiUrl}/ClientDashboard`,
+    {}
+  );
+  }
+  loadStaffDashboard(): Observable<any> {
+    return this.http.post(
+    `${ApiUrl}/StaffDashboard`,
     {}
   );
   }

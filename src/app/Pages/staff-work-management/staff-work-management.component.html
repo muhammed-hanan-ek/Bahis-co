@@ -6,7 +6,7 @@
         class="text-xl md:text-2xl font-semibold text-gray-900 tracking-tight"
       >
         {{
-          userRole == "Staff" || userRole == "Marketing Head"
+          (userRole == "Staff" || userRole == "Marketing Head")
             ? "My Work Dashboard"
             : userRole == "Admin"
               ? "Work Management Dashboard"
@@ -16,7 +16,7 @@
 
       <p class="text-sm text-gray-500">
         {{
-          userRole == "Staff" || userRole == "Marketing Head"
+         ( userRole == "Staff" || userRole == "Marketing Head")
             ? "View and manage your submitted work"
             : userRole == "Admin"
               ? "Monitor and manage employee work submissions"

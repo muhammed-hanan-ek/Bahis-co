@@ -269,7 +269,7 @@ export class AdminDashboardComponent implements OnInit {
         ];
 
         this.adsXAxis = {
-          categories: this.clientAdsOverview.map(a => a.title),
+          categories: this.clientAdsOverview.map(a => a.USR_NAME),
         };
       },
 

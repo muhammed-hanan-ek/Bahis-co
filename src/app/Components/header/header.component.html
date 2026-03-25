@@ -127,7 +127,7 @@
       <!-- USER PROFILE PICTURE SHOWING IN SMALL SCREEN -->
       <div class="lg:hidden flex items-center" (click)="OpenMenu($event)">
         <img
-          src="default.jpg"
+          [src]="user?.img ? ApiUrl + '/uploads/' + user.img : null"
           alt="User"
           class="h-9 w-9 rounded-full border border-white/40 object-cover"
         />
@@ -139,13 +139,13 @@
       >
         <!-- USER PROFILE IMAGE -->
         <img
-          [src]="ApiUrl+'/uploads/'+user.img"
+          [src]="user?.img ? ApiUrl + '/uploads/' + user.img : null"
           alt="User"
           class="h-9 w-9 rounded-full border border-white/40 object-cover"
         />
         <!-- USER NAME -->
         <span class="text-sm font-medium text-white hidden lg:block">
-          {{user.UserName}}
+          {{user?.UserName}}
         </span>
         <i
           class="fa-solid fa-chevron-down text-xs text-white hidden lg:block"

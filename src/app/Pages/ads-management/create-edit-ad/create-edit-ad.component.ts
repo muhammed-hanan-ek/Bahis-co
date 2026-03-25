@@ -19,23 +19,25 @@ export class CreateEditAdComponent implements OnInit {
   slno:number|null=null
   isEdit: boolean = false;
   AmtNumber: boolean = false;
-  adSearch: any = null;
-  filteredads: any[] = [];
+  clientSearch: any = null;
+  filteredClients: any[] = [];
   form:{
-    ad: number |null,
-    client: string |null,
+    ad: string |null,
+    client: number |null,
     startDate: string |null,
     endDate: string |null,
-    amount: string |null
+    amount: string |null,
+    link:string | null
   } = {
-    ad: null,
-    client: '',
+    ad: '',
+    client: null,
     startDate: '',
     endDate: '',
     amount: '',
+    link:''
   };
 
-  ads:any[] =[] ;
+  clients:any[] =[] ;
 
 
   constructor(
@@ -50,25 +52,25 @@ export class CreateEditAdComponent implements OnInit {
   ngOnInit(): void {
     this.isEdit = this.data.isEdit;
     this.slno = this.data.slno;
-    this.filteredads = this.ads;
+    this.filteredClients = this.clients;
 
     this.onLoad()
-    console.log(this.ads);
     
   }
 
-  filterAds() {
-    this.filteredads = this.ads.filter((ad) =>
-      ad.toLowerCase().includes(this.adSearch.toLowerCase()),
+  filterClients() {
+    this.filteredClients = this.clients.filter((client) =>
+      client.name.toLowerCase().includes(this.clientSearch.toLowerCase()),
     );
   }
 
-  selectAd(ad: any) {
-    const selected = this.ads.find(c => c.name === ad)
-    this.form.ad = selected ? selected.id : null;
-    this.form.client=selected?selected.client:null 
-  }
+  selectClient(client: any) {
+  const selected = this.clients.find(c => c.name === client);
+  this.form.client = selected ? selected.client : null;
 
+    console.log(this.form.client,'client id');
+    
+}
   validateAmt(value: string) {
     const regex = /^\d+(\.\d+)?$/;
 
@@ -86,22 +88,29 @@ export class CreateEditAdComponent implements OnInit {
   onLoad(){
     this.service.LoadAd(this.slno).subscribe({
       next:(res)=>{
-       this.ads = res.data[0];
-this.filteredads = this.ads;
+       this.clients = res.data[0];
+this.filteredClients = this.clients;
+
+
 
 const adData = res.data[1][0];
 
 this.form.ad = adData?.AD;
 this.form.amount = adData?.AMOUNT;
+this.form.client = adData?.CLIENT;
+this.form.link = adData?.LINK;
 this.form.startDate = this.formatDate(adData?.START_DATE);
 this.form.endDate = this.formatDate(adData?.END_DATE);
 
 // 🔥 IMPORTANT
-const selected = this.ads.find(c => c.id === this.form.ad);
+const selected = this.clients.find(c => c.client === this.form.client);
 
 if (selected) {
-  this.adSearch = selected.name;   // ✅ this binds to input
+  this.clientSearch = selected.name;   // ✅ this binds to input
   this.form.client = selected.client;
+
+
+  
 }
         
       },
@@ -137,7 +146,7 @@ if (selected) {
     if (!ok) return;
 
     this.loader.showLoader()
-    this.service.SaveAd(this.slno,this.form.ad,this.form.startDate,this.form.endDate,this.form.amount).subscribe({
+    this.service.SaveAd(this.slno,this.form.ad,this.form.startDate,this.form.endDate,this.form.amount,this.form.client,this.form.link).subscribe({
       next:(res)=>{
         console.log(res);
         

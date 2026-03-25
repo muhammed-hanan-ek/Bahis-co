@@ -221,7 +221,7 @@ export class ClientDashboardComponent {
         this.adsSeries = [
           {
             name: 'Total Ads Created',
-            data: this.clientAdsOverview.map(a => a.CN_COUNT),
+            data: this.clientAdsOverview.map(a => a.COUNT),
           },
           {
             name: 'Total Ad Revenue',
@@ -230,7 +230,7 @@ export class ClientDashboardComponent {
         ];
 
         this.adsXAxis = {
-          categories: this.clientAdsOverview.map(a => a.title),
+          categories: this.clientAdsOverview.map(a => a.USR_NAME),
         };
         
       },
