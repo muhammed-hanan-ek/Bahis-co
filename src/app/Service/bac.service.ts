@@ -76,7 +76,7 @@ export class BACService {
   );
   }
 
-  addWork(title:any,client:any,desc:any,link:any,slno:any): Observable<any> {
+  addWork(title:any,client:any,desc:any,link:any,slno:any,taggedEmp:any): Observable<any> {
     const formData = new FormData();
 
     formData.append('title',title);
@@ -84,6 +84,7 @@ export class BACService {
     formData.append('desc',desc);
     formData.append('link',link);
     formData.append('slno',slno);
+    formData.append('taggedEmp', JSON.stringify(taggedEmp || []));
 
     return this.http.post(
     `${ApiUrl}/work/add`,

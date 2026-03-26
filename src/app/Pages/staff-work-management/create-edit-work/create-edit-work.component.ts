@@ -137,7 +137,8 @@ export class CreateEditWorkComponent implements OnInit {
         this.form.client,
         this.form.description,
         this.form.driveLink,
-        this.slno
+        this.slno,
+        assignments
       )
       .subscribe({
         next: (res) => {
