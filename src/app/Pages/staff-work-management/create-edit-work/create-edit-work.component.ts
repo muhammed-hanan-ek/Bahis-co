@@ -173,6 +173,8 @@ export class CreateEditWorkComponent implements OnInit {
 
     this.service.LoadEditWork(this.slno).subscribe({
       next: (res) => {
+        console.log(res);
+        
         this.clients = res.data[1];
         this.filteredClients = this.clients;
 
