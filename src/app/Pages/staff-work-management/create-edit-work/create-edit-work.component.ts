@@ -11,6 +11,7 @@ import { LoaderService } from '../../../loader/loader.service';
 
 @Component({
   selector: 'app-create-edit-work',
+  standalone: true,
   imports: [FormsModule, CommonModule, MatAutocompleteModule, MatInputModule],
   templateUrl: './create-edit-work.component.html',
   styleUrl: './create-edit-work.component.css',
@@ -22,7 +23,6 @@ export class CreateEditWorkComponent implements OnInit {
 
   clientSearch: any = '';
   filteredClients: any[] = [];
-
   clients: any[] = [];
 
   form = {
@@ -32,22 +32,10 @@ export class CreateEditWorkComponent implements OnInit {
     driveLink: '',
   };
 
-  // ✅ NEW: WORK ASSIGNMENTS
-  workAssignments: any[] = [
-    {
-      tag: '',
-      employee: null,
-      employeeSearch: '',
-      filteredEmployees: []
-    }
-  ];
+  // ✅ WORK ASSIGNMENTS (MAIN STRUCTURE)
+  workAssignments: any[] = [];
 
-  // ✅ SAMPLE EMPLOYEES (replace with API later)
-  employees: any[] = [
-    { id: 1, name: 'Rahul' },
-    { id: 2, name: 'Arjun' },
-    { id: 3, name: 'Nihal' }
-  ];
+  employees: any[] = [];
 
   constructor(
     private dialogRef: MatDialogRef<CreateEditWorkComponent>,
@@ -79,7 +67,7 @@ export class CreateEditWorkComponent implements OnInit {
 
   // ================= EMPLOYEE =================
   filterEmployees(index: number) {
-    const search = this.workAssignments[index].employeeSearch.toLowerCase();
+    const search = (this.workAssignments[index].employeeSearch || '').toLowerCase();
 
     this.workAssignments[index].filteredEmployees = this.employees.filter(e =>
       e.name.toLowerCase().includes(search)
@@ -101,7 +89,7 @@ export class CreateEditWorkComponent implements OnInit {
       tag: '',
       employee: null,
       employeeSearch: '',
-      filteredEmployees: []
+      filteredEmployees: [...this.employees]
     });
   }
 
@@ -167,27 +155,54 @@ export class CreateEditWorkComponent implements OnInit {
       });
   }
 
-  // ================= LOAD =================
+  // ================= LOAD (🔥 FULL FIX) =================
   load() {
     this.loader.showLoader();
 
     this.service.LoadEditWork(this.slno).subscribe({
       next: (res) => {
-        console.log(res);
-        
-        this.clients = res.data[1];
+        console.log(res, 'load create');
+
+        this.clients = res.data[1] || [];
         this.filteredClients = this.clients;
 
-        this.form.client = res.data[0][0].client;
-        this.form.description = res.data[0][0].description;
-        this.form.driveLink = res.data[0][0].link;
-        this.form.title = res.data[0][0].title;
+        this.employees = res.data[2] || [];
+
+        const tags = res.data[3] || [];
+
+        // ✅ FIX: Replace workAssignments completely
+        this.workAssignments = tags.length
+          ? tags.map((t: any) => {
+              const emp = this.employees.find(e => e.id == t.TE_EMPLOYEE);
+
+              return {
+                tag: t.TE_TAG || '',
+                employee: t.TE_EMPLOYEE || null,
+                employeeSearch: emp ? emp.name : '',
+                filteredEmployees: [...this.employees]
+              };
+            })
+          : [
+              {
+                tag: '',
+                employee: null,
+                employeeSearch: '',
+                filteredEmployees: [...this.employees]
+              }
+            ];
+
+        // FORM DATA
+        this.form.client = res.data[0][0]?.client;
+        this.form.description = res.data[0][0]?.description;
+        this.form.driveLink = res.data[0][0]?.link;
+        this.form.title = res.data[0][0]?.title;
 
         if (this.form.client) {
           const client = this.clients.find(c => c.id == this.form.client);
           this.clientSearch = client?.Client || '';
         }
       },
+
       error: (err) => {
         console.log(err);
         this.toastr.error(
@@ -196,6 +211,7 @@ export class CreateEditWorkComponent implements OnInit {
         );
         this.loader.hideLoader();
       },
+
       complete: () => {
         this.loader.hideLoader();
       }

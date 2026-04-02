@@ -66,9 +66,7 @@ export class HeaderComponent implements OnInit {
   isOpenNav: boolean = false;
   ApiUrl=ApiUrl
   menus:any[]=[];
-  notifications:any[]=[
-    {title:'Notification 1',desc:'description of notification 1',count:2,type:'hi'}
-  ];
+  notifications:any[]=[];
   user:any=null
 
   overlayRef!: OverlayRef;
@@ -144,13 +142,22 @@ export class HeaderComponent implements OnInit {
   }
 
   notificationMarkAllAsRead(){
+
     console.log('Mark all as read');
-    
+    this.service.notificationMarkALLAsRead().subscribe({
+      next:(res)=>{
+        this.load()
+      }
+    })
   }
 
   notificationMarkAsRead(type:string){
     console.log('mark as read');
-    
+    this.service.notificationMarkAsRead(type).subscribe({
+      next:(res)=>{
+        this.load()
+      }
+    })
   }
 
   
@@ -180,6 +187,13 @@ export class HeaderComponent implements OnInit {
         this.shared.setRole(this.user.Role)
       },
       
+    })
+
+    this.service.loadNotification().subscribe({
+      next:(res)=>{
+        console.log(res);
+        this.notifications=res.data
+      }
     })
   }
 }

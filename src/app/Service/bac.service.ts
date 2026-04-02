@@ -148,11 +148,12 @@ export class BACService {
   );
   }
 
-  ApproveOrRejectWork(workId:any,DESICION:any): Observable<any> {
+  ApproveOrRejectWork(workId:any,DESICION:any,remark:any): Observable<any> {
     const formData = new FormData();
 
     formData.append('workId',workId);
     formData.append('DESICION',DESICION);
+    formData.append('remark',remark);
 
     return this.http.post(
     `${ApiUrl}/work/ApproveOrReject`,
@@ -307,6 +308,31 @@ DeleteAD(SLNO:any): Observable<any> {
     return this.http.post(
     `${ApiUrl}/StaffDashboard`,
     {}
+  );
+  }
+  loadNotification(): Observable<any> {
+    return this.http.post(
+    `${ApiUrl}/user/notifications`,
+    {}
+  );
+  }
+
+   notificationMarkAsRead(type:any): Observable<any> {
+    const formData = new FormData();
+
+    formData.append('type',type);
+
+    return this.http.post(
+    `${ApiUrl}/user/notificationMarkAsRead`,
+    formData
+  );
+  }
+   notificationMarkALLAsRead(): Observable<any> {
+    const formData = new FormData();
+
+    return this.http.post(
+    `${ApiUrl}/user/notificationMarkALLAsRead`,
+    formData
   );
   }
 

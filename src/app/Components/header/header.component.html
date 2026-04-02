@@ -39,7 +39,7 @@
             <div
               class="w-12 h-12 bg-gray-200 rounded-xl flex items-center justify-center text-[var(--primaryColor)] text-xl"
             >
-              <i class="" [ngClass]="menu.icon?menu.icon:'fa-regular fa-home'"></i>
+              <i class="" [ngClass]="menu.icon?menu.icon:'fa-regular fa-folder'"></i>
             </div>
             <!-- MENU ITEM NAME -->
             <span class="text-sm text-gray-600 text-center font-semibold text-wrap">
@@ -96,7 +96,7 @@
           <div
             class="bg-[var(--primaryColor)] w-10 h-9 flex justify-center items-center rounded-full text-white font-medium"
           >
-            {{noti.count}}
+            {{noti.items}}
           </div>
 
           <div
@@ -104,15 +104,15 @@
           >
             <!-- NOTIFICATION TITLE -->
             <span class="font-medium">
-              {{noti.title}}
+              {{noti.noti_title}}
               <!-- NOTIFICATION DESCRIPTION -->
               <div class="text-[10px] font-normal">
-                {{noti.desc}}
+                {{noti.noti_desc}}
               </div>
             </span>
             <!-- NOTIFICATION CLOSE OR MARK AS READ BUTTON -->
             <button
-            (click)="notificationMarkAsRead(noti.type)"
+            (click)="notificationMarkAsRead(noti.noti_type)"
               class="cursor-pointer hover:bg-gray-100 rounded-full p-2 flex justify-center items-center"
             >
               <i class="fa-solid fa-x text-[9px]"></i>

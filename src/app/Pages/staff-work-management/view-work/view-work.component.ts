@@ -19,6 +19,9 @@ export class ViewWorkComponent implements OnInit {
   slno: number | null = null;
   userRole: string | null = null;
   clients: any[] = [];
+    workAssignments: any[] = [];
+
+  employees: any[] = [];
 
   constructor(
     private dialogRef: MatDialogRef<ViewWorkComponent>,
@@ -44,6 +47,7 @@ export class ViewWorkComponent implements OnInit {
     driveLink: string;
     remark: string;
     status: string;
+
   } = {
     title: '',
     description: '',
@@ -65,6 +69,26 @@ export class ViewWorkComponent implements OnInit {
     this.dialogRef.close();
   }
 
+
+  
+  // ================= EMPLOYEE =================
+  filterEmployees(index: number) {
+    const search = (this.workAssignments[index].employeeSearch || '').toLowerCase();
+
+    this.workAssignments[index].filteredEmployees = this.employees.filter(e =>
+      e.name.toLowerCase().includes(search)
+    );
+  }
+
+  selectEmployee(value: string, index: number) {
+    const emp = this.employees.find(e => e.name === value);
+
+    if (emp) {
+      this.workAssignments[index].employee = emp.id;
+      this.workAssignments[index].employeeSearch = emp.name;
+    }
+  }
+
   load() {
     this.service.LoadEditWork(this.slno).subscribe({
       next: (res) => {
@@ -76,6 +100,32 @@ export class ViewWorkComponent implements OnInit {
         this.work.description=res.data[0][0].description
         this.work.driveLink=res.data[0][0].link
         this.work.title=res.data[0][0].title
+        this.work.remark=res.data[0][0].remark
+
+                this.employees = res.data[2] || [];
+
+        const tags = res.data[3] || [];
+
+        // ✅ FIX: Replace workAssignments completely
+        this.workAssignments = tags.length
+          ? tags.map((t: any) => {
+              const emp = this.employees.find(e => e.id == t.TE_EMPLOYEE);
+
+              return {
+                tag: t.TE_TAG || '',
+                employee: t.TE_EMPLOYEE || null,
+                employeeSearch: emp ? emp.name : '',
+                filteredEmployees: [...this.employees]
+              };
+            })
+          : [
+              {
+                tag: '',
+                employee: null,
+                employeeSearch: '',
+                filteredEmployees: [...this.employees]
+              }
+            ];
 
       },
       error: (err) => {
@@ -105,7 +155,7 @@ export class ViewWorkComponent implements OnInit {
 
     if (!ok) return;
     this.loader.showLoader()
-    this.service.ApproveOrRejectWork(this.slno,desicion).subscribe({
+    this.service.ApproveOrRejectWork(this.slno,desicion,this.work.remark).subscribe({
       next: (res) => {
         if(desicion==1){
         if(res.data[0].MSG=='Success'){

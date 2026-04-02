@@ -80,6 +80,59 @@
       </div>
     </div>
 
+     <!-- WORK TAG + EMPLOYEE -->
+    <div class="space-y-2" *ngIf="workAssignments.length!=0 && (userRole=='Staff' || userRole=='Admin')">
+
+        <label class="text-sm font-medium text-gray-600">
+          Work Tags & Employees
+        </label>
+
+
+
+      <div
+        *ngFor="let item of workAssignments; let i = index"
+        class="flex items-center gap-2"
+      >
+        <!-- TAG -->
+        <input
+        disabled
+          type="text"
+          [(ngModel)]="item.tag"
+          placeholder="Enter tag (e.g. shoot)"
+          class="w-1/4 h-14 px-3 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primaryColor)]/30"
+        />
+
+        <!-- EMPLOYEE -->
+        <mat-form-field appearance="outline" class="w-3/4 text-sm" >
+          <input
+            type="text"
+            matInput
+            class="disabled:text-black"
+            placeholder="Search employee"
+            [(ngModel)]="item.employeeSearch"
+            [matAutocomplete]="empAuto"
+            (input)="filterEmployees(i)"
+            [readonly]="true"
+            [disabled]="true"
+          />
+
+          <mat-autocomplete
+            #empAuto="matAutocomplete"
+            (optionSelected)="selectEmployee($event.option.value, i)"
+          >
+            <mat-option
+              *ngFor="let emp of item.filteredEmployees"
+              [value]="emp.name"
+            >
+              {{ emp.name }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+
+
+      </div>
+    </div>
+
     <!-- REMARK -->
     <div *ngIf="work.status != 'Pending' || userRole=='Client'">
       <label class="text-xs text-gray-500"> Remark </label>

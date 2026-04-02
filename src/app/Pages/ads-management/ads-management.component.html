@@ -269,9 +269,10 @@
       <div class="flex items-center justify-end gap-3">
         <!-- Excel -->
         <button
+        [disabled]="filteredads.length==0"
         (click)="Excel()"
           title="Export Excel"
-          class="py-1 px-3 flex items-center justify-center bg-emerald-50 text-emerald-600 border border-emerald-200 rounded-lg hover:bg-emerald-100 hover:scale-105 transition-all duration-200 shadow-sm"
+          class="py-1 px-3 flex disabled:scale-100 disabled:opacity-70 disabled:bg-emerald-50 items-center justify-center bg-emerald-50 text-emerald-600 border border-emerald-200 rounded-lg hover:bg-emerald-100 hover:scale-105 transition-all duration-200 shadow-sm"
         >
           <i class="fa-solid fa-file-excel text-lg"></i>
           <span class="hidden md:flex text-sm font-medium">Excel</span>
@@ -279,9 +280,10 @@
 
         <!-- PDF -->
         <button
+        [disabled]="filteredads.length==0"
         (click)="pdf()"
           title="Export PDF"
-          class="py-1 px-3 flex items-center justify-center bg-red-50 text-red-600 gap-1 border border-red-200 rounded-lg hover:bg-red-100 hover:scale-105 transition-all duration-200 shadow-sm"
+          class="py-1 px-3 flex disabled:scale-100 disabled:opacity-70 disabled:bg-red-50 items-center justify-center bg-red-50 text-red-600 gap-1 border border-red-200 rounded-lg hover:bg-red-100 hover:scale-105 transition-all duration-200 shadow-sm"
         >
           <i class="fa-solid fa-file-pdf text-lg"></i>
           <span class="hidden md:flex text-sm font-medium">PDF</span>
@@ -391,7 +393,7 @@
     </div>
 
     <div
-      *ngIf="ads.length == 0"
+      *ngIf="filteredads.length == 0"
       class="flex flex-col items-center justify-center gap-2"
     >
       <i class="fa-solid fa-box-open text-3xl text-gray-400"></i>
