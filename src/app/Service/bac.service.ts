@@ -336,4 +336,40 @@ DeleteAD(SLNO:any): Observable<any> {
   );
   }
 
+  LoadcreateEditWorkCalendar(slno:any): Observable<any> {
+    const formData = new FormData();
+
+    formData.append('slno',slno);
+
+    return this.http.post(
+    `${ApiUrl}/work_calendar/load`,
+    formData
+  );
+  }
+
+  addWorkCalendar(slno:any,title:any,content:any,client:any,date:any): Observable<any> {
+    const formData = new FormData();
+
+    formData.append('slno',slno);
+    formData.append('title',title);
+    formData.append('content',content);
+    formData.append('client',client);
+    formData.append('date',date);
+
+    return this.http.post(
+    `${ApiUrl}/work_calendar/add`,
+    formData
+  );
+  }
+
+  calendarlist(status: any, Client: any, date: any): Observable<any> {
+  const formData = new FormData();
+
+  formData.append('status', JSON.stringify(status || []));
+  formData.append('Client', JSON.stringify(Client || []));
+  formData.append('date', date);
+
+  return this.http.post(`${ApiUrl}/work_calendar/list`, formData);
+}
+
 }

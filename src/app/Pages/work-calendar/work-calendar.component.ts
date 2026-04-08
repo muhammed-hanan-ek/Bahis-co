@@ -96,7 +96,7 @@ export class WorkCalendarComponent {
       }
     })
     const today = new Date();
-    this.filters.date = today.toISOString();
+    this.filters.date = today.toISOString().split('T')[0];
     this.onload()
     this.filteredWorks = [...this.works];
 
@@ -193,7 +193,24 @@ export class WorkCalendarComponent {
 
 
   onload(){
+    this.loader.showLoader()
+    this.service.calendarlist(this.filters.status,this.filters.clients,this.filters.date).subscribe({
+      next:(res)=>{
+        console.log(res,'calendar');
+        this.works=res.data[0]
+        this.filteredWorks = [...this.works];
+        this.statuses=res.data[1]
+        this.clients=res.data[2]
 
+      },
+      error:(err)=>{
+        console.log(err);
+        this.toastr.error('An error occurred while loading work calendar. Please try again.','Error')
+      },
+      complete:()=>{
+        this.loader.hideLoader()
+      }
+    })
   }
 
   async deleteWork(slno:any) {

@@ -235,7 +235,7 @@
               </td>
               <!-- CONTENT -->
               <td class="px-4 py-3 border-r border-gray-100">
-                <span class="block text-xs text-gray-500 max-w-xs truncate" [title]="w.content">
+                <span class="block text-xs whitespace-pre-wrap text-gray-500 max-w-xs truncate" [title]="w.content">
                   {{ w.content || '-' }}
                 </span>
               </td>
@@ -299,7 +299,7 @@
 
                   <!-- EDIT -->
                   <button
-                    (click)="openwork(true, null)"
+                    (click)="openwork(true, w.slno)"
                     title="Edit"
                     class="inline-flex items-center justify-center w-8 h-8 rounded-lg border border-gray-200 bg-white text-gray-400 hover:text-blue-600 hover:bg-blue-50 hover:border-blue-200 active:scale-95 transition-all duration-150"
                   >
@@ -374,7 +374,7 @@
 
               <!-- EDIT -->
               <button
-                (click)="openwork(true, null)"
+                (click)="openwork(true, w.slno)"
                 title="Edit"
                 class="inline-flex items-center justify-center w-8 h-8 rounded-lg border border-gray-200 bg-white text-gray-400 hover:text-blue-600 hover:bg-blue-50 hover:border-blue-200 active:scale-95 transition-all duration-150"
               >
@@ -402,7 +402,7 @@
           </div>
 
           <!-- CONTENT PREVIEW -->
-          <p class="text-xs text-gray-500 leading-relaxed line-clamp-2 mb-3">
+          <p class="text-xs text-gray-500 whitespace-pre-wrap leading-relaxed line-clamp-2 mb-3">
             {{ w.content || '-' }}
           </p>
 
