@@ -60,6 +60,11 @@ export const routes: Routes = [
         loadChildren: () =>
           import('./Pages/staff-dashboard/staff-dashboard.routes'),
       },
+      {
+        path: 'work-calendar',
+        loadChildren: () =>
+          import('./Pages/work-calendar/work-calendar.routes'),
+      },
     ],
   },
 ];

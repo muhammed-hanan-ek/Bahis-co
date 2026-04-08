@@ -372,7 +372,7 @@
 
               <button
                 (click)="openwork(true,work.slno)"
-                [disabled]="work.status == 'Rejected' || work.status == 'Approved'"
+                [disabled]="work.status == 'Rejected' || work.status == 'Approved' || work.Edit==0"
                 class="w-full disabled:bg-white text-left px-3 py-2 text-sm hover:bg-gray-50 flex items-center gap-2"
               >
                 <i class="fa-solid fa-pen text-gray-400"></i>
@@ -381,7 +381,7 @@
 
               <button
                 (click)="deleteWork(work.slno)"
-                [disabled]="work.status == 'Rejected' || work.status == 'Approved'"
+                [disabled]="work.status == 'Rejected' || work.status == 'Approved' || work.Edit==0"
                 class="w-full disabled:bg-white text-left px-3 py-2 text-sm text-red-500 hover:bg-gray-50 flex items-center gap-2"
               >
                 <i class="fa-solid fa-trash"></i>

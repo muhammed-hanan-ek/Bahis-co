@@ -109,11 +109,11 @@ export class ViewWorkComponent implements OnInit {
         // ✅ FIX: Replace workAssignments completely
         this.workAssignments = tags.length
           ? tags.map((t: any) => {
-              const emp = this.employees.find(e => e.id == t.TE_EMPLOYEE);
+              const emp = this.employees.find(e => e.id == t.USR_SLNO);
 
               return {
                 tag: t.TE_TAG || '',
-                employee: t.TE_EMPLOYEE || null,
+                employee: t.USR_SLNO || null,
                 employeeSearch: emp ? emp.name : '',
                 filteredEmployees: [...this.employees]
               };
@@ -126,6 +126,9 @@ export class ViewWorkComponent implements OnInit {
                 filteredEmployees: [...this.employees]
               }
             ];
+
+            console.log(this.workAssignments,'workassignments');
+            
 
       },
       error: (err) => {
