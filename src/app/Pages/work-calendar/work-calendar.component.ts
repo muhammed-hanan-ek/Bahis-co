@@ -144,7 +144,7 @@ export class WorkCalendarComponent {
     const today = new Date();
 
     this.filters = {
-      date: today.toISOString(),
+      date: today.toISOString().split('T')[0],
       clients: [],
       status: []
     };
@@ -223,7 +223,65 @@ export class WorkCalendarComponent {
     });
 
     if (!ok) return;
-    
+    this.loader.showLoader()
+    this.service.deletecalendar(slno).subscribe({
+      next: (res) => {
+        if(res.data[0].MSG=='Success'){
+          this.toastr.success('Work deleted successfully','Successful')
+          this.onload()
+        }
+      },
+      error: (err) => {
+
+        console.log(err);
+
+        this.toastr.error(
+          'An error occurred while deleting work . Please try again.',
+          'Error'
+        );
+
+        this.loader.hideLoader();
+      },
+      complete: () => {
+        this.loader.hideLoader();
+      }
+    });
+  }
+
+
+   async markAsComplete(slno:any){
+    const ok = await this.confirmSevice.open({
+      title: 'Work mark as completed',
+      message: 'Are you sure you want to mark this work as completed?',
+      type: 'info',
+      confirmText: 'Confirm',
+    });
+
+    if (!ok) return;
+
+    this.loader.showLoader()
+    this.service.markAsComplete(slno).subscribe({
+      next: (res) => {
+        if(res.data[0].MSG=='Success'){
+          this.toastr.success('Work marked as completed','Successful')
+          this.onload()
+        }
+      },
+      error: (err) => {
+
+        console.log(err);
+
+        this.toastr.error(
+          'An error occurred while marking this work as completed. Please try again.',
+          'Error'
+        );
+
+        this.loader.hideLoader();
+      },
+      complete: () => {
+        this.loader.hideLoader();
+      }
+    });
   }
 
   pdf(){

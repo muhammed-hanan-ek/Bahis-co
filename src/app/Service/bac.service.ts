@@ -372,4 +372,19 @@ DeleteAD(SLNO:any): Observable<any> {
   return this.http.post(`${ApiUrl}/work_calendar/list`, formData);
 }
 
+  markAsComplete(slno:any): Observable<any> {
+  const formData = new FormData();
+
+  formData.append('slno', slno);
+
+  return this.http.post(`${ApiUrl}/work_calendar/markAsComplete`, formData);
+}
+  deletecalendar(slno:any): Observable<any> {
+  const formData = new FormData();
+
+  formData.append('slno', slno);
+
+  return this.http.post(`${ApiUrl}/work_calendar/delete`, formData);
+}
+
 }

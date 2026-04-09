@@ -289,6 +289,8 @@ export class StaffWorkManagementComponent implements OnInit {
     
   }
 
+ 
+
   pdf(){
     this.loader.showLoader()
     this.service.LoadworkPdf(this.filters.employees,this.filters.status,this.filters.clients,this.filters.month).subscribe({
