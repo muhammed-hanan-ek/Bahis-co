@@ -36,24 +36,24 @@ export class StaffDashboardComponent {
   year = '';
   time = '';
 
-  clientWorks:any[] = [];
+  clientWorks: any[] = [];
   MostApproved: any;
-  ApiUrl=ApiUrl
+  ApiUrl = ApiUrl;
 
-   workAnalysisData = {
+  workAnalysisData = {
     pending: 0,
     Approved: 0,
     Rejected: 0,
   };
 
   constructor(
-    private service :BACService,
-    private toastr:ToastrService,
-    private loader:LoaderService
-  ){}
+    private service: BACService,
+    private toastr: ToastrService,
+    private loader: LoaderService,
+  ) {}
 
   ngOnInit() {
-    this.load()
+    this.load();
     this.updateTime();
 
     setInterval(() => {
@@ -104,7 +104,7 @@ export class StaffDashboardComponent {
     height: 320,
     toolbar: { show: false },
     zoom: { enabled: false },
-    animations: { enabled: false }
+    animations: { enabled: false },
   };
 
   chartSeries: ApexNonAxisChartSeries = [0, 0, 0];
@@ -144,7 +144,10 @@ export class StaffDashboardComponent {
             show: true,
             label: 'Total Works',
             formatter: (w: any) => {
-              return w.globals.seriesTotals.reduce((a: number, b: number) => a + b, 0);
+              return w.globals.seriesTotals.reduce(
+                (a: number, b: number) => a + b,
+                0,
+              );
             },
           },
         },
@@ -158,7 +161,6 @@ export class StaffDashboardComponent {
       return opts.w.config.series[opts.seriesIndex];
     },
   };
-
 
   // ---------------- WORKS AREA CHART ----------------
 
@@ -216,14 +218,9 @@ export class StaffDashboardComponent {
     },
   };
 
-
   load() {
     this.service.loadStaffDashboard().subscribe({
       next: (res) => {
-
-        console.log(res,'staff dashboard response');
-        
-
         this.workAnalysisData.pending = res.data[1][0].pending_count;
         this.workAnalysisData.Approved = res.data[1][0].approved_count;
         this.workAnalysisData.Rejected = res.data[1][0].Rejected_count;
@@ -233,16 +230,16 @@ export class StaffDashboardComponent {
         this.worksSeries = [
           {
             name: 'Works Created',
-            data: this.clientWorks.map(w => w.total),
+            data: this.clientWorks.map((w) => w.total),
           },
           {
             name: 'Works Approved',
-            data: this.clientWorks.map(w => w.approved_count),
+            data: this.clientWorks.map((w) => w.approved_count),
           },
         ];
 
         this.worksXAxis = {
-          categories: this.clientWorks.map(w => w.USR_NAME),
+          categories: this.clientWorks.map((w) => w.USR_NAME),
         };
 
         this.chartSeries = [
@@ -252,14 +249,12 @@ export class StaffDashboardComponent {
         ];
 
         this.MostApproved = res.data[2][0];
-
-
       },
 
       error: () => {
         this.toastr.error(
           'An error occurred while loading Dashboard. Please try again.',
-          'Error'
+          'Error',
         );
       },
     });

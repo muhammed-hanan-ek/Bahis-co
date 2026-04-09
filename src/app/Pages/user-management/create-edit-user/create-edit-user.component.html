@@ -39,7 +39,6 @@
           type="file"
           hidden
           accept="image/*"
-          
           (change)="onFileSelected($event)"
         />
 
@@ -101,11 +100,12 @@
         </label>
 
         <select
-        [(ngModel)]="role"
+          [(ngModel)]="role"
           class="h-10 w-full rounded-lg border border-gray-200 px-3 bg-white text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--primaryColor)]/30 focus:border-[var(--primaryColor)] transition"
         >
-          <option *ngFor="let role of roles" [value]="role.slno">{{role.role}}</option>
-          
+          <option *ngFor="let role of roles" [value]="role.slno">
+            {{ role.role }}
+          </option>
         </select>
       </div>
     </div>
@@ -118,7 +118,7 @@
 
       <div class="relative">
         <input
-        [(ngModel)]="password"
+          [(ngModel)]="password"
           [type]="show ? 'text' : 'password'"
           placeholder="Enter password"
           class="h-10 w-full rounded-lg border border-gray-200 px-3 pr-10 bg-white text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--primaryColor)]/30 focus:border-[var(--primaryColor)] transition"
@@ -151,8 +151,8 @@
     </button>
 
     <button
-    (click)="save()"
-    [disabled]="!username || !email || !role ||(isEdit? false : !password)"
+      (click)="save()"
+      [disabled]="!username || !email || !role || (isEdit ? false : !password)"
       class="px-5 py-2 text-sm rounded-lg bg-[var(--primaryColor)] text-white font-medium shadow-sm disabled:opacity-70 disabled:scale-100 hover:shadow-md hover:scale-[1.02] transition"
     >
       {{ isEdit ? "Save Changes" : "Create User" }}

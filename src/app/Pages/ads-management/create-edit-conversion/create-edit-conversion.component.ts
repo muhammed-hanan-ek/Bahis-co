@@ -16,7 +16,7 @@ import { ConfirmationService } from '../../../confirmation/confirmation.service'
   styleUrl: './create-edit-conversion.component.css',
 })
 export class CreateEditConversionComponent implements OnInit {
-  slno:number | null=null
+  slno: number | null = null;
   isEdit: boolean = false;
   AmtNumber: boolean = false;
   AdSearch: any = null;
@@ -37,7 +37,7 @@ export class CreateEditConversionComponent implements OnInit {
     this.isEdit = this.data.isEdit;
     this.slno = this.data.slno;
 
-    this.onLoad()
+    this.onLoad();
   }
 
   filterads() {
@@ -49,8 +49,6 @@ export class CreateEditConversionComponent implements OnInit {
   selectad(ad: any) {
     const selected = this.ads.find((c) => c.name === ad);
     this.form.ad = selected ? selected.id : null;
-    console.log(this.form);
-    
   }
 
   validateAmt(value: string) {
@@ -68,19 +66,16 @@ export class CreateEditConversionComponent implements OnInit {
   onLoad() {
     this.service.LoadConvesrion(this.slno).subscribe({
       next: (res) => {
-        console.log(res);
+        this.ads = res.data[0];
+        this.filteredads = this.ads;
+        this.form.ad = res.data[1][0].ad;
+        this.form.converioncount = res.data[1][0].count;
+        this.form.amount = res.data[1][0].amount;
+        const selected = this.ads.find((c) => c.id === this.form.ad);
 
-        this.ads=res.data[0]
-        this.filteredads=this.ads
-        this.form.ad=res.data[1][0].ad
-        this.form.converioncount=res.data[1][0].count
-        this.form.amount=res.data[1][0].amount
-        const selected = this.ads.find(c => c.id === this.form.ad);
-
-if (selected) {
-  this.AdSearch = selected.name; 
-
-}
+        if (selected) {
+          this.AdSearch = selected.name;
+        }
       },
       error: (err) => {
         console.log(err);
@@ -96,36 +91,52 @@ if (selected) {
     });
   }
 
-      async saveconversion(){
+  async saveconversion() {
     const ok = await this.confirmService.open({
-      title: this.isEdit?'Save Changes':'Add Conversion',
-      message: this.isEdit?'Are you sure you want to Edit this conversion?':'Are you sure you want to create conversion?',
-      type:  this.isEdit?'info':'success',
-      confirmText:  'Confirm',
+      title: this.isEdit ? 'Save Changes' : 'Add Conversion',
+      message: this.isEdit
+        ? 'Are you sure you want to Edit this conversion?'
+        : 'Are you sure you want to create conversion?',
+      type: this.isEdit ? 'info' : 'success',
+      confirmText: 'Confirm',
     });
 
     if (!ok) return;
 
-    this.loader.showLoader()
-    this.service.SaveConversion(this.slno,this.form.ad,this.form.converioncount,this.form.amount).subscribe({
-      next:(res)=>{
-        console.log(res);
-        
-        if(res.data[0].MSG=='success'){
-          this.toastr.success(this.isEdit?'Conversion edited successfully.':'Conversion added successfully','Successful')
-        }
-      },
-      error:(err)=>{
-        console.log(err);
-        this.toastr.error(this.isEdit?'An error occurred while editing conversion. Please try again.':'An error occurred while adding conversion. Please try again.','Error')
-      },
-      complete:()=>{
-        this.loader.hideLoader()
-        this.close()
-      }
-    })
+    this.loader.showLoader();
+    this.service
+      .SaveConversion(
+        this.slno,
+        this.form.ad,
+        this.form.converioncount,
+        this.form.amount,
+      )
+      .subscribe({
+        next: (res) => {
+          if (res.data[0].MSG == 'success') {
+            this.toastr.success(
+              this.isEdit
+                ? 'Conversion edited successfully.'
+                : 'Conversion added successfully',
+              'Successful',
+            );
+          }
+        },
+        error: (err) => {
+          console.log(err);
+          this.toastr.error(
+            this.isEdit
+              ? 'An error occurred while editing conversion. Please try again.'
+              : 'An error occurred while adding conversion. Please try again.',
+            'Error',
+          );
+        },
+        complete: () => {
+          this.loader.hideLoader();
+          this.close();
+        },
+      });
   }
-
 
   close() {
     this.dialogRef.close();

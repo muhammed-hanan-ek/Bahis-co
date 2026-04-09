@@ -13,10 +13,9 @@ import { LoaderService } from '../../../loader/loader.service';
   selector: 'app-create-edit-work-calendar',
   imports: [FormsModule, CommonModule, MatAutocompleteModule, MatInputModule],
   templateUrl: './create-edit-work-calendar.component.html',
-  styleUrl: './create-edit-work-calendar.component.css'
+  styleUrl: './create-edit-work-calendar.component.css',
 })
 export class CreateEditWorkCalendarComponent {
-
   isEdit: boolean = false;
   slno: any = null;
 
@@ -31,14 +30,13 @@ export class CreateEditWorkCalendarComponent {
     date: '',
   };
 
-
   constructor(
     private dialogRef: MatDialogRef<CreateEditWorkCalendarComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private confirmService: ConfirmationService,
     private service: BACService,
     private toastr: ToastrService,
-    private loader: LoaderService
+    private loader: LoaderService,
   ) {}
 
   ngOnInit(): void {
@@ -51,16 +49,14 @@ export class CreateEditWorkCalendarComponent {
   // ================= CLIENT =================
   filterClients() {
     this.filteredClients = this.clients.filter((client) =>
-      client.Client.toLowerCase().includes(this.clientSearch.toLowerCase())
+      client.Client.toLowerCase().includes(this.clientSearch.toLowerCase()),
     );
   }
 
   selectClient(client: any) {
-    const selected = this.clients.find(c => c.Client === client);
+    const selected = this.clients.find((c) => c.Client === client);
     this.form.client = selected ? selected.id : null;
   }
-
-
 
   // ================= SAVE =================
   async savework() {
@@ -77,56 +73,59 @@ export class CreateEditWorkCalendarComponent {
 
     this.loader.showLoader();
 
-    this.service.addWorkCalendar(this.slno,this.form.title,this.form.content,this.form.client,this.form.date).subscribe({
-      next:(res)=>{
-        console.log(res);
-
-        if (res.data[0].MSG == 'Success') {
+    this.service
+      .addWorkCalendar(
+        this.slno,
+        this.form.title,
+        this.form.content,
+        this.form.client,
+        this.form.date,
+      )
+      .subscribe({
+        next: (res) => {
+          if (res.data[0].MSG == 'Success') {
             this.toastr.success(
               this.isEdit
                 ? 'Work edited successfully.'
                 : 'Work added successfully',
-              'Successful'
+              'Successful',
             );
           }
-      },
-      error: (err) => {
-        console.log(err);
-        this.toastr.error(
-           this.isEdit
+        },
+        error: (err) => {
+          console.log(err);
+          this.toastr.error(
+            this.isEdit
               ? 'An error occurred while editing work.'
               : 'An error occurred while adding work.',
-          'Error'
-        );
-        this.loader.hideLoader();
-       
-      },
+            'Error',
+          );
+          this.loader.hideLoader();
+        },
 
-      complete: () => {
-        this.loader.hideLoader();
-         this.close();
-      }
-    })
-   
+        complete: () => {
+          this.loader.hideLoader();
+          this.close();
+        },
+      });
   }
 
   // ================= LOAD (🔥 FULL FIX) =================
   load() {
-    this.loader.showLoader()
+    this.loader.showLoader();
     this.service.LoadcreateEditWorkCalendar(this.slno).subscribe({
-      next:(res)=>{
-        console.log(res);
-        this.clients=res.data[0]
-        this.filteredClients=this.clients
+      next: (res) => {
+        this.clients = res.data[0];
+        this.filteredClients = this.clients;
 
         this.form.client = res.data[1][0]?.client;
         this.form.content = res.data[1][0]?.content;
-        const date1=new Date(res.data[1][0]?.date);
-        this.form.date = date1.toISOString().split('T')[0]
+        const date1 = new Date(res.data[1][0]?.date);
+        this.form.date = date1.toISOString().split('T')[0];
         this.form.title = res.data[1][0]?.title;
 
-         if (this.form.client) {
-          const client = this.clients.find(c => c.id == this.form.client);
+        if (this.form.client) {
+          const client = this.clients.find((c) => c.id == this.form.client);
           this.clientSearch = client?.Client || '';
         }
       },
@@ -134,15 +133,15 @@ export class CreateEditWorkCalendarComponent {
         console.log(err);
         this.toastr.error(
           'An error occurred while loading work calendar.',
-          'Error'
+          'Error',
         );
         this.loader.hideLoader();
       },
 
       complete: () => {
         this.loader.hideLoader();
-      }
-    })
+      },
+    });
   }
 
   close() {

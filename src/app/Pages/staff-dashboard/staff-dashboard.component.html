@@ -36,27 +36,32 @@
           Most Approved Client
         </div>
 
-        <div class="flex flex-col items-center justify-center " *ngIf="MostApproved">
+        <div
+          class="flex flex-col items-center justify-center"
+          *ngIf="MostApproved"
+        >
           <img
-            [src]="ApiUrl+'/uploads/'+MostApproved?.img"
+            [src]="ApiUrl + '/uploads/' + MostApproved?.img"
             class="rounded-full border-4 border-blue-100 w-20 h-20 mt-3 object-cover"
           />
-  
-          <div class="text-sm font-semibold mt-3 text-gray-800">{{MostApproved?.USR_NAME || null}}</div>
-  
-          <div class="text-xs text-gray-500">{{MostApproved?.approved_count || 0}} Works Approved</div>
+
+          <div class="text-sm font-semibold mt-3 text-gray-800">
+            {{ MostApproved?.USR_NAME || null }}
+          </div>
+
+          <div class="text-xs text-gray-500">
+            {{ MostApproved?.approved_count || 0 }} Works Approved
+          </div>
         </div>
 
-         <div
-      *ngIf="!MostApproved"
-      class="flex flex-col items-center justify-center gap-2 h-full"
-    >
-     
-      <p class="text-xs font-medium">
-        {{ "No Approved Work Found" }}
-      </p>
-      
-    </div>
+        <div
+          *ngIf="!MostApproved"
+          class="flex flex-col items-center justify-center gap-2 h-full"
+        >
+          <p class="text-xs font-medium">
+            {{ "No Approved Work Found" }}
+          </p>
+        </div>
       </div>
     </div>
 
@@ -70,7 +75,8 @@
         </span> -->
       </div>
 
-      <apx-chart *ngIf="clientWorks.length!=0"
+      <apx-chart
+        *ngIf="clientWorks.length != 0"
         [series]="chartSeries"
         [chart]="chartDetails"
         [labels]="chartLabels"
@@ -83,15 +89,14 @@
       </apx-chart>
 
       <div
-      *ngIf="clientWorks.length==0"
-      class="flex flex-col items-center justify-center gap-2 h-full"
-    >
-     <i class="fa-solid fa-box-open text-3xl text-gray-400"></i>
-      <p class="text-xs font-medium">
-        {{ "No Works Found" }}
-      </p>
-      
-    </div>
+        *ngIf="clientWorks.length == 0"
+        class="flex flex-col items-center justify-center gap-2 h-full"
+      >
+        <i class="fa-solid fa-box-open text-3xl text-gray-400"></i>
+        <p class="text-xs font-medium">
+          {{ "No Works Found" }}
+        </p>
+      </div>
     </div>
 
     <!-- CLIENT WORK CHART -->
@@ -124,7 +129,10 @@
         </div>
 
         <!-- STAFF SLIDER -->
-        <div class="flex gap-3 overflow-x-auto pb-1 scrollbar-hide"  *ngIf="clientWorks.length!=0">
+        <div
+          class="flex gap-3 overflow-x-auto pb-1 scrollbar-hide"
+          *ngIf="clientWorks.length != 0"
+        >
           <div
             *ngFor="let client of clientWorks"
             class="min-w-[220px] bg-gray-50 border border-gray-100 rounded-xl p-3 hover:shadow-md transition"
@@ -173,18 +181,16 @@
               </div>
             </div>
           </div>
-          
         </div>
         <div
-      *ngIf="clientWorks.length==0"
-      class="flex flex-col items-center justify-center gap-2 h-full pb-10"
-    >
-     <i class="fa-solid fa-box-open text-3xl text-gray-400"></i>
-      <p class="text-xs font-medium">
-        {{ "No Works Found" }}
-      </p>
-      
-    </div>
+          *ngIf="clientWorks.length == 0"
+          class="flex flex-col items-center justify-center gap-2 h-full pb-10"
+        >
+          <i class="fa-solid fa-box-open text-3xl text-gray-400"></i>
+          <p class="text-xs font-medium">
+            {{ "No Works Found" }}
+          </p>
+        </div>
       </div>
     </div>
   </div>

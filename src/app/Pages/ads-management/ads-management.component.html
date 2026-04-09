@@ -5,12 +5,16 @@
       <div
         class="text-xl md:text-2xl font-semibold text-gray-900 tracking-tight"
       >
-        {{ (userRole == "Admin" || userRole=='Marketing Head') ? "Ads Management" : "Ad Sales Overview" }}
+        {{
+          userRole == "Admin" || userRole == "Marketing Head"
+            ? "Ads Management"
+            : "Ad Sales Overview"
+        }}
       </div>
 
       <p class="text-sm text-gray-500">
         {{
-          (userRole == "Admin" || userRole=='Marketing Head')
+          userRole == "Admin" || userRole == "Marketing Head"
             ? "Create and manage advertisements for clients"
             : "Manage ad-generated sales"
         }}
@@ -22,7 +26,7 @@
       <div class="relative w-full sm:w-[280px]">
         <input
           type="text"
-           [(ngModel)]="searchText"
+          [(ngModel)]="searchText"
           (ngModelChange)="searchads()"
           class="h-10 w-full rounded-xl border border-gray-200 bg-white pl-10 pr-4 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--primaryColor)]/30 focus:border-[var(--primaryColor)] transition"
           placeholder="Search ad here..."
@@ -77,7 +81,10 @@
               </div>
 
               <!-- CLIENTS -->
-              <div class="space-y-1 pb-2" *ngIf="userRole == 'Admin' || userRole == 'Marketing Head'">
+              <div
+                class="space-y-1 pb-2"
+                *ngIf="userRole == 'Admin' || userRole == 'Marketing Head'"
+              >
                 <label class="text-xs font-medium text-gray-500">
                   Clients
                 </label>
@@ -90,7 +97,7 @@
                     class="flex items-center gap-2 text-sm text-gray-600"
                     [title]="client"
                   >
-                   <input
+                    <input
                       #chk
                       type="checkbox"
                       [checked]="filters.clients.includes(+client.id)"
@@ -140,7 +147,7 @@
             </button>
 
             <button
-            (click)="applyFilters()"
+              (click)="applyFilters()"
               class="px-3 py-1.5 text-sm rounded-lg bg-[var(--primaryColor)] text-white hover:shadow transition"
             >
               Apply
@@ -269,8 +276,8 @@
       <div class="flex items-center justify-end gap-3">
         <!-- Excel -->
         <button
-        [disabled]="filteredads.length==0"
-        (click)="Excel()"
+          [disabled]="filteredads.length == 0"
+          (click)="Excel()"
           title="Export Excel"
           class="py-1 px-3 flex disabled:scale-100 disabled:opacity-70 disabled:bg-emerald-50 items-center justify-center bg-emerald-50 text-emerald-600 border border-emerald-200 rounded-lg hover:bg-emerald-100 hover:scale-105 transition-all duration-200 shadow-sm"
         >
@@ -280,8 +287,8 @@
 
         <!-- PDF -->
         <button
-        [disabled]="filteredads.length==0"
-        (click)="pdf()"
+          [disabled]="filteredads.length == 0"
+          (click)="pdf()"
           title="Export PDF"
           class="py-1 px-3 flex disabled:scale-100 disabled:opacity-70 disabled:bg-red-50 items-center justify-center bg-red-50 text-red-600 gap-1 border border-red-200 rounded-lg hover:bg-red-100 hover:scale-105 transition-all duration-200 shadow-sm"
         >
@@ -317,14 +324,19 @@
               {{ ads.dateperiod }}
             </div>
             <div class="text-xs text-gray-400">Spend : ₹{{ ads.spend }}</div>
-            <div class="text-xs text-gray-400">Conversion Count : {{ads.count}}</div>
+            <div class="text-xs text-gray-400">
+              Conversion Count : {{ ads.count }}
+            </div>
             <div class="text-xs text-gray-400">
               Revenue : ₹{{ ads.Revenue }}
             </div>
           </div>
 
           <!-- MENU -->
-          <div class="relative menu-container" *ngIf="userRole == 'Admin' || userRole == 'Marketing Head'">
+          <div
+            class="relative menu-container"
+            *ngIf="userRole == 'Admin' || userRole == 'Marketing Head'"
+          >
             <button
               (click)="toggleMenu(i, $event)"
               class="w-8 h-8 flex items-center justify-center rounded-full text-gray-400 hover:bg-gray-100"
@@ -339,7 +351,6 @@
               class="absolute right-0 top-8 w-32 bg-white border border-gray-200 rounded-lg shadow-lg z-20"
             >
               <button
-              
                 (click)="viewAd(ads.slno)"
                 class="w-full text-left px-3 py-2 text-sm hover:bg-gray-50 flex items-center gap-2"
               >
@@ -348,8 +359,8 @@
               </button>
 
               <button
-              [disabled]="ads.count>0"
-                (click)="openads(true,ads.slno)"
+                [disabled]="ads.count > 0"
+                (click)="openads(true, ads.slno)"
                 class="w-full text-left px-3 py-2 text-gray-700 text-sm hover:shadow-none hover:text-gray-900 flex items-center gap-2"
               >
                 <i class="fa-solid fa-pen"></i>
@@ -357,7 +368,7 @@
               </button>
 
               <button
-              [disabled]="ads.count>0"
+                [disabled]="ads.count > 0"
                 (click)="deleteads(ads.slno)"
                 class="w-full text-left px-3 py-2 text-sm text-red-500 hover:shadow-none hover:text-red-700 flex items-center gap-2"
               >

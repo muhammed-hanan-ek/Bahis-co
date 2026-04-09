@@ -19,52 +19,49 @@ export class SignInComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private toastr:ToastrService,
-    private service:BACService,
-    private loader:LoaderService
+    private toastr: ToastrService,
+    private service: BACService,
+    private loader: LoaderService,
   ) {}
 
   ngOnInit(): void {}
 
   signIn() {
+    if (this.username && this.password) {
+      this.loader.showLoader();
 
-  if (this.username && this.password) {
+      this.service.userLogin(this.username, this.password).subscribe({
+        next: (res) => {
+          const msg = res.data[0].result;
+          if (msg == 'invalid') {
+            this.toastr.warning('', 'Invalid Username or Password');
+          } else {
+            const token = res.token;
+            const userId = res.data[0].userId;
+            const userRole = res.data[0].UsrRole;
+            const start_page = res.data[0].START_PAGE;
 
-    this.loader.showLoader();
+            localStorage.setItem('token', token);
 
-    this.service.userLogin(this.username,this.password).subscribe({
-      next: (res) => {
-        console.log(res);
-        
-        const msg=res.data[0].result
-        if(msg=='invalid'){
-          this.toastr.warning('','Invalid Username or Password')
-        }else{
-          const token=res.token
-          const userId=res.data[0].userId
-          const userRole=res.data[0].UsrRole
-          const start_page=res.data[0].START_PAGE
-
-          localStorage.setItem('token',token)
-
-          this.router.navigate([`/${start_page}`])
-          this.toastr.success('You have successfully logged in.','Successful')
-        }
-      },
-      error: (err) => {
-        console.log(err);
-        this.toastr.error(
-          'An error occurred while logging in. Please try again.',
-          'Error'
-        );
-        this.loader.hideLoader();
-      },
-      complete: () => {
-        this.loader.hideLoader();
-        
-      }
-    });
-
+            this.router.navigate([`/${start_page}`]);
+            this.toastr.success(
+              'You have successfully logged in.',
+              'Successful',
+            );
+          }
+        },
+        error: (err) => {
+          console.log(err);
+          this.toastr.error(
+            'An error occurred while logging in. Please try again.',
+            'Error',
+          );
+          this.loader.hideLoader();
+        },
+        complete: () => {
+          this.loader.hideLoader();
+        },
+      });
+    }
   }
-}
 }

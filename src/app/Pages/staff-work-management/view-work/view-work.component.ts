@@ -19,7 +19,7 @@ export class ViewWorkComponent implements OnInit {
   slno: number | null = null;
   userRole: string | null = null;
   clients: any[] = [];
-    workAssignments: any[] = [];
+  workAssignments: any[] = [];
 
   employees: any[] = [];
 
@@ -29,7 +29,7 @@ export class ViewWorkComponent implements OnInit {
     private service: BACService,
     private toastr: ToastrService,
     private loader: LoaderService,
-    private confirmSevice:ConfirmationService
+    private confirmSevice: ConfirmationService,
   ) {}
 
   ngOnInit(): void {
@@ -47,7 +47,6 @@ export class ViewWorkComponent implements OnInit {
     driveLink: string;
     remark: string;
     status: string;
-
   } = {
     title: '',
     description: '',
@@ -69,19 +68,19 @@ export class ViewWorkComponent implements OnInit {
     this.dialogRef.close();
   }
 
-
-  
   // ================= EMPLOYEE =================
   filterEmployees(index: number) {
-    const search = (this.workAssignments[index].employeeSearch || '').toLowerCase();
+    const search = (
+      this.workAssignments[index].employeeSearch || ''
+    ).toLowerCase();
 
-    this.workAssignments[index].filteredEmployees = this.employees.filter(e =>
-      e.name.toLowerCase().includes(search)
+    this.workAssignments[index].filteredEmployees = this.employees.filter((e) =>
+      e.name.toLowerCase().includes(search),
     );
   }
 
   selectEmployee(value: string, index: number) {
-    const emp = this.employees.find(e => e.name === value);
+    const emp = this.employees.find((e) => e.name === value);
 
     if (emp) {
       this.workAssignments[index].employee = emp.id;
@@ -92,30 +91,28 @@ export class ViewWorkComponent implements OnInit {
   load() {
     this.service.LoadEditWork(this.slno).subscribe({
       next: (res) => {
-        console.log(res, 'work');
-
         this.clients = res.data[1];
         const client = this.clients.find((c) => c.id == res.data[0][0].client);
         this.work.client = client ? client.Client : '';
-        this.work.description=res.data[0][0].description
-        this.work.driveLink=res.data[0][0].link
-        this.work.title=res.data[0][0].title
-        this.work.remark=res.data[0][0].remark
+        this.work.description = res.data[0][0].description;
+        this.work.driveLink = res.data[0][0].link;
+        this.work.title = res.data[0][0].title;
+        this.work.remark = res.data[0][0].remark;
 
-                this.employees = res.data[2] || [];
+        this.employees = res.data[2] || [];
 
         const tags = res.data[3] || [];
 
         // ✅ FIX: Replace workAssignments completely
         this.workAssignments = tags.length
           ? tags.map((t: any) => {
-              const emp = this.employees.find(e => e.id == t.USR_SLNO);
+              const emp = this.employees.find((e) => e.id == t.USR_SLNO);
 
               return {
                 tag: t.TE_TAG || '',
                 employee: t.USR_SLNO || null,
                 employeeSearch: emp ? emp.name : '',
-                filteredEmployees: [...this.employees]
+                filteredEmployees: [...this.employees],
               };
             })
           : [
@@ -123,13 +120,9 @@ export class ViewWorkComponent implements OnInit {
                 tag: '',
                 employee: null,
                 employeeSearch: '',
-                filteredEmployees: [...this.employees]
-              }
+                filteredEmployees: [...this.employees],
+              },
             ];
-
-            console.log(this.workAssignments,'workassignments');
-            
-
       },
       error: (err) => {
         console.log(err);
@@ -147,49 +140,50 @@ export class ViewWorkComponent implements OnInit {
     });
   }
 
-      async ApproveOrRjectWork(desicion:any) {
-
+  async ApproveOrRjectWork(desicion: any) {
     const ok = await this.confirmSevice.open({
-      title: desicion==1?'Approve Work':'Reject Work',
-      message: desicion==1?'Are you sure you want to approve this work?':'Are you sure you want to reject this work?',
-      type: desicion==1?'success':'info',
-      confirmText: desicion==1?'Approve':'Reject',
+      title: desicion == 1 ? 'Approve Work' : 'Reject Work',
+      message:
+        desicion == 1
+          ? 'Are you sure you want to approve this work?'
+          : 'Are you sure you want to reject this work?',
+      type: desicion == 1 ? 'success' : 'info',
+      confirmText: desicion == 1 ? 'Approve' : 'Reject',
     });
 
     if (!ok) return;
-    this.loader.showLoader()
-    this.service.ApproveOrRejectWork(this.slno,desicion,this.work.remark).subscribe({
-      next: (res) => {
-        if(desicion==1){
-        if(res.data[0].MSG=='Success'){
-          this.toastr.success('Work Approved successfully','Successful')
-          this.load()
-          this.close()
-        }
-      }else{
-        if(res.data[0].MSG=='Success'){
-          this.toastr.success('Work Rejected successfully','Successful')
-          this.load()
-          this.close()
-        }
-      }
-      },
-      error: (err) => {
+    this.loader.showLoader();
+    this.service
+      .ApproveOrRejectWork(this.slno, desicion, this.work.remark)
+      .subscribe({
+        next: (res) => {
+          if (desicion == 1) {
+            if (res.data[0].MSG == 'Success') {
+              this.toastr.success('Work Approved successfully', 'Successful');
+              this.load();
+              this.close();
+            }
+          } else {
+            if (res.data[0].MSG == 'Success') {
+              this.toastr.success('Work Rejected successfully', 'Successful');
+              this.load();
+              this.close();
+            }
+          }
+        },
+        error: (err) => {
+          console.log(err);
 
-        console.log(err);
+          this.toastr.error(
+            'An error occurred while deleting users. Please try again.',
+            'Error',
+          );
 
-        this.toastr.error(
-          'An error occurred while deleting users. Please try again.',
-          'Error'
-        );
-
-        this.loader.hideLoader();
-      },
-      complete: () => {
-        this.loader.hideLoader();
-      }
-    });
-    
-    
+          this.loader.hideLoader();
+        },
+        complete: () => {
+          this.loader.hideLoader();
+        },
+      });
   }
 }

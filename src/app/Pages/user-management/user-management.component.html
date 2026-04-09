@@ -160,7 +160,8 @@
         <!-- USER INFO -->
         <div class="flex items-start gap-3 min-w-0">
           <!-- AVATAR -->
-          <div *ngIf="!user.img"
+          <div
+            *ngIf="!user.img"
             class="h-11 w-11 shrink-0 rounded-full flex items-center justify-center text-white font-semibold text-sm shadow-sm bg-gradient-to-br"
             [ngClass]="{
               'from-red-500 to-rose-500': user.Role === 'Admin',
@@ -171,11 +172,11 @@
           >
             {{ user.name.charAt(0) }}
           </div>
-          <img *ngIf="user.img"
-            class="h-11 w-11 shrink-0 rounded-full flex items-center justify-center text-white font-semibold text-sm shadow-sm "
-            [src]="ApiUrl+'/uploads/'+user.img"
+          <img
+            *ngIf="user.img"
+            class="h-11 w-11 shrink-0 rounded-full flex items-center justify-center text-white font-semibold text-sm shadow-sm"
+            [src]="ApiUrl + '/uploads/' + user.img"
           />
-            
 
           <!-- TEXT -->
           <div class="min-w-0 w-full">
@@ -235,7 +236,7 @@
           class="flex flex-col gap-2 opacity-70 group-hover:opacity-100 shrink-0"
         >
           <button
-          (click)="openUser(true,user.slno)"
+            (click)="openUser(true, user.slno)"
             class="w-8 h-8 flex items-center justify-center rounded-full text-gray-500 hover:bg-blue-50 hover:text-blue-600 transition"
           >
             <i class="fa-solid fa-pen text-xs"></i>

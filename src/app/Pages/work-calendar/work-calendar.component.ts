@@ -15,25 +15,19 @@ import { CreateEditWorkComponent } from '../staff-work-management/create-edit-wo
 import { ViewWorkComponent } from '../staff-work-management/view-work/view-work.component';
 import { CreateEditWorkCalendarComponent } from './create-edit-work-calendar/create-edit-work-calendar.component';
 
-
 @Component({
   selector: 'app-work-calendar',
   imports: [CommonModule, FormsModule, NgxPaginationModule],
   templateUrl: './work-calendar.component.html',
-  styleUrl: './work-calendar.component.css'
+  styleUrl: './work-calendar.component.css',
 })
 export class WorkCalendarComponent {
-
-  
-
-   @HostListener('document:click', ['$event'])
+  @HostListener('document:click', ['$event'])
   handleOutsideClick(event: any) {
     // Close filter dropdown
     if (!event.target.closest('.filter-container')) {
       this.showFilter = false;
     }
-
-   
   }
 
   showFilter = false;
@@ -49,57 +43,65 @@ export class WorkCalendarComponent {
   }
 
   works: any[] = [
-    {title:'hello',client:'client1',content:'post on instagram',date:'12/12/2002',status:'Pending'},
-    {title:'hello',client:'client1',content:'post on instagram',date:'12/12/2002',status:'Completed'},
+    {
+      title: 'hello',
+      client: 'client1',
+      content: 'post on instagram',
+      date: '12/12/2002',
+      status: 'Pending',
+    },
+    {
+      title: 'hello',
+      client: 'client1',
+      content: 'post on instagram',
+      date: '12/12/2002',
+      status: 'Completed',
+    },
   ];
 
   filteredWorks: any[] = [];
 
-  clients :any[]= [
-    {id:1,name:'client1'},
-    {id:2,name:'client2'},
+  clients: any[] = [
+    { id: 1, name: 'client1' },
+    { id: 2, name: 'client2' },
   ];
 
-  statuses:any[]=[
-    {id:1,name:'pedning'},
-    {id:2,name:'completed'},
-  ]
+  statuses: any[] = [
+    { id: 1, name: 'pedning' },
+    { id: 2, name: 'completed' },
+  ];
 
-
-  ApiUrl=ApiUrl
+  ApiUrl = ApiUrl;
 
   filters: {
-    date:string,
-    clients:number[],
-    status:number[]
+    date: string;
+    clients: number[];
+    status: number[];
   } = {
     date: '',
     clients: [],
-    status: []
+    status: [],
   };
-
 
   constructor(
     private dialog: MatDialog,
-    private shared:SharedService,
-    private service:BACService,
-    private toastr:ToastrService,
-    private loader:LoaderService,
-    private confirmSevice:ConfirmationService
+    private shared: SharedService,
+    private service: BACService,
+    private toastr: ToastrService,
+    private loader: LoaderService,
+    private confirmSevice: ConfirmationService,
   ) {}
-
 
   ngOnInit(): void {
     this.shared.Role$.subscribe({
-      next:(res)=>{
-        this.userRole=res
-      }
-    })
+      next: (res) => {
+        this.userRole = res;
+      },
+    });
     const today = new Date();
     this.filters.date = today.toISOString().split('T')[0];
-    this.onload()
+    this.onload();
     this.filteredWorks = [...this.works];
-
   }
 
   toggleFilter(event?: Event) {
@@ -107,36 +109,29 @@ export class WorkCalendarComponent {
     this.showFilter = !this.showFilter;
   }
 
-
   /* CLIENT FILTER */
 
   toggleClient(id: number, checked: boolean) {
-  if (checked) {
-    if (!this.filters.clients.includes(id)) {
-      this.filters.clients = [...this.filters.clients, id];
+    if (checked) {
+      if (!this.filters.clients.includes(id)) {
+        this.filters.clients = [...this.filters.clients, id];
+      }
+    } else {
+      this.filters.clients = this.filters.clients.filter((x) => x !== id);
     }
-  } else {
-    this.filters.clients = this.filters.clients.filter(x => x !== id);
   }
-
-  // console.log(this.filters.clients,'filtered clients');
-  
-}
 
   /* STATUS FILTER */
 
   toggleStatus(status: number, checked: boolean) {
     if (checked) {
-    if (!this.filters.status.includes(status)) {
-      this.filters.status = [...this.filters.status, status];
+      if (!this.filters.status.includes(status)) {
+        this.filters.status = [...this.filters.status, status];
+      }
+    } else {
+      this.filters.status = this.filters.status.filter((x) => x !== status);
     }
-  } else {
-    this.filters.status = this.filters.status.filter(x => x !== status);
   }
-
-  }
-
-
 
   /* CLEAR FILTERS */
 
@@ -146,24 +141,24 @@ export class WorkCalendarComponent {
     this.filters = {
       date: today.toISOString().split('T')[0],
       clients: [],
-      status: []
+      status: [],
     };
-    this.showFilter=false
+    this.showFilter = false;
     this.filteredWorks = [...this.works];
-    this.onload()
+    this.onload();
   }
 
   /* APPLY FILTERS */
 
   applyFilters() {
-    this.onload()
+    this.onload();
     this.showFilter = false;
   }
 
   /* CREATE WORK */
 
   openwork(isEdit: boolean, slno: string | null) {
-    const dialogRef=this.dialog.open(CreateEditWorkCalendarComponent, {
+    const dialogRef = this.dialog.open(CreateEditWorkCalendarComponent, {
       width: '500px',
       maxWidth: '95vw',
       panelClass: 'responsive-dialog',
@@ -174,10 +169,9 @@ export class WorkCalendarComponent {
     });
 
     dialogRef.afterClosed().subscribe({
-      next:()=>this.onload()
-    })
+      next: () => this.onload(),
+    });
   }
-
 
   /* STATUS COUNTS */
 
@@ -189,32 +183,35 @@ export class WorkCalendarComponent {
     return this.works.filter((w) => w.status === 'Completed').length;
   }
 
- 
-
-
-  onload(){
-    this.loader.showLoader()
-    this.service.calendarlist(this.filters.status,this.filters.clients,this.filters.date).subscribe({
-      next:(res)=>{
-        console.log(res,'calendar');
-        this.works=res.data[0]
-        this.filteredWorks = [...this.works];
-        this.statuses=res.data[1]
-        this.clients=res.data[2]
-
-      },
-      error:(err)=>{
-        console.log(err);
-        this.toastr.error('An error occurred while loading work calendar. Please try again.','Error')
-      },
-      complete:()=>{
-        this.loader.hideLoader()
-      }
-    })
+  onload() {
+    this.loader.showLoader();
+    this.service
+      .calendarlist(
+        this.filters.status,
+        this.filters.clients,
+        this.filters.date,
+      )
+      .subscribe({
+        next: (res) => {
+          this.works = res.data[0];
+          this.filteredWorks = [...this.works];
+          this.statuses = res.data[1];
+          this.clients = res.data[2];
+        },
+        error: (err) => {
+          console.log(err);
+          this.toastr.error(
+            'An error occurred while loading work calendar. Please try again.',
+            'Error',
+          );
+        },
+        complete: () => {
+          this.loader.hideLoader();
+        },
+      });
   }
 
-  async deleteWork(slno:any) {
-
+  async deleteWork(slno: any) {
     const ok = await this.confirmSevice.open({
       title: 'Delete Work',
       message: 'Are you sure you want to delete this work?',
@@ -223,33 +220,31 @@ export class WorkCalendarComponent {
     });
 
     if (!ok) return;
-    this.loader.showLoader()
+    this.loader.showLoader();
     this.service.deletecalendar(slno).subscribe({
       next: (res) => {
-        if(res.data[0].MSG=='Success'){
-          this.toastr.success('Work deleted successfully','Successful')
-          this.onload()
+        if (res.data[0].MSG == 'Success') {
+          this.toastr.success('Work deleted successfully', 'Successful');
+          this.onload();
         }
       },
       error: (err) => {
-
         console.log(err);
 
         this.toastr.error(
           'An error occurred while deleting work . Please try again.',
-          'Error'
+          'Error',
         );
 
         this.loader.hideLoader();
       },
       complete: () => {
         this.loader.hideLoader();
-      }
+      },
     });
   }
 
-
-   async markAsComplete(slno:any){
+  async markAsComplete(slno: any) {
     const ok = await this.confirmSevice.open({
       title: 'Work mark as completed',
       message: 'Are you sure you want to mark this work as completed?',
@@ -259,76 +254,82 @@ export class WorkCalendarComponent {
 
     if (!ok) return;
 
-    this.loader.showLoader()
+    this.loader.showLoader();
     this.service.markAsComplete(slno).subscribe({
       next: (res) => {
-        if(res.data[0].MSG=='Success'){
-          this.toastr.success('Work marked as completed','Successful')
-          this.onload()
+        if (res.data[0].MSG == 'Success') {
+          this.toastr.success('Work marked as completed', 'Successful');
+          this.onload();
         }
       },
       error: (err) => {
-
         console.log(err);
 
         this.toastr.error(
           'An error occurred while marking this work as completed. Please try again.',
-          'Error'
+          'Error',
         );
 
         this.loader.hideLoader();
       },
       complete: () => {
         this.loader.hideLoader();
-      }
+      },
     });
   }
 
-   pdf(){
-    this.loader.showLoader()
-    this.service.calendarpdf(this.filters.status,this.filters.clients,this.filters.date).subscribe({
-      next:(res)=>{
-        
-        console.log(res);
-        if (res && res.filename) {
-                    window.open(`${ApiUrl}/uploads/PDF/${res.filename}`);
-                } else {
-                    this.toastr.error('PDF Export Failed');
-                }
+  pdf() {
+    this.loader.showLoader();
+    this.service
+      .calendarpdf(this.filters.status, this.filters.clients, this.filters.date)
+      .subscribe({
+        next: (res) => {
+          if (res && res.filename) {
+            window.open(`${ApiUrl}/uploads/PDF/${res.filename}`);
+          } else {
+            this.toastr.error('PDF Export Failed');
+          }
+        },
 
-      },
-
-      error:(err)=>{
-        console.log(err);
-        this.toastr.error('An error occurred while loading works. Please try again.','Error')
-      },
-      complete:()=>{
-        this.loader.hideLoader()
-      }
-    })
+        error: (err) => {
+          console.log(err);
+          this.toastr.error(
+            'An error occurred while loading works. Please try again.',
+            'Error',
+          );
+        },
+        complete: () => {
+          this.loader.hideLoader();
+        },
+      });
   }
-  Excel(){
-    this.loader.showLoader()
-    this.service.calendarExcel(this.filters.status,this.filters.clients,this.filters.date).subscribe({
-      next:(res)=>{
-        
-        console.log(res);
-        if (res && res.filename) {
-                    window.open(`${ApiUrl}/uploads/excel/${res.filename}`);
-                } else {
-                    this.toastr.error('excel Export Failed');
-                }
+  Excel() {
+    this.loader.showLoader();
+    this.service
+      .calendarExcel(
+        this.filters.status,
+        this.filters.clients,
+        this.filters.date,
+      )
+      .subscribe({
+        next: (res) => {
+          if (res && res.filename) {
+            window.open(`${ApiUrl}/uploads/excel/${res.filename}`);
+          } else {
+            this.toastr.error('excel Export Failed');
+          }
+        },
 
-      },
-
-      error:(err)=>{
-        console.log(err);
-        this.toastr.error('An error occurred while loading works. Please try again.','Error')
-      },
-      complete:()=>{
-        this.loader.hideLoader()
-      }
-    })
+        error: (err) => {
+          console.log(err);
+          this.toastr.error(
+            'An error occurred while loading works. Please try again.',
+            'Error',
+          );
+        },
+        complete: () => {
+          this.loader.hideLoader();
+        },
+      });
   }
-
 }

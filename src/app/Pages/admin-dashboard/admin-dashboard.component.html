@@ -35,18 +35,18 @@
         <div class="text-xs text-gray-500 font-medium">Best Performer</div>
 
         <img
-          [src]="ApiUrl+'/uploads/'+bestPerformer?.img"
+          [src]="ApiUrl + '/uploads/' + bestPerformer?.img"
           alt="Best Performer image"
           class="rounded-full border-4 border-blue-100 w-20 h-20 mt-3 object-cover"
         />
 
         <div class="text-sm font-semibold mt-3 text-gray-800">
-          {{
-            bestPerformer?.USR_NAME
-          }}
+          {{ bestPerformer?.USR_NAME }}
         </div>
 
-        <div class="text-xs text-gray-500">{{bestPerformer?.approved_count}} Works Approved</div>
+        <div class="text-xs text-gray-500">
+          {{ bestPerformer?.approved_count }} Works Approved
+        </div>
       </div>
     </div>
 

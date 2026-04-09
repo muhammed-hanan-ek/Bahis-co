@@ -13,8 +13,6 @@ import { LoaderService } from '../../loader/loader.service';
 import { ConfirmationService } from '../../confirmation/confirmation.service';
 import { ApiUrl } from '../../app.contsant';
 
-
-
 @Component({
   selector: 'app-staff-work-management',
   standalone: true,
@@ -38,7 +36,7 @@ export class StaffWorkManagementComponent implements OnInit {
 
   showFilter = false;
   searchText = '';
-  statuses:any[]=[]
+  statuses: any[] = [];
   activeMenu: number | null = null;
   userRole: string | null = null;
 
@@ -55,17 +53,17 @@ export class StaffWorkManagementComponent implements OnInit {
 
   filteredWorks: any[] = [];
 
-  clients :any[]= [];
+  clients: any[] = [];
 
-  employees:any[] = [];
+  employees: any[] = [];
 
-  ApiUrl=ApiUrl
+  ApiUrl = ApiUrl;
 
   filters: {
-    month:string,
-    clients:number[],
-    status:number[],
-    employees:number[]
+    month: string;
+    clients: number[];
+    status: number[];
+    employees: number[];
   } = {
     month: '',
     clients: [],
@@ -73,28 +71,25 @@ export class StaffWorkManagementComponent implements OnInit {
     employees: [],
   };
 
-
   constructor(
     private dialog: MatDialog,
-    private shared:SharedService,
-    private service:BACService,
-    private toastr:ToastrService,
-    private loader:LoaderService,
-    private confirmSevice:ConfirmationService
+    private shared: SharedService,
+    private service: BACService,
+    private toastr: ToastrService,
+    private loader: LoaderService,
+    private confirmSevice: ConfirmationService,
   ) {}
-
 
   ngOnInit(): void {
     this.shared.Role$.subscribe({
-      next:(res)=>{
-        this.userRole=res
-      }
-    })
+      next: (res) => {
+        this.userRole = res;
+      },
+    });
     const today = new Date();
     this.filters.month = today.toISOString().slice(0, 7);
-    this.onload()
+    this.onload();
     this.filteredWorks = [...this.works];
-
   }
 
   toggleFilter(event?: Event) {
@@ -123,38 +118,37 @@ export class StaffWorkManagementComponent implements OnInit {
   /* CLIENT FILTER */
 
   toggleClient(id: number, checked: boolean) {
-  if (checked) {
-    if (!this.filters.clients.includes(id)) {
-      this.filters.clients = [...this.filters.clients, id];
+    if (checked) {
+      if (!this.filters.clients.includes(id)) {
+        this.filters.clients = [...this.filters.clients, id];
+      }
+    } else {
+      this.filters.clients = this.filters.clients.filter((x) => x !== id);
     }
-  } else {
-    this.filters.clients = this.filters.clients.filter(x => x !== id);
   }
-}
 
   /* STATUS FILTER */
 
   toggleStatus(status: number, checked: boolean) {
     if (checked) {
-    if (!this.filters.status.includes(status)) {
-      this.filters.status = [...this.filters.status, status];
+      if (!this.filters.status.includes(status)) {
+        this.filters.status = [...this.filters.status, status];
+      }
+    } else {
+      this.filters.status = this.filters.status.filter((x) => x !== status);
     }
-  } else {
-    this.filters.status = this.filters.status.filter(x => x !== status);
-  }
-
   }
 
   // emp filter
 
   toggleEmployee(emp: any, checked: boolean) {
     if (checked) {
-    if (!this.filters.employees.includes(emp)) {
-      this.filters.employees = [...this.filters.employees, emp];
+      if (!this.filters.employees.includes(emp)) {
+        this.filters.employees = [...this.filters.employees, emp];
+      }
+    } else {
+      this.filters.employees = this.filters.employees.filter((x) => x !== emp);
     }
-  } else {
-    this.filters.employees = this.filters.employees.filter(x => x !== emp);
-  }
   }
 
   /* CLEAR FILTERS */
@@ -166,24 +160,24 @@ export class StaffWorkManagementComponent implements OnInit {
       month: today.toISOString().slice(0, 7),
       clients: [],
       status: [],
-      employees:[]
+      employees: [],
     };
-    this.showFilter=false
+    this.showFilter = false;
     this.filteredWorks = [...this.works];
-    this.onload()
+    this.onload();
   }
 
   /* APPLY FILTERS */
 
   applyFilters() {
-    this.onload()
+    this.onload();
     this.showFilter = false;
   }
 
   /* CREATE WORK */
 
   openwork(isEdit: boolean, slno: string | null) {
-    const dialogRef=this.dialog.open(CreateEditWorkComponent, {
+    const dialogRef = this.dialog.open(CreateEditWorkComponent, {
       width: '500px',
       maxWidth: '95vw',
       panelClass: 'responsive-dialog',
@@ -194,12 +188,12 @@ export class StaffWorkManagementComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe({
-      next:()=>this.onload()
-    })
+      next: () => this.onload(),
+    });
   }
 
-  viewwork(slno: string | null,status:string) {
-    const dialogRef=this.dialog.open(ViewWorkComponent, {
+  viewwork(slno: string | null, status: string) {
+    const dialogRef = this.dialog.open(ViewWorkComponent, {
       width: '500px',
       maxWidth: '95vw',
       panelClass: 'responsive-dialog',
@@ -211,8 +205,8 @@ export class StaffWorkManagementComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe({
-      next:()=>this.onload()
-    })
+      next: () => this.onload(),
+    });
   }
 
   /* STATUS COUNTS */
@@ -229,31 +223,37 @@ export class StaffWorkManagementComponent implements OnInit {
     return this.works.filter((w) => w.status === 'Rejected').length;
   }
 
-
-  onload(){
-    this.loader.showLoader()
-    this.service.LoadworkReport(this.filters.employees,this.filters.status,this.filters.clients,this.filters.month).subscribe({
-      next:(res)=>{
-        this.works=res.data[0]
-        this.filteredWorks = [...this.works];
-        this.statuses=res.data[1]
-        this.clients=res.data[2]
-        this.employees=res.data[3]
-        console.log(res);
-
-      },
-      error:(err)=>{
-        console.log(err);
-        this.toastr.error('An error occurred while loading works. Please try again.','Error')
-      },
-      complete:()=>{
-        this.loader.hideLoader()
-      }
-    })
+  onload() {
+    this.loader.showLoader();
+    this.service
+      .LoadworkReport(
+        this.filters.employees,
+        this.filters.status,
+        this.filters.clients,
+        this.filters.month,
+      )
+      .subscribe({
+        next: (res) => {
+          this.works = res.data[0];
+          this.filteredWorks = [...this.works];
+          this.statuses = res.data[1];
+          this.clients = res.data[2];
+          this.employees = res.data[3];
+        },
+        error: (err) => {
+          console.log(err);
+          this.toastr.error(
+            'An error occurred while loading works. Please try again.',
+            'Error',
+          );
+        },
+        complete: () => {
+          this.loader.hideLoader();
+        },
+      });
   }
 
-  async deleteWork(slno:any) {
-
+  async deleteWork(slno: any) {
     const ok = await this.confirmSevice.open({
       title: 'Delete Work',
       message: 'Are you sure you want to delete this work?',
@@ -262,80 +262,88 @@ export class StaffWorkManagementComponent implements OnInit {
     });
 
     if (!ok) return;
-    this.loader.showLoader()
+    this.loader.showLoader();
     this.service.DeleteWork(slno).subscribe({
       next: (res) => {
-        if(res.data[0].MSG=='Success'){
-          this.toastr.success('Work deleted successfully','Successful')
-          this.onload()
+        if (res.data[0].MSG == 'Success') {
+          this.toastr.success('Work deleted successfully', 'Successful');
+          this.onload();
         }
       },
       error: (err) => {
-
         console.log(err);
 
         this.toastr.error(
           'An error occurred while deleting work. Please try again.',
-          'Error'
+          'Error',
         );
 
         this.loader.hideLoader();
       },
       complete: () => {
         this.loader.hideLoader();
-      }
+      },
     });
-    
-    
   }
 
- 
+  pdf() {
+    this.loader.showLoader();
+    this.service
+      .LoadworkPdf(
+        this.filters.employees,
+        this.filters.status,
+        this.filters.clients,
+        this.filters.month,
+      )
+      .subscribe({
+        next: (res) => {
+          if (res && res.filename) {
+            window.open(`${ApiUrl}/uploads/PDF/${res.filename}`);
+          } else {
+            this.toastr.error('PDF Export Failed');
+          }
+        },
 
-  pdf(){
-    this.loader.showLoader()
-    this.service.LoadworkPdf(this.filters.employees,this.filters.status,this.filters.clients,this.filters.month).subscribe({
-      next:(res)=>{
-        
-        console.log(res);
-        if (res && res.filename) {
-                    window.open(`${ApiUrl}/uploads/PDF/${res.filename}`);
-                } else {
-                    this.toastr.error('PDF Export Failed');
-                }
-
-      },
-
-      error:(err)=>{
-        console.log(err);
-        this.toastr.error('An error occurred while loading works. Please try again.','Error')
-      },
-      complete:()=>{
-        this.loader.hideLoader()
-      }
-    })
+        error: (err) => {
+          console.log(err);
+          this.toastr.error(
+            'An error occurred while loading works. Please try again.',
+            'Error',
+          );
+        },
+        complete: () => {
+          this.loader.hideLoader();
+        },
+      });
   }
-  Excel(){
-    this.loader.showLoader()
-    this.service.LoadworkExcel(this.filters.employees,this.filters.status,this.filters.clients,this.filters.month).subscribe({
-      next:(res)=>{
-        
-        console.log(res);
-        if (res && res.filename) {
-                    window.open(`${ApiUrl}/uploads/excel/${res.filename}`);
-                } else {
-                    this.toastr.error('excel Export Failed');
-                }
+  Excel() {
+    this.loader.showLoader();
+    this.service
+      .LoadworkExcel(
+        this.filters.employees,
+        this.filters.status,
+        this.filters.clients,
+        this.filters.month,
+      )
+      .subscribe({
+        next: (res) => {
+          if (res && res.filename) {
+            window.open(`${ApiUrl}/uploads/excel/${res.filename}`);
+          } else {
+            this.toastr.error('excel Export Failed');
+          }
+        },
 
-      },
-
-      error:(err)=>{
-        console.log(err);
-        this.toastr.error('An error occurred while loading works. Please try again.','Error')
-      },
-      complete:()=>{
-        this.loader.hideLoader()
-      }
-    })
+        error: (err) => {
+          console.log(err);
+          this.toastr.error(
+            'An error occurred while loading works. Please try again.',
+            'Error',
+          );
+        },
+        complete: () => {
+          this.loader.hideLoader();
+        },
+      });
   }
-
 }

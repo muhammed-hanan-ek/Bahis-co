@@ -16,20 +16,19 @@ import { ApiUrl } from '../../app.contsant';
   styleUrl: './user-management.component.css',
 })
 export class UserManagementComponent implements OnInit {
-
   selectedFilter: string = 'All';
   searchText: string = '';
 
   users: any[] = [];
   filteredUsers: any[] = [];
-  ApiUrl=ApiUrl
+  ApiUrl = ApiUrl;
 
   constructor(
     private dialog: MatDialog,
     private confirmService: ConfirmationService,
     private toastr: ToastrService,
     private service: BACService,
-    private loader: LoaderService
+    private loader: LoaderService,
   ) {}
 
   ngOnInit(): void {
@@ -51,18 +50,20 @@ export class UserManagementComponent implements OnInit {
 
     // Role filter
     if (this.selectedFilter !== 'All' && this.selectedFilter != 'Staff') {
-      users = users.filter(user => user.Role === this.selectedFilter);
-    }
-    else if(this.selectedFilter !== 'All' && this.selectedFilter =='Staff'){
-      users = users.filter(user => user.Role === 'Staff' || user.Role=='Marketing Head');
+      users = users.filter((user) => user.Role === this.selectedFilter);
+    } else if (
+      this.selectedFilter !== 'All' &&
+      this.selectedFilter == 'Staff'
+    ) {
+      users = users.filter(
+        (user) => user.Role === 'Staff' || user.Role == 'Marketing Head',
+      );
     }
 
     // Search filter
     if (this.searchText) {
       const text = this.searchText.toLowerCase();
-      users = users.filter(user =>
-        user.name.toLowerCase().includes(text)
-      );
+      users = users.filter((user) => user.name.toLowerCase().includes(text));
     }
 
     this.filteredUsers = users;
@@ -74,30 +75,31 @@ export class UserManagementComponent implements OnInit {
       width: '500px',
       maxWidth: '95vw',
       panelClass: 'responsive-dialog',
-      data: { isEdit, slno }
+      data: { isEdit, slno },
     });
 
     dialogRef.afterClosed().subscribe({
-      next: () => this.onload()
+      next: () => this.onload(),
     });
   }
 
   // ---------- COUNTS ----------
   get adminCount() {
-    return this.users.filter(u => u.Role === 'Admin').length;
+    return this.users.filter((u) => u.Role === 'Admin').length;
   }
 
   get staffCount() {
-    return this.users.filter(u => u.Role === 'Staff' || u.Role==='Marketing Head').length;
+    return this.users.filter(
+      (u) => u.Role === 'Staff' || u.Role === 'Marketing Head',
+    ).length;
   }
 
   get clientCount() {
-    return this.users.filter(u => u.Role === 'Client').length;
+    return this.users.filter((u) => u.Role === 'Client').length;
   }
 
   // ---------- DELETE ----------
-  async deleteUser(slno:any) {
-
+  async deleteUser(slno: any) {
     const ok = await this.confirmService.open({
       title: 'Delete User',
       message: 'Are you sure you want to delete this user?',
@@ -106,62 +108,52 @@ export class UserManagementComponent implements OnInit {
     });
 
     if (!ok) return;
-    this.loader.showLoader()
+    this.loader.showLoader();
     this.service.DeleteUser(slno).subscribe({
       next: (res) => {
-        if(res.result=='success'){
-          this.toastr.success('User deleted successfully','Successful')
-          this.onload()
+        if (res.result == 'success') {
+          this.toastr.success('User deleted successfully', 'Successful');
+          this.onload();
         }
       },
       error: (err) => {
-
         console.log(err);
 
         this.toastr.error(
           'An error occurred while deleting users. Please try again.',
-          'Error'
+          'Error',
         );
 
         this.loader.hideLoader();
       },
       complete: () => {
         this.loader.hideLoader();
-      }
+      },
     });
-    
-    
   }
 
   // ---------- LOAD USERS ----------
   onload() {
-
     this.loader.showLoader();
 
     this.service.LoadUserList().subscribe({
       next: (res) => {
-
         this.users = res.data || [];
         this.filteredUsers = [...this.users];
-
-        console.log(this.users);
-
       },
       error: (err) => {
-
         console.log(err);
 
         this.toastr.error(
           'An error occurred while loading users. Please try again.',
-          'Error'
+          'Error',
         );
 
         this.loader.hideLoader();
       },
       complete: () => {
         this.loader.hideLoader();
-      }
+      },
     });
   }
-
 }

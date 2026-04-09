@@ -34,25 +34,23 @@ export class ClientDashboardComponent {
   month = '';
   year = '';
   time = '';
-  ads:any = [];
+  ads: any = [];
   workAnalysisData = {
     pending: 0,
     Approved: 0,
     Rejected: 0,
   };
-  performedAd:any;
+  performedAd: any;
 
-   clientWorksOverview:any[]=[];
-  clientAdsOverview:any[]=[];
+  clientWorksOverview: any[] = [];
+  clientAdsOverview: any[] = [];
 
   constructor(
-      private service:BACService,
-      private toastr:ToastrService
-    ){
-  
-    }
+    private service: BACService,
+    private toastr: ToastrService,
+  ) {}
   ngOnInit() {
-    this.load()
+    this.load();
     this.updateTime();
 
     setInterval(() => {
@@ -96,7 +94,6 @@ export class ClientDashboardComponent {
     this.time = now.toLocaleTimeString();
   }
 
-
   // ---------------- DONUT CHART ----------------
 
   chartDetails: ApexChart = {
@@ -104,7 +101,7 @@ export class ClientDashboardComponent {
     height: 320,
     toolbar: { show: false },
     zoom: { enabled: false },
-    animations: { enabled: false }
+    animations: { enabled: false },
   };
 
   chartSeries: ApexNonAxisChartSeries = [0, 0, 0];
@@ -144,7 +141,10 @@ export class ClientDashboardComponent {
             show: true,
             label: 'Total Works',
             formatter: (w: any) => {
-              return w.globals.seriesTotals.reduce((a: number, b: number) => a + b, 0);
+              return w.globals.seriesTotals.reduce(
+                (a: number, b: number) => a + b,
+                0,
+              );
             },
           },
         },
@@ -160,7 +160,6 @@ export class ClientDashboardComponent {
   };
   // ---------------- ADS AREA CHART ----------------
 
- 
   adsSeries: ApexAxisChartSeries = [];
 
   adsChart: ApexChart = {
@@ -168,7 +167,7 @@ export class ClientDashboardComponent {
     height: 320,
     toolbar: { show: false },
     zoom: { enabled: false },
-    animations: { enabled: false }
+    animations: { enabled: false },
   };
 
   adsXAxis: ApexXAxis = {
@@ -199,13 +198,10 @@ export class ClientDashboardComponent {
     },
   };
 
-
-  load(){
+  load() {
     this.service.loadClientDashboard().subscribe({
-      next:(res)=>{
-        console.log(res);
-        
-         this.workAnalysisData.pending = res.data[1][0].pending_count;
+      next: (res) => {
+        this.workAnalysisData.pending = res.data[1][0].pending_count;
         this.workAnalysisData.Approved = res.data[1][0].approved_count;
         this.workAnalysisData.Rejected = res.data[1][0].Rejected_count;
         this.chartSeries = [
@@ -214,30 +210,32 @@ export class ClientDashboardComponent {
           this.workAnalysisData.Rejected,
         ];
 
-        this.performedAd=res.data[2][0]
+        this.performedAd = res.data[2][0];
 
         this.clientAdsOverview = res.data[0];
 
         this.adsSeries = [
           {
             name: 'Total Ads Created',
-            data: this.clientAdsOverview.map(a => a.COUNT),
+            data: this.clientAdsOverview.map((a) => a.COUNT),
           },
           {
             name: 'Total Ad Revenue',
-            data: this.clientAdsOverview.map(a => a.CN_AMOUNT),
+            data: this.clientAdsOverview.map((a) => a.CN_AMOUNT),
           },
         ];
 
         this.adsXAxis = {
-          categories: this.clientAdsOverview.map(a => a.USR_NAME),
+          categories: this.clientAdsOverview.map((a) => a.USR_NAME),
         };
-        
       },
-      error:(err)=>{
+      error: (err) => {
         console.log(err);
-        this.toastr.error('An error occurred while loading Dashboard. Please try again.','Error')
-      }
-    })
+        this.toastr.error(
+          'An error occurred while loading Dashboard. Please try again.',
+          'Error',
+        );
+      },
+    });
   }
 }

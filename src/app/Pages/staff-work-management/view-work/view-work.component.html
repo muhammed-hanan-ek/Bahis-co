@@ -80,14 +80,17 @@
       </div>
     </div>
 
-     <!-- WORK TAG + EMPLOYEE -->
-    <div class="space-y-2" *ngIf="workAssignments.length!=0 && (userRole=='Staff' || userRole=='Admin')">
-
-        <label class="text-sm font-medium text-gray-600">
-          Work Tags & Employees
-        </label>
-
-
+    <!-- WORK TAG + EMPLOYEE -->
+    <div
+      class="space-y-2"
+      *ngIf="
+        workAssignments.length != 0 &&
+        (userRole == 'Staff' || userRole == 'Admin')
+      "
+    >
+      <label class="text-sm font-medium text-gray-600">
+        Work Tags & Employees
+      </label>
 
       <div
         *ngFor="let item of workAssignments; let i = index"
@@ -95,7 +98,7 @@
       >
         <!-- TAG -->
         <input
-        disabled
+          disabled
           type="text"
           [(ngModel)]="item.tag"
           placeholder="Enter tag (e.g. shoot)"
@@ -103,7 +106,7 @@
         />
 
         <!-- EMPLOYEE -->
-        <mat-form-field appearance="outline" class="w-3/4 text-sm" >
+        <mat-form-field appearance="outline" class="w-3/4 text-sm">
           <input
             type="text"
             matInput
@@ -128,17 +131,20 @@
             </mat-option>
           </mat-autocomplete>
         </mat-form-field>
-
-
       </div>
     </div>
 
     <!-- REMARK -->
-    <div *ngIf="work.status != 'Pending' || userRole=='Client'">
+    <div *ngIf="work.status != 'Pending' || userRole == 'Client'">
       <label class="text-xs text-gray-500"> Remark </label>
 
       <textarea
-      [disabled]="work.status != 'Pending' && (userRole=='Staff'||userRole=='Admin' || userRole == 'Marketing Head')"
+        [disabled]="
+          work.status != 'Pending' &&
+          (userRole == 'Staff' ||
+            userRole == 'Admin' ||
+            userRole == 'Marketing Head')
+        "
         [(ngModel)]="work.remark"
         rows="3"
         class="mt-1 w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-[var(--primaryColor)]/30 focus:outline-none resize-none"
@@ -156,8 +162,8 @@
     <div class="flex gap-3">
       <!-- REJECT -->
       <button
-      [disabled]="!work.remark || work.status != 'Pending'"
-      (click)="ApproveOrRjectWork(0)"
+        [disabled]="!work.remark || work.status != 'Pending'"
+        (click)="ApproveOrRjectWork(0)"
         class="disabled:bg-white flex items-center gap-2 px-4 py-2 text-sm rounded-lg border border-red-400 text-red-600 hover:bg-red-50 transition"
       >
         <i class="fa-solid fa-xmark"></i>
@@ -166,8 +172,8 @@
 
       <!-- APPROVE -->
       <button
-      (click)="ApproveOrRjectWork(1)"
-       [disabled]="!work.remark || work.status != 'Pending'"
+        (click)="ApproveOrRjectWork(1)"
+        [disabled]="!work.remark || work.status != 'Pending'"
         class="disabled:bg-white flex items-center gap-2 px-5 py-2 text-sm rounded-lg border border-green-400 text-green-600 hover:bg-green-50 transition"
       >
         <i class="fa-solid fa-check"></i>

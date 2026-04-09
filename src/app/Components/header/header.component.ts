@@ -53,7 +53,7 @@ export class HeaderComponent implements OnInit {
   @Output() menuToggle = new EventEmitter<void>();
   @ViewChild('notificationTpl') notificationTpl!: TemplateRef<any>;
   @HostListener('document:click', ['$event'])
-    closeAll(event: any) {
+  closeAll(event: any) {
     if (!event.target.closest('.menu-container')) {
       this.isOpenNav = false;
     }
@@ -64,10 +64,10 @@ export class HeaderComponent implements OnInit {
   }
   isOpenMenu: boolean = false;
   isOpenNav: boolean = false;
-  ApiUrl=ApiUrl
-  menus:any[]=[];
-  notifications:any[]=[];
-  user:any=null
+  ApiUrl = ApiUrl;
+  menus: any[] = [];
+  notifications: any[] = [];
+  user: any = null;
 
   overlayRef!: OverlayRef;
 
@@ -76,23 +76,21 @@ export class HeaderComponent implements OnInit {
     private dialog: MatDialog,
     private overlay: Overlay,
     private vcr: ViewContainerRef,
-    private router:Router,
-    private loader:LoaderService,
-    private confirmService:ConfirmationService,
-    private service:BACService,
-    private shared:SharedService
+    private router: Router,
+    private loader: LoaderService,
+    private confirmService: ConfirmationService,
+    private service: BACService,
+    private shared: SharedService,
   ) {}
 
   ngOnInit(): void {
-    this.load()
+    this.load();
   }
 
   toggleMenu(event: Event) {
     event.stopPropagation();
     this.isOpenNav = !this.isOpenNav;
   }
-
-
 
   OpenMenu(event: Event) {
     event.stopPropagation();
@@ -131,36 +129,32 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  menuNavigation(path:any){
-    this.loader.showLoader()
+  menuNavigation(path: any) {
+    this.loader.showLoader();
     setTimeout(() => {
-      this.router.navigate([`/${path}`])
-      this.loader.hideLoader()
-      this.isOpenNav=false;
-      this.isOpenMenu=false
+      this.router.navigate([`/${path}`]);
+      this.loader.hideLoader();
+      this.isOpenNav = false;
+      this.isOpenMenu = false;
     }, 1000);
   }
 
-  notificationMarkAllAsRead(){
-
-    console.log('Mark all as read');
+  notificationMarkAllAsRead() {
     this.service.notificationMarkALLAsRead().subscribe({
-      next:(res)=>{
-        this.load()
-      }
-    })
+      next: (res) => {
+        this.load();
+      },
+    });
   }
 
-  notificationMarkAsRead(type:string){
-    console.log('mark as read');
+  notificationMarkAsRead(type: string) {
     this.service.notificationMarkAsRead(type).subscribe({
-      next:(res)=>{
-        this.load()
-      }
-    })
+      next: (res) => {
+        this.load();
+      },
+    });
   }
 
-  
   async userLogout() {
     const ok = await this.confirmService.open({
       title: 'Logout',
@@ -170,30 +164,27 @@ export class HeaderComponent implements OnInit {
     });
 
     if (!ok) return;
-    this.loader.showLoader()
-    localStorage.removeItem('token')
+    this.loader.showLoader();
+    localStorage.removeItem('token');
     setTimeout(() => {
-      this.router.navigate(['/sign-in'])
-      this.loader.hideLoader()
+      this.router.navigate(['/sign-in']);
+      this.loader.hideLoader();
     }, 1000);
   }
 
-
-  load(){
+  load() {
     this.service.LoadMenu().subscribe({
-      next:(res)=>{
-        this.user=res.data[0][0]
-        this.menus=res.data[1]
-        this.shared.setRole(this.user.Role)
+      next: (res) => {
+        this.user = res.data[0][0];
+        this.menus = res.data[1];
+        this.shared.setRole(this.user.Role);
       },
-      
-    })
+    });
 
     this.service.loadNotification().subscribe({
-      next:(res)=>{
-        console.log(res);
-        this.notifications=res.data
-      }
-    })
+      next: (res) => {
+        this.notifications = res.data;
+      },
+    });
   }
 }

@@ -4,7 +4,7 @@
     class="flex justify-between items-center px-6 py-3 bg-[var(--primaryColor)] text-white rounded-t-xl flex-shrink-0"
   >
     <div>
-      <div class="text-lg font-semibold">{{ad}}</div>
+      <div class="text-lg font-semibold">{{ ad }}</div>
 
       <p class="text-xs opacity-80">Conversion Details for the Ad</p>
     </div>
@@ -26,7 +26,7 @@
         class="bg-white border border-gray-200 rounded-xl px-6 py-5 flex justify-between items-center"
       >
         <div>
-          <div class="text-3xl font-bold text-gray-900">{{count}}</div>
+          <div class="text-3xl font-bold text-gray-900">{{ count }}</div>
 
           <div class="text-xs uppercase font-semibold text-gray-400">
             Ad conversion
@@ -45,7 +45,7 @@
         class="bg-white border border-gray-200 rounded-xl px-6 py-5 flex justify-between items-center"
       >
         <div>
-          <div class="text-3xl font-bold text-gray-900">₹{{Revenue}}</div>
+          <div class="text-3xl font-bold text-gray-900">₹{{ Revenue }}</div>
 
           <div class="text-xs uppercase font-semibold text-gray-400">
             Ad Revenue
@@ -62,7 +62,7 @@
         class="bg-white border border-gray-200 rounded-xl px-6 py-5 flex justify-between items-center"
       >
         <div>
-          <div class="text-3xl font-bold text-gray-900">₹{{spend}}</div>
+          <div class="text-3xl font-bold text-gray-900">₹{{ spend }}</div>
 
           <div class="text-xs uppercase font-semibold text-gray-400">
             Total Spend
@@ -85,8 +85,8 @@
         <div class="flex items-center gap-3">
           <!-- Excel -->
           <button
-          [disabled]="conversions.length==0"
-          (click)="excel()"
+            [disabled]="conversions.length == 0"
+            (click)="excel()"
             class="py-1 px-3 flex disabled:scale-100 disabled:opacity-70 disabled:bg-emerald-50 items-center gap-1 bg-emerald-50 text-emerald-600 border border-emerald-200 rounded-lg hover:bg-emerald-100 transition"
           >
             <i class="fa-solid fa-file-excel"></i>
@@ -95,8 +95,8 @@
 
           <!-- PDF -->
           <button
-          [disabled]="conversions.length==0"
-          (click)="pdf()"
+            [disabled]="conversions.length == 0"
+            (click)="pdf()"
             class="py-1 px-3 flex disabled:scale-100 disabled:opacity-70 disabled:bg-red-50 items-center gap-1 bg-red-50 text-red-600 border border-red-200 rounded-lg hover:bg-red-100 transition"
           >
             <i class="fa-solid fa-file-pdf"></i>
@@ -128,12 +128,12 @@
               </div>
 
               <div class="text-xs text-gray-400 mt-1">
-                {{ conversion.date | date:'dd-MM-yyyy' }}
+                {{ conversion.date | date: "dd-MM-yyyy" }}
               </div>
             </div>
 
             <!-- MENU -->
-            <div class="relative menu-container" *ngIf="userRole=='Client'">
+            <div class="relative menu-container" *ngIf="userRole == 'Client'">
               <button
                 (click)="toggleMenu(i, $event)"
                 class="w-8 h-8 flex items-center justify-center rounded-full text-gray-400 hover:bg-gray-100"
@@ -155,7 +155,7 @@
                 </button>
 
                 <button
-                (click)="deleteaConversion(conversion.slno)"
+                  (click)="deleteaConversion(conversion.slno)"
                   class="w-full text-left px-3 py-2 text-sm text-red-500 hover:text-red-700 flex items-center gap-2"
                 >
                   <i class="fa-solid fa-trash"></i>

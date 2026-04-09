@@ -1,17 +1,19 @@
 <div class="w-full xl:p-6 md:p-4 p-3 space-y-5">
-
   <!-- HEADER -->
   <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
     <div class="space-y-1">
-      <div class="text-xl md:text-2xl font-semibold text-gray-900 tracking-tight">
+      <div
+        class="text-xl md:text-2xl font-semibold text-gray-900 tracking-tight"
+      >
         Work Calendar
       </div>
-      <p class="text-sm text-gray-500">View and manage scheduled work activities</p>
+      <p class="text-sm text-gray-500">
+        View and manage scheduled work activities
+      </p>
     </div>
 
     <div class="flex flex-col sm:flex-row gap-3">
       <div class="relative flex items-center gap-3 filter-container">
-
         <!-- FILTER BUTTON -->
         <button
           (click)="toggleFilter($event)"
@@ -33,7 +35,9 @@
           class="absolute right-0 top-[48px] w-[320px] max-w-[90vw] bg-white border border-gray-200 rounded-xl shadow-xl z-50 animate-fadeIn"
         >
           <div class="space-y-4 relative max-h-[420px] overflow-y-auto">
-            <div class="text-sm px-4 pt-4 font-semibold text-gray-700 sticky top-0 bg-white rounded-t-xl">
+            <div
+              class="text-sm px-4 pt-4 font-semibold text-gray-700 sticky top-0 bg-white rounded-t-xl"
+            >
               Filters
             </div>
             <div class="px-4 pb-4">
@@ -52,7 +56,9 @@
                 *ngIf="userRole == 'Admin' || userRole == 'Marketing Head'"
               >
                 <label class="text-xs font-medium text-gray-500">Clients</label>
-                <div class="max-h-28 overflow-y-auto space-y-1 grid grid-cols-2 gap-x-2 gap-y-1">
+                <div
+                  class="max-h-28 overflow-y-auto space-y-1 grid grid-cols-2 gap-x-2 gap-y-1"
+                >
                   <label
                     *ngFor="let client of clients"
                     class="flex items-center gap-2 text-sm text-gray-600"
@@ -91,7 +97,9 @@
             </div>
           </div>
           <!-- FILTER ACTIONS -->
-          <div class="flex justify-end gap-2 border-t p-3 bg-gray-50 rounded-b-xl">
+          <div
+            class="flex justify-end gap-2 border-t p-3 bg-gray-50 rounded-b-xl"
+          >
             <button
               (click)="clearFilters()"
               class="px-3 py-1.5 text-sm border border-gray-300 rounded-lg hover:bg-gray-100 transition"
@@ -122,30 +130,48 @@
 
   <!-- STAT CARDS -->
   <div class="grid xl:grid-cols-4 md:grid-cols-3 grid-cols-1 gap-5">
-    <div class="bg-white border border-gray-200 rounded-xl px-6 py-5 flex justify-between items-center">
+    <div
+      class="bg-white border border-gray-200 rounded-xl px-6 py-5 flex justify-between items-center"
+    >
       <div>
         <div class="text-3xl font-bold text-gray-900">{{ works.length }}</div>
-        <div class="text-xs uppercase font-semibold text-gray-400">Total Works</div>
+        <div class="text-xs uppercase font-semibold text-gray-400">
+          Total Works
+        </div>
       </div>
-      <div class="h-12 w-12 flex items-center justify-center rounded-lg text-white bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500">
+      <div
+        class="h-12 w-12 flex items-center justify-center rounded-lg text-white bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500"
+      >
         <i class="fa-solid fa-briefcase"></i>
       </div>
     </div>
-    <div class="bg-white border border-gray-200 rounded-xl px-6 py-5 flex justify-between items-center">
+    <div
+      class="bg-white border border-gray-200 rounded-xl px-6 py-5 flex justify-between items-center"
+    >
       <div>
         <div class="text-3xl font-bold text-gray-900">{{ pendingCount }}</div>
-        <div class="text-xs uppercase font-semibold text-gray-400">Pending Works</div>
+        <div class="text-xs uppercase font-semibold text-gray-400">
+          Pending Works
+        </div>
       </div>
-      <div class="h-12 w-12 flex items-center justify-center rounded-lg text-white bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-400">
+      <div
+        class="h-12 w-12 flex items-center justify-center rounded-lg text-white bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-400"
+      >
         <i class="fa-solid fa-hourglass-half"></i>
       </div>
     </div>
-    <div class="bg-white border border-gray-200 rounded-xl px-6 py-5 flex justify-between items-center">
+    <div
+      class="bg-white border border-gray-200 rounded-xl px-6 py-5 flex justify-between items-center"
+    >
       <div>
         <div class="text-3xl font-bold text-gray-900">{{ completedCount }}</div>
-        <div class="text-xs uppercase font-semibold text-gray-400">Completed Works</div>
+        <div class="text-xs uppercase font-semibold text-gray-400">
+          Completed Works
+        </div>
       </div>
-      <div class="h-12 w-12 flex items-center justify-center rounded-lg text-white bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500">
+      <div
+        class="h-12 w-12 flex items-center justify-center rounded-lg text-white bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500"
+      >
         <i class="fa-solid fa-circle-check"></i>
       </div>
     </div>
@@ -156,7 +182,9 @@
     <div class="flex justify-between items-center">
       <div class="flex items-center gap-2">
         <div class="text-lg font-semibold text-gray-900">Works</div>
-        <span class="text-xs text-gray-700 font-medium px-3 py-1 bg-gray-200 rounded-xl">
+        <span
+          class="text-xs text-gray-700 font-medium px-3 py-1 bg-gray-200 rounded-xl"
+        >
           {{ filters.date | date: "dd MMMM yyyy" }}
         </span>
       </div>
@@ -185,8 +213,9 @@
     </div>
 
     <!-- TABLE CARD -->
-    <div class="bg-white rounded shadow-sm border border-gray-200 overflow-hidden">
-
+    <div
+      class="bg-white rounded shadow-sm border border-gray-200 overflow-hidden"
+    >
       <!-- ─────────────────────────────────────────────── -->
       <!--  DESKTOP TABLE  (sm and above)                 -->
       <!-- ─────────────────────────────────────────────── -->
@@ -194,22 +223,34 @@
         <table class="min-w-full text-sm text-gray-700 border-collapse">
           <thead class="sticky top-0 z-20 bg-gray-50 border-b border-gray-200">
             <tr>
-              <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200 w-36">
+              <th
+                class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200 w-36"
+              >
                 Work Title
               </th>
-              <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200 w-28">
+              <th
+                class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200 w-28"
+              >
                 Client
               </th>
-              <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200">
+              <th
+                class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200"
+              >
                 Content
               </th>
-              <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200 w-28">
+              <th
+                class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200 w-28"
+              >
                 Date
               </th>
-              <th class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200 w-28">
+              <th
+                class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200 w-28"
+              >
                 Status
               </th>
-              <th class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider w-28">
+              <th
+                class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider w-28"
+              >
                 Actions
               </th>
             </tr>
@@ -225,24 +266,31 @@
             >
               <!-- TITLE -->
               <td class="px-4 py-3 border-r border-gray-100">
-                <span class="font-medium text-gray-800 text-sm">{{ w.title || '-' }}</span>
+                <span class="font-medium text-gray-800 text-sm">{{
+                  w.title || "-"
+                }}</span>
               </td>
               <!-- CLIENT -->
               <td class="px-4 py-3 border-r border-gray-100">
-                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700">
-                  {{ w.client || 'N/A' }}
+                <span
+                  class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700"
+                >
+                  {{ w.client || "N/A" }}
                 </span>
               </td>
               <!-- CONTENT -->
               <td class="px-4 py-3 border-r border-gray-100">
-                <span class="block text-xs whitespace-pre-wrap text-gray-500 max-w-xs truncate" [title]="w.content">
-                  {{ w.content || '-' }}
+                <span
+                  class="block text-xs whitespace-pre-wrap text-gray-500 max-w-xs truncate"
+                  [title]="w.content"
+                >
+                  {{ w.content || "-" }}
                 </span>
               </td>
               <!-- DATE -->
               <td class="px-4 py-3 border-r border-gray-100">
                 <span class="text-xs text-gray-400 whitespace-nowrap">
-                  {{ w.date | date:'dd MMM yyyy' }}
+                  {{ w.date | date: "dd MMM yyyy" }}
                 </span>
               </td>
               <!-- STATUS -->
@@ -250,30 +298,32 @@
                 <span
                   class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium whitespace-nowrap"
                   [ngClass]="{
-                    'bg-amber-50 text-amber-700 border border-amber-200':          w.status === 'Pending',
-                    
-                    'bg-emerald-50 text-emerald-700 border border-emerald-200':    w.status === 'Completed',
-                    
-                    'bg-gray-100 text-gray-600 border border-gray-200':            !w.status
+                    'bg-amber-50 text-amber-700 border border-amber-200':
+                      w.status === 'Pending',
+
+                    'bg-emerald-50 text-emerald-700 border border-emerald-200':
+                      w.status === 'Completed',
+
+                    'bg-gray-100 text-gray-600 border border-gray-200':
+                      !w.status,
                   }"
                 >
                   <span
                     class="w-1.5 h-1.5 rounded-full shrink-0"
                     [ngClass]="{
-                      'bg-amber-500':   w.status === 'Pending',
-                      
+                      'bg-amber-500': w.status === 'Pending',
+
                       'bg-emerald-500': w.status === 'Completed',
-                      
-                      'bg-gray-400':    !w.status
+
+                      'bg-gray-400': !w.status,
                     }"
                   ></span>
-                  {{ w.status || 'Unknown' }}
+                  {{ w.status || "Unknown" }}
                 </span>
               </td>
               <!-- ACTIONS -->
               <td class="px-4 py-3">
                 <div class="flex items-center justify-center gap-1.5">
-
                   <!-- MARK AS COMPLETED — hidden when already completed -->
                   <button
                     *ngIf="w.status !== 'Completed'"
@@ -281,8 +331,17 @@
                     title="Mark as Completed"
                     class="inline-flex items-center justify-center w-8 h-8 rounded-lg border border-gray-200 bg-white text-gray-400 hover:text-emerald-600 hover:bg-emerald-50 hover:border-emerald-200 active:scale-95 transition-all duration-150"
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M20 6L9 17l-5-5"/>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="w-3.5 h-3.5"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="M20 6L9 17l-5-5" />
                     </svg>
                   </button>
 
@@ -292,39 +351,77 @@
                     class="inline-flex items-center justify-center w-8 h-8 rounded-lg border border-emerald-200 bg-emerald-50 text-emerald-500 cursor-default"
                     title="Completed"
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M20 6L9 17l-5-5"/>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="w-3.5 h-3.5"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="M20 6L9 17l-5-5" />
                     </svg>
                   </span>
 
                   <!-- EDIT -->
                   <button
-                  [disabled]="w.status=='Completed'"
+                    [disabled]="w.status == 'Completed'"
                     (click)="openwork(true, w.slno)"
-                    [title]="w.status=='Completed'?'You cannot edit this work as already completed':'Edit'"
+                    [title]="
+                      w.status == 'Completed'
+                        ? 'You cannot edit this work as already completed'
+                        : 'Edit'
+                    "
                     class="inline-flex disabled:border-gray-200 disabled:bg-white disabled:text-gray-400 disabled:scale-100 disabled:opacity-70 items-center justify-center w-8 h-8 rounded-lg border border-gray-200 bg-white text-gray-400 hover:text-blue-600 hover:bg-blue-50 hover:border-blue-200 active:scale-95 transition-all duration-150"
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-                      <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="w-3.5 h-3.5"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"
+                      />
+                      <path
+                        d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"
+                      />
                     </svg>
                   </button>
 
                   <!-- DELETE -->
                   <button
-                  (click)="deleteWork(w.slno)"
-                    [disabled]="w.status=='Completed'"
-                    [title]="w.status=='Completed'?'You cannot delete this work as already completed':'Delete'"
+                    (click)="deleteWork(w.slno)"
+                    [disabled]="w.status == 'Completed'"
+                    [title]="
+                      w.status == 'Completed'
+                        ? 'You cannot delete this work as already completed'
+                        : 'Delete'
+                    "
                     class="inline-flex disabled:border-gray-200 disabled:bg-white disabled:text-gray-400 disabled:scale-100 disabled:opacity-70 items-center justify-center w-8 h-8 rounded-lg border border-gray-200 bg-white text-gray-400 hover:text-red-600 hover:bg-red-50 hover:border-red-200 active:scale-95 transition-all duration-150"
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <polyline points="3 6 5 6 21 6"/>
-                      <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
-                      <path d="M10 11v6M14 11v6"/>
-                      <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="w-3.5 h-3.5"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <polyline points="3 6 5 6 21 6" />
+                      <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+                      <path d="M10 11v6M14 11v6" />
+                      <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
                     </svg>
                   </button>
-
                 </div>
               </td>
             </tr>
@@ -347,10 +444,9 @@
           <!-- TOP ROW: title + action buttons -->
           <div class="flex items-start justify-between gap-3 mb-2">
             <span class="font-medium text-gray-800 text-sm leading-snug">
-              {{ w.title || '-' }}
+              {{ w.title || "-" }}
             </span>
             <div class="flex items-center gap-1.5 shrink-0">
-
               <!-- MARK AS COMPLETED -->
               <button
                 *ngIf="w.status !== 'Completed'"
@@ -358,8 +454,17 @@
                 title="Mark as Completed"
                 class="inline-flex items-center justify-center w-8 h-8 rounded-lg border border-gray-200 bg-white text-gray-400 hover:text-emerald-600 hover:bg-emerald-50 hover:border-emerald-200 active:scale-95 transition-all duration-150"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M20 6L9 17l-5-5"/>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-3.5 h-3.5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M20 6L9 17l-5-5" />
                 </svg>
               </button>
 
@@ -369,81 +474,123 @@
                 class="inline-flex items-center justify-center w-8 h-8 rounded-lg border border-emerald-200 bg-emerald-50 text-emerald-500 cursor-default"
                 title="Completed"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M20 6L9 17l-5-5"/>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-3.5 h-3.5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M20 6L9 17l-5-5" />
                 </svg>
               </span>
 
               <!-- EDIT -->
               <button
-              [disabled]="w.status=='Completed'"
+                [disabled]="w.status == 'Completed'"
                 (click)="openwork(true, w.slno)"
                 title="Edit"
                 class="inline-flex items-center disabled:scale-100 disabled:opacity-70 justify-center w-8 h-8 rounded-lg border border-gray-200 bg-white text-gray-400 disabled:border-gray-200 disabled:bg-white disabled:text-gray-400 hover:text-blue-600 hover:bg-blue-50 hover:border-blue-200 active:scale-95 transition-all duration-150"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-3.5 h-3.5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"
+                  />
+                  <path
+                    d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"
+                  />
                 </svg>
               </button>
 
               <!-- DELETE -->
               <button
                 (click)="deleteWork(w.slno)"
-                [disabled]="w.status=='Completed'"
-                [title]="w.status=='Completed'?'You cannot delete this work as already completed':'Delete'"
+                [disabled]="w.status == 'Completed'"
+                [title]="
+                  w.status == 'Completed'
+                    ? 'You cannot delete this work as already completed'
+                    : 'Delete'
+                "
                 class="inline-flex items-center disabled:border-gray-200 disabled:bg-white disabled:text-gray-400 disabled:scale-100 disabled:opacity-70 justify-center w-8 h-8 rounded-lg border border-gray-200 bg-white text-gray-400 hover:text-red-600 hover:bg-red-50 hover:border-red-200 active:scale-95 transition-all duration-150"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="3 6 5 6 21 6"/>
-                  <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
-                  <path d="M10 11v6M14 11v6"/>
-                  <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-3.5 h-3.5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="3 6 5 6 21 6" />
+                  <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+                  <path d="M10 11v6M14 11v6" />
+                  <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
                 </svg>
               </button>
-
             </div>
           </div>
 
           <!-- CONTENT PREVIEW -->
-          <p class="text-xs text-gray-500 whitespace-pre-wrap leading-relaxed line-clamp-2 mb-3">
-            {{ w.content || '-' }}
+          <p
+            class="text-xs text-gray-500 whitespace-pre-wrap leading-relaxed line-clamp-2 mb-3"
+          >
+            {{ w.content || "-" }}
           </p>
 
           <!-- BOTTOM ROW: client · status · date -->
           <div class="flex flex-wrap items-center justify-between gap-2">
             <div class="flex items-center gap-2">
               <!-- CLIENT BADGE -->
-              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700">
-                {{ w.client || 'N/A' }}
+              <span
+                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700"
+              >
+                {{ w.client || "N/A" }}
               </span>
               <!-- STATUS BADGE -->
               <span
                 class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium whitespace-nowrap"
                 [ngClass]="{
-                  'bg-amber-50 text-amber-700 border border-amber-200':          w.status === 'Pending',
-                  'bg-blue-50 text-blue-700 border border-blue-200':             w.status === 'In Progress',
-                  'bg-emerald-50 text-emerald-700 border border-emerald-200':    w.status === 'Completed',
-                  'bg-red-50 text-red-700 border border-red-200':                w.status === 'Cancelled',
-                  'bg-gray-100 text-gray-600 border border-gray-200':            !w.status
+                  'bg-amber-50 text-amber-700 border border-amber-200':
+                    w.status === 'Pending',
+                  'bg-blue-50 text-blue-700 border border-blue-200':
+                    w.status === 'In Progress',
+                  'bg-emerald-50 text-emerald-700 border border-emerald-200':
+                    w.status === 'Completed',
+                  'bg-red-50 text-red-700 border border-red-200':
+                    w.status === 'Cancelled',
+                  'bg-gray-100 text-gray-600 border border-gray-200': !w.status,
                 }"
               >
                 <span
                   class="w-1.5 h-1.5 rounded-full shrink-0"
                   [ngClass]="{
-                    'bg-amber-500':   w.status === 'Pending',
-                    'bg-blue-500':    w.status === 'In Progress',
+                    'bg-amber-500': w.status === 'Pending',
+                    'bg-blue-500': w.status === 'In Progress',
                     'bg-emerald-500': w.status === 'Completed',
-                    'bg-red-500':     w.status === 'Cancelled',
-                    'bg-gray-400':    !w.status
+                    'bg-red-500': w.status === 'Cancelled',
+                    'bg-gray-400': !w.status,
                   }"
                 ></span>
-                {{ w.status || 'Unknown' }}
+                {{ w.status || "Unknown" }}
               </span>
             </div>
             <!-- DATE -->
             <span class="text-xs text-gray-400 whitespace-nowrap">
-              {{ w.date | date:'dd MMM yyyy' }}
+              {{ w.date | date: "dd MMM yyyy" }}
             </span>
           </div>
         </div>
@@ -456,16 +603,28 @@
         *ngIf="!filteredWorks || filteredWorks.length === 0"
         class="flex flex-col items-center justify-center py-16 text-center px-4"
       >
-        <div class="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mb-3">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="2" y="7" width="20" height="14" rx="2"/>
-            <path d="M16 7V5a2 2 0 0 0-4 0v2M8 7V5a2 2 0 0 0-4 0"/>
+        <div
+          class="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mb-3"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-5 h-5 text-gray-400"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <rect x="2" y="7" width="20" height="14" rx="2" />
+            <path d="M16 7V5a2 2 0 0 0-4 0v2M8 7V5a2 2 0 0 0-4 0" />
           </svg>
         </div>
         <p class="text-sm font-medium text-gray-700">No Records Found</p>
-        <p class="text-xs text-gray-400 mt-1">Try adjusting your filters to continue</p>
+        <p class="text-xs text-gray-400 mt-1">
+          Try adjusting your filters to continue
+        </p>
       </div>
-
     </div>
 
     <!-- PAGINATION -->
@@ -475,6 +634,5 @@
         (pageChange)="page = $event"
       ></pagination-controls>
     </div>
-
   </div>
 </div>

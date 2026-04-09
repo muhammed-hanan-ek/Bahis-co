@@ -42,7 +42,7 @@
           (optionSelected)="selectad($event.option.value)"
         >
           <mat-option *ngFor="let ad of filteredads" [value]="ad.name">
-            {{ ad.name}}
+            {{ ad.name }}
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>
@@ -87,8 +87,8 @@
     </button>
 
     <button
-    [disabled]="!form.ad||!form.converioncount||!form.amount"
-    (click)="saveconversion()"
+      [disabled]="!form.ad || !form.converioncount || !form.amount"
+      (click)="saveconversion()"
       class="px-5 py-2 text-sm disabled:scale-100 disabled:opacity-70 rounded-lg bg-[var(--primaryColor)] text-white font-medium shadow-sm hover:shadow-md hover:scale-[1.02] transition"
     >
       {{ isEdit ? "Save Changes" : "Create Conversion" }}

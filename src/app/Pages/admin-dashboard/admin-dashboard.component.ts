@@ -29,7 +29,6 @@ import { ApiUrl } from '../../app.contsant';
   styleUrl: './admin-dashboard.component.css',
 })
 export class AdminDashboardComponent implements OnInit {
-
   ApiUrl = ApiUrl;
 
   // ---------------- TIME ----------------
@@ -53,7 +52,7 @@ export class AdminDashboardComponent implements OnInit {
 
   constructor(
     private service: BACService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
   ) {}
 
   ngOnInit() {
@@ -68,8 +67,29 @@ export class AdminDashboardComponent implements OnInit {
   updateTime() {
     const now = new Date();
 
-    const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-    const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    const days = [
+      'Sunday',
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+    ];
+    const months = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
+    ];
 
     this.dayName = days[now.getDay()];
     this.day = now.getDate().toString();
@@ -85,7 +105,7 @@ export class AdminDashboardComponent implements OnInit {
     height: 320,
     toolbar: { show: false },
     zoom: { enabled: false },
-    animations: { enabled: false }
+    animations: { enabled: false },
   };
 
   chartSeries: ApexNonAxisChartSeries = [0, 0, 0];
@@ -125,7 +145,10 @@ export class AdminDashboardComponent implements OnInit {
             show: true,
             label: 'Total Works',
             formatter: (w: any) => {
-              return w.globals.seriesTotals.reduce((a: number, b: number) => a + b, 0);
+              return w.globals.seriesTotals.reduce(
+                (a: number, b: number) => a + b,
+                0,
+              );
             },
           },
         },
@@ -149,7 +172,7 @@ export class AdminDashboardComponent implements OnInit {
     height: 280,
     toolbar: { show: false },
     zoom: { enabled: false },
-    animations: { enabled: false }
+    animations: { enabled: false },
   };
 
   worksXAxis: ApexXAxis = {
@@ -189,7 +212,7 @@ export class AdminDashboardComponent implements OnInit {
     height: 320,
     toolbar: { show: false },
     zoom: { enabled: false },
-    animations: { enabled: false }
+    animations: { enabled: false },
   };
 
   adsXAxis: ApexXAxis = {
@@ -225,7 +248,6 @@ export class AdminDashboardComponent implements OnInit {
   load() {
     this.service.loadAdminDashboard().subscribe({
       next: (res) => {
-
         this.workAnalysisData.pending = res.data[0][0].pending_count;
         this.workAnalysisData.Approved = res.data[0][0].approved_count;
         this.workAnalysisData.Rejected = res.data[0][0].Rejected_count;
@@ -235,16 +257,16 @@ export class AdminDashboardComponent implements OnInit {
         this.worksSeries = [
           {
             name: 'Works Created',
-            data: this.clientWorks.map(w => w.total),
+            data: this.clientWorks.map((w) => w.total),
           },
           {
             name: 'Works Approved',
-            data: this.clientWorks.map(w => w.approved_count),
+            data: this.clientWorks.map((w) => w.approved_count),
           },
         ];
 
         this.worksXAxis = {
-          categories: this.clientWorks.map(w => w.USR_NAME),
+          categories: this.clientWorks.map((w) => w.USR_NAME),
         };
 
         this.chartSeries = [
@@ -260,23 +282,23 @@ export class AdminDashboardComponent implements OnInit {
         this.adsSeries = [
           {
             name: 'Total Ads Created',
-            data: this.clientAdsOverview.map(a => a.CN_COUNT),
+            data: this.clientAdsOverview.map((a) => a.CN_COUNT),
           },
           {
             name: 'Total Ad Revenue',
-            data: this.clientAdsOverview.map(a => a.CN_AMOUNT),
+            data: this.clientAdsOverview.map((a) => a.CN_AMOUNT),
           },
         ];
 
         this.adsXAxis = {
-          categories: this.clientAdsOverview.map(a => a.USR_NAME),
+          categories: this.clientAdsOverview.map((a) => a.USR_NAME),
         };
       },
 
       error: () => {
         this.toastr.error(
           'An error occurred while loading Dashboard. Please try again.',
-          'Error'
+          'Error',
         );
       },
     });

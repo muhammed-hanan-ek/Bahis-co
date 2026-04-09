@@ -35,16 +35,16 @@ export class AdsManagementComponent {
     }
   }
   constructor(
-    private shared:SharedService,
+    private shared: SharedService,
     private dialog: MatDialog,
-    private service:BACService,
-        private toastr:ToastrService,
-        private loader:LoaderService,
-        private confirmSevice:ConfirmationService
+    private service: BACService,
+    private toastr: ToastrService,
+    private loader: LoaderService,
+    private confirmSevice: ConfirmationService,
   ) {}
 
   showFilter = false;
-  ApiUrl=ApiUrl
+  ApiUrl = ApiUrl;
   searchText = '';
   activeMenu: number | null = null;
   userRole: string | null = 'Admin';
@@ -58,31 +58,30 @@ export class AdsManagementComponent {
     this.page = 1; // reset to first page
   }
 
-  ads :any[]= [];
+  ads: any[] = [];
 
-  statuses:any[]=[]
+  statuses: any[] = [];
 
   filteredads: any[] = [];
 
-   clients :any[]= [];
+  clients: any[] = [];
 
   employees = ['emp1', 'emp2'];
 
   filters: any = {
     month: '',
     clients: [],
-
   };
 
   ngOnInit(): void {
     this.shared.Role$.subscribe({
-      next:(res)=>{
-        this.userRole=res
-      }
-    })
+      next: (res) => {
+        this.userRole = res;
+      },
+    });
     const today = new Date();
     this.filters.month = today.toISOString().slice(0, 7);
-    this.onload()
+    this.onload();
     this.filteredads = [...this.ads];
   }
 
@@ -102,7 +101,7 @@ export class AdsManagementComponent {
   /* SEARCH */
 
   searchads() {
-     const text = this.searchText.toLowerCase();
+    const text = this.searchText.toLowerCase();
 
     this.filteredads = this.ads.filter((ad) =>
       ad.title.toLowerCase().includes(text),
@@ -113,34 +112,38 @@ export class AdsManagementComponent {
 
   toggleClient(id: number, checked: boolean) {
     if (checked) {
-    if (!this.filters.clients.includes(id)) {
-      this.filters.clients = [...this.filters.clients, id];
+      if (!this.filters.clients.includes(id)) {
+        this.filters.clients = [...this.filters.clients, id];
+      }
+    } else {
+      this.filters.clients = this.filters.clients.filter((x: any) => x !== id);
     }
-  } else {
-    this.filters.clients = this.filters.clients.filter((x: any) => x !== id);
-  }
   }
 
   /* STATUS FILTER */
 
   toggleStatus(status: number, checked: boolean) {
     if (checked) {
-    if (!this.filters.status.includes(status)) {
-      this.filters.status = [...this.filters.status, status];
+      if (!this.filters.status.includes(status)) {
+        this.filters.status = [...this.filters.status, status];
+      }
+    } else {
+      this.filters.status = this.filters.status.filter(
+        (x: any) => x !== status,
+      );
     }
-  } else {
-    this.filters.status = this.filters.status.filter((x: any) => x !== status);
-  }
   }
 
   toggleEmployee(emp: any, checked: boolean) {
     if (checked) {
-    if (!this.filters.employees.includes(emp)) {
-      this.filters.employees = [...this.filters.employees, emp];
+      if (!this.filters.employees.includes(emp)) {
+        this.filters.employees = [...this.filters.employees, emp];
+      }
+    } else {
+      this.filters.employees = this.filters.employees.filter(
+        (x: any) => x !== emp,
+      );
     }
-  } else {
-    this.filters.employees = this.filters.employees.filter((x: any) => x !== emp);
-  }
   }
 
   /* CLEAR FILTERS */
@@ -152,20 +155,18 @@ export class AdsManagementComponent {
       month: today.toISOString().slice(0, 7),
       clients: [],
       status: [],
-      employees:[]
+      employees: [],
     };
-    this.showFilter=false
+    this.showFilter = false;
     this.filteredads = [...this.ads];
-    this.onload()
+    this.onload();
   }
 
   /* APPLY FILTERS */
 
   applyFilters() {
-    console.log(this.filters);
-    this.onload()
+    this.onload();
     this.showFilter = false;
-
   }
 
   /* CREATE ads */
@@ -182,12 +183,12 @@ export class AdsManagementComponent {
     });
     dialogref.afterClosed().subscribe({
       next: () => {
-        this.onload()
+        this.onload();
       },
     });
   }
   openconversion(isEdit: boolean, slno: string | null) {
-    const dialogRef=this.dialog.open(CreateEditConversionComponent, {
+    const dialogRef = this.dialog.open(CreateEditConversionComponent, {
       width: '500px',
       maxWidth: '95vw',
       panelClass: 'responsive-dialog',
@@ -199,15 +200,13 @@ export class AdsManagementComponent {
 
     dialogRef.afterClosed().subscribe({
       next: () => {
-        this.onload()
+        this.onload();
       },
     });
   }
 
   viewAd(slno: any) {
-    console.log('view ad click');
-
-    const dialogRef=this.dialog.open(ViewAdComponent, {
+    const dialogRef = this.dialog.open(ViewAdComponent, {
       width: '100vw',
       height: '95vh',
       minWidth: '100vw',
@@ -217,9 +216,9 @@ export class AdsManagementComponent {
         slno: slno,
       },
     });
-     dialogRef.afterClosed().subscribe({
+    dialogRef.afterClosed().subscribe({
       next: () => {
-        this.onload()
+        this.onload();
       },
     });
   }
@@ -238,79 +237,80 @@ export class AdsManagementComponent {
     return this.ads.reduce((sum, ad) => sum + Number(ad.Revenue), 0);
   }
 
-    onload(){
-    this.loader.showLoader()
-    this.service.LoadAdReport(this.filters.clients,this.filters.month).subscribe({
-      next:(res)=>{
-        this.ads=res.data[0]
-        this.filteredads = [...this.ads];
-        this.clients=res.data[1]
-        console.log(res);
-
-      },
-      error:(err)=>{
-        console.log(err);
-        this.toastr.error('An error occurred while loading works. Please try again.','Error')
-      },
-      complete:()=>{
-        this.loader.hideLoader()
-      }
-    })
-
-
+  onload() {
+    this.loader.showLoader();
+    this.service
+      .LoadAdReport(this.filters.clients, this.filters.month)
+      .subscribe({
+        next: (res) => {
+          this.ads = res.data[0];
+          this.filteredads = [...this.ads];
+          this.clients = res.data[1];
+        },
+        error: (err) => {
+          console.log(err);
+          this.toastr.error(
+            'An error occurred while loading works. Please try again.',
+            'Error',
+          );
+        },
+        complete: () => {
+          this.loader.hideLoader();
+        },
+      });
   }
 
-  pdf(){
-      this.loader.showLoader()
-      this.service.LoadAdpdf(this.filters.clients,this.filters.month).subscribe({
-        next:(res)=>{
-          
-          console.log(res);
-          if (res && res.filename) {
-                      window.open(`${ApiUrl}/uploads/PDF/${res.filename}`);
-                  } else {
-                      this.toastr.error('PDF Export Failed');
-                  }
-  
-        },
-  
-        error:(err)=>{
-          console.log(err);
-          this.toastr.error('An error occurred while loading works. Please try again.','Error')
-        },
-        complete:()=>{
-          this.loader.hideLoader()
+  pdf() {
+    this.loader.showLoader();
+    this.service.LoadAdpdf(this.filters.clients, this.filters.month).subscribe({
+      next: (res) => {
+        if (res && res.filename) {
+          window.open(`${ApiUrl}/uploads/PDF/${res.filename}`);
+        } else {
+          this.toastr.error('PDF Export Failed');
         }
-      })
-    }
-    Excel(){
-      this.loader.showLoader()
-      this.service.LoadAdExcel(this.filters.clients,this.filters.month).subscribe({
-        next:(res)=>{
-          
-          console.log(res);
+      },
+
+      error: (err) => {
+        console.log(err);
+        this.toastr.error(
+          'An error occurred while loading works. Please try again.',
+          'Error',
+        );
+      },
+      complete: () => {
+        this.loader.hideLoader();
+      },
+    });
+  }
+  Excel() {
+    this.loader.showLoader();
+    this.service
+      .LoadAdExcel(this.filters.clients, this.filters.month)
+      .subscribe({
+        next: (res) => {
           if (res && res.filename) {
-                      window.open(`${ApiUrl}/uploads/excel/${res.filename}`);
-                  } else {
-                      this.toastr.error('excel Export Failed');
-                  }
-  
+            window.open(`${ApiUrl}/uploads/excel/${res.filename}`);
+          } else {
+            this.toastr.error('excel Export Failed');
+          }
         },
-  
-        error:(err)=>{
+
+        error: (err) => {
           console.log(err);
-          this.toastr.error('An error occurred while loading works. Please try again.','Error')
+          this.toastr.error(
+            'An error occurred while loading works. Please try again.',
+            'Error',
+          );
         },
-        complete:()=>{
-          this.loader.hideLoader()
-        }
-      })
-    }
+        complete: () => {
+          this.loader.hideLoader();
+        },
+      });
+  }
 
   // editads(a:any){}
- async deleteads(SLNO:any){
-    
-
+  async deleteads(SLNO: any) {
     const ok = await this.confirmSevice.open({
       title: 'Delete Ad',
       message: 'Are you sure you want to delete this Ad?',
@@ -319,32 +319,27 @@ export class AdsManagementComponent {
     });
 
     if (!ok) return;
-    this.loader.showLoader()
+    this.loader.showLoader();
     this.service.DeleteAD(SLNO).subscribe({
       next: (res) => {
-        if(res.data[0].MSG=='Success'){
-          this.toastr.success('Ad deleted successfully','Successful')
-          this.onload()
+        if (res.data[0].MSG == 'Success') {
+          this.toastr.success('Ad deleted successfully', 'Successful');
+          this.onload();
         }
       },
       error: (err) => {
-
         console.log(err);
 
         this.toastr.error(
           'An error occurred while deleting ad. Please try again.',
-          'Error'
+          'Error',
         );
 
         this.loader.hideLoader();
       },
       complete: () => {
         this.loader.hideLoader();
-      }
+      },
     });
-    
-
-    
-  
   }
 }

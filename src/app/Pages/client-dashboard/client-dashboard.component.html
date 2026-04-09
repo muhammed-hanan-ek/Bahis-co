@@ -36,7 +36,7 @@
         <div
           class="bg-gradient-to-br from-blue-500 to-indigo-600 text-white flex items-center justify-center text-3xl font-semibold rounded-full border-4 border-blue-100 w-20 h-20 mt-3 object-cover"
         >
-          {{performedAd?.title.charAt(0)}}
+          {{ performedAd?.title.charAt(0) }}
         </div>
 
         <!-- <img
@@ -44,9 +44,11 @@
           class=""
         /> -->
 
-        <div class="text-sm font-semibold mt-3 text-gray-800">{{performedAd?.title}}</div>
+        <div class="text-sm font-semibold mt-3 text-gray-800">
+          {{ performedAd?.title }}
+        </div>
 
-        <div class="text-xs text-gray-500">Earned ₹{{performedAd?.AMT}}</div>
+        <div class="text-xs text-gray-500">Earned ₹{{ performedAd?.AMT }}</div>
       </div>
     </div>
 
@@ -114,7 +116,7 @@
                 </div>
 
                 <div class="text-xs text-gray-500">
-                  {{ad.date}}
+                  {{ ad.date }}
                 </div>
               </div>
             </div>

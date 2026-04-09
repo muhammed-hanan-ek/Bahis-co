@@ -51,7 +51,8 @@
         (click)="confirm.confirm()"
         class="flex-1 py-2.5 text-sm font-semibold text-white rounded-lg transition shadow-sm"
         [ngClass]="{
-          'bg-red-600 hover:bg-red-700': (config.type === 'danger' || config.type === 'logout'),
+          'bg-red-600 hover:bg-red-700':
+            config.type === 'danger' || config.type === 'logout',
           'bg-green-600 hover:bg-green-700': config.type === 'success',
           'bg-blue-600 hover:bg-blue-700': config.type === 'info',
         }"

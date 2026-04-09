@@ -17,7 +17,6 @@ import { LoaderService } from '../../../loader/loader.service';
   styleUrl: './create-edit-work.component.css',
 })
 export class CreateEditWorkComponent implements OnInit {
-
   isEdit: boolean = false;
   slno: any = null;
 
@@ -43,7 +42,7 @@ export class CreateEditWorkComponent implements OnInit {
     private confirmService: ConfirmationService,
     private service: BACService,
     private toastr: ToastrService,
-    private loader: LoaderService
+    private loader: LoaderService,
   ) {}
 
   ngOnInit(): void {
@@ -56,26 +55,28 @@ export class CreateEditWorkComponent implements OnInit {
   // ================= CLIENT =================
   filterClients() {
     this.filteredClients = this.clients.filter((client) =>
-      client.Client.toLowerCase().includes(this.clientSearch.toLowerCase())
+      client.Client.toLowerCase().includes(this.clientSearch.toLowerCase()),
     );
   }
 
   selectClient(client: any) {
-    const selected = this.clients.find(c => c.Client === client);
+    const selected = this.clients.find((c) => c.Client === client);
     this.form.client = selected ? selected.id : null;
   }
 
   // ================= EMPLOYEE =================
   filterEmployees(index: number) {
-    const search = (this.workAssignments[index].employeeSearch || '').toLowerCase();
+    const search = (
+      this.workAssignments[index].employeeSearch || ''
+    ).toLowerCase();
 
-    this.workAssignments[index].filteredEmployees = this.employees.filter(e =>
-      e.name.toLowerCase().includes(search)
+    this.workAssignments[index].filteredEmployees = this.employees.filter((e) =>
+      e.name.toLowerCase().includes(search),
     );
   }
 
   selectEmployee(value: string, index: number) {
-    const emp = this.employees.find(e => e.name === value);
+    const emp = this.employees.find((e) => e.name === value);
 
     if (emp) {
       this.workAssignments[index].employee = emp.id;
@@ -89,7 +90,7 @@ export class CreateEditWorkComponent implements OnInit {
       tag: '',
       employee: null,
       employeeSearch: '',
-      filteredEmployees: [...this.employees]
+      filteredEmployees: [...this.employees],
     });
   }
 
@@ -110,12 +111,10 @@ export class CreateEditWorkComponent implements OnInit {
 
     if (!ok) return;
 
-    const assignments = this.workAssignments.map(a => ({
+    const assignments = this.workAssignments.map((a) => ({
       tag: a.tag,
-      employeeId: a.employee
+      employeeId: a.employee,
     }));
-
-    console.log('Assignments:', assignments);
 
     this.loader.showLoader();
 
@@ -126,7 +125,7 @@ export class CreateEditWorkComponent implements OnInit {
         this.form.description,
         this.form.driveLink,
         this.slno,
-        assignments
+        assignments,
       )
       .subscribe({
         next: (res) => {
@@ -135,7 +134,7 @@ export class CreateEditWorkComponent implements OnInit {
               this.isEdit
                 ? 'Work edited successfully.'
                 : 'Work added successfully',
-              'Successful'
+              'Successful',
             );
           }
         },
@@ -145,7 +144,7 @@ export class CreateEditWorkComponent implements OnInit {
             this.isEdit
               ? 'An error occurred while editing work.'
               : 'An error occurred while adding work.',
-            'Error'
+            'Error',
           );
         },
         complete: () => {
@@ -161,8 +160,6 @@ export class CreateEditWorkComponent implements OnInit {
 
     this.service.LoadEditWork(this.slno).subscribe({
       next: (res) => {
-        console.log(res, 'load create');
-
         this.clients = res.data[1] || [];
         this.filteredClients = this.clients;
 
@@ -173,13 +170,13 @@ export class CreateEditWorkComponent implements OnInit {
         // ✅ FIX: Replace workAssignments completely
         this.workAssignments = tags.length
           ? tags.map((t: any) => {
-              const emp = this.employees.find(e => e.id == t.USR_SLNO);
+              const emp = this.employees.find((e) => e.id == t.USR_SLNO);
 
               return {
                 tag: t.TE_TAG || '',
                 employee: t.USR_SLNO || null,
                 employeeSearch: emp ? emp.name : '',
-                filteredEmployees: [...this.employees]
+                filteredEmployees: [...this.employees],
               };
             })
           : [
@@ -187,8 +184,8 @@ export class CreateEditWorkComponent implements OnInit {
                 tag: '',
                 employee: null,
                 employeeSearch: '',
-                filteredEmployees: [...this.employees]
-              }
+                filteredEmployees: [...this.employees],
+              },
             ];
 
         // FORM DATA
@@ -198,23 +195,20 @@ export class CreateEditWorkComponent implements OnInit {
         this.form.title = res.data[0][0]?.title;
 
         if (this.form.client) {
-          const client = this.clients.find(c => c.id == this.form.client);
+          const client = this.clients.find((c) => c.id == this.form.client);
           this.clientSearch = client?.Client || '';
         }
       },
 
       error: (err) => {
         console.log(err);
-        this.toastr.error(
-          'An error occurred while loading work.',
-          'Error'
-        );
+        this.toastr.error('An error occurred while loading work.', 'Error');
         this.loader.hideLoader();
       },
 
       complete: () => {
         this.loader.hideLoader();
-      }
+      },
     });
   }
 
