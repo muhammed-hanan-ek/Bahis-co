@@ -371,6 +371,24 @@ DeleteAD(SLNO:any): Observable<any> {
 
   return this.http.post(`${ApiUrl}/work_calendar/list`, formData);
 }
+  calendarpdf(status: any, Client: any, date: any): Observable<any> {
+  const formData = new FormData();
+
+  formData.append('status', JSON.stringify(status || []));
+  formData.append('Client', JSON.stringify(Client || []));
+  formData.append('date', date);
+
+  return this.http.post(`${ApiUrl}/work_calendar/pdf`, formData);
+}
+  calendarExcel(status: any, Client: any, date: any): Observable<any> {
+  const formData = new FormData();
+
+  formData.append('status', JSON.stringify(status || []));
+  formData.append('Client', JSON.stringify(Client || []));
+  formData.append('date', date);
+
+  return this.http.post(`${ApiUrl}/work_calendar/excel`, formData);
+}
 
   markAsComplete(slno:any): Observable<any> {
   const formData = new FormData();

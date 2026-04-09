@@ -284,11 +284,51 @@ export class WorkCalendarComponent {
     });
   }
 
-  pdf(){
-    
+   pdf(){
+    this.loader.showLoader()
+    this.service.calendarpdf(this.filters.status,this.filters.clients,this.filters.date).subscribe({
+      next:(res)=>{
+        
+        console.log(res);
+        if (res && res.filename) {
+                    window.open(`${ApiUrl}/uploads/PDF/${res.filename}`);
+                } else {
+                    this.toastr.error('PDF Export Failed');
+                }
+
+      },
+
+      error:(err)=>{
+        console.log(err);
+        this.toastr.error('An error occurred while loading works. Please try again.','Error')
+      },
+      complete:()=>{
+        this.loader.hideLoader()
+      }
+    })
   }
   Excel(){
-    
+    this.loader.showLoader()
+    this.service.calendarExcel(this.filters.status,this.filters.clients,this.filters.date).subscribe({
+      next:(res)=>{
+        
+        console.log(res);
+        if (res && res.filename) {
+                    window.open(`${ApiUrl}/uploads/excel/${res.filename}`);
+                } else {
+                    this.toastr.error('excel Export Failed');
+                }
+
+      },
+
+      error:(err)=>{
+        console.log(err);
+        this.toastr.error('An error occurred while loading works. Please try again.','Error')
+      },
+      complete:()=>{
+        this.loader.hideLoader()
+      }
+    })
   }
 
 }
