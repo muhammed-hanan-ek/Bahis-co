@@ -278,6 +278,8 @@ export class WorkCalendarComponent {
     });
   }
 
+  
+
   pdf() {
     this.loader.showLoader();
     this.service
