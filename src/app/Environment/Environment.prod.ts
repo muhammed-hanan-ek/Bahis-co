@@ -1,4 +1,4 @@
 export const environment = {
-  ApiUrl: 'http://localhost:3000',
+  ApiUrl: 'http://www.kaboomapp.in/apiKaboom',
   hostUrl: 'http://localhost:4200',
 };
