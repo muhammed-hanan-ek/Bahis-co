@@ -135,14 +135,14 @@
     </div>
 
     <!-- REMARK -->
-    <div *ngIf="work.status != 'Pending' || userRole == 'Client'">
+    <div *ngIf="work.status != 'Pending' || (userRole == 'Client' || userRole == 'Admin')">
       <label class="text-xs text-gray-500"> Remark </label>
 
       <textarea
         [disabled]="
           work.status != 'Pending' &&
           (userRole == 'Staff' ||
-            userRole == 'Admin' ||
+            
             userRole == 'Marketing Head')
         "
         [(ngModel)]="work.remark"
@@ -155,7 +155,7 @@
   <!-- FOOTER -->
   <div
     class="flex justify-between items-center px-6 py-4 border-t bg-gray-50 rounded-b-xl"
-    *ngIf="userRole == 'Client'"
+    *ngIf="userRole == 'Client' || userRole == 'Admin'"
   >
     <div class="text-xs text-gray-400">Review & take action</div>
 

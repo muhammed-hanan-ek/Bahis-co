@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './loader.component.css',
 })
 export class LoaderComponent implements OnInit {
-  fullText = 'Bahis & CO';
+  fullText = 'Kaboom';
   displayedText = '';
   index = 0;
 
