@@ -165,7 +165,8 @@ export class HeaderComponent implements OnInit {
 
     if (!ok) return;
     this.loader.showLoader();
-    localStorage.removeItem('token');
+    localStorage.clear()
+    // localStorage.removeItem('token');
     setTimeout(() => {
       this.router.navigate(['/sign-in']);
       this.loader.hideLoader();
