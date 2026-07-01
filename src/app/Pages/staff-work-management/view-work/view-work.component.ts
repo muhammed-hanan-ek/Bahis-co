@@ -142,13 +142,17 @@ export class ViewWorkComponent implements OnInit {
 
   async ApproveOrRjectWork(desicion: any) {
     const ok = await this.confirmSevice.open({
-      title: desicion == 1 ? 'Approve Work' : 'Reject Work',
+      title: desicion === 1 ? 'Approve Work' : 'Reject Work',
       message:
-        desicion == 1
-          ? 'Are you sure you want to approve this work?'
-          : 'Are you sure you want to reject this work?',
-      type: desicion == 1 ? 'success' : 'info',
-      confirmText: desicion == 1 ? 'Approve' : 'Reject',
+        this.work.status !== 'Pending'
+          ? desicion === 1
+            ? `This work is currently "${this.work.status}". Are you sure you want to approve it?`
+            : `This work is currently "${this.work.status}". Are you sure you want to reject it?`
+          : desicion === 1
+            ? 'Are you sure you want to approve this work?'
+            : 'Are you sure you want to reject this work?',
+      type: desicion === 1 ? 'success' : 'info',
+      confirmText: desicion === 1 ? 'Approve' : 'Reject',
     });
 
     if (!ok) return;
@@ -175,7 +179,7 @@ export class ViewWorkComponent implements OnInit {
           console.log(err);
 
           this.toastr.error(
-            'An error occurred while deleting users. Please try again.',
+            'An error occurred while updating the work status. Please try again.',
             'Error',
           );
 
